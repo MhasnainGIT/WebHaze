@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "name": "WebHaze Base Design System",
+    "version": "1.0.0"
+  },
+  "colors": {
+    "primary": "#0066cc",
+    "secondary": "#6c757d",
+    "success": "#28a745",
+    "danger": "#dc3545",
+    "warning": "#ffc107",
+    "info": "#17a2b8",
+    "light": "#f8f9fa",
+    "dark": "#343a40"
+  },
+  "spacing": {
+    "unit": 8,
+    "scale": [0, 0.25, 0.5, 1, 1.5, 2, 3, 4, 5, 6]
+  },
+  "breakpoints": {
+    "xs": "320px",
+    "sm": "576px",
+    "md": "768px",
+    "lg": "992px",
+    "xl": "1200px",
+    "xxl": "1400px"
+  },
+  "typography": {
+    "fontSizes": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "base": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem",
+      "4xl": "2.25rem"
+    },
+    "lineHeights": {
+      "tight": 1.25,
+      "base": 1.5,
+      "relaxed": 1.75
+    }
+  },
+  "themes": {
+    "light": {
+      "background": "#ffffff",
+      "text": "#212529",
+      "border": "#dee2e6"
+    },
+    "dark": {
+      "background": "#212529",
+      "text": "#f8f9fa",
+      "border": "#495057"
+    }
+  }
+}

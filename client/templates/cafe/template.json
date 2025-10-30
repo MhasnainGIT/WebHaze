@@ -1,0 +1,21 @@
+{
+  "id": "cafe-modern-1",
+  "title": "Modern Cafe",
+  "description": "A clean, responsive cafe template with hero, menu, and contact sections.",
+  "designTokens": "../../config/design-tokens.schema.json",
+  "layout": {
+    "header": {
+      "type": "header",
+      "props": {"logoText": "{{site.name}}", "cta": {"text": "Reserve", "href": "#contact"}}
+    },
+    "sections": [
+      {"type":"hero","props":{"title":"Welcome to {{site.name}}","subtitle":"Fresh coffee & pastries"}},
+      {"type":"menu","props":{"items":[{"name":"Latte","price":"$4"},{"name":"Croissant","price":"$3"}]}},
+      {"type":"contact","props":{"address":"123 Market St","phone":"(555) 123-4567"}}
+    ]
+  },
+  "defaults": {
+    "colors": {"primary":"#8B5E3C","accent":"#D99B6C","bg":"#FFFFFF"},
+    "breakpoints": {"mobile":"480px","tablet":"768px","desktop":"1024px"}
+  }
+}

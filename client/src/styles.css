@@ -1,0 +1,17 @@
+body,html,#root{height:100%;margin:0}
+.app{display:flex;height:100vh}
+.sidebar{width:280px;padding:16px;border-right:1px solid #eee;background:#fafafa}
+.preview{flex:1;padding:8px}
+
+/* Mobile responsive utilities */
+.container-site{max-width:1200px;margin:0 auto;padding:0 1rem}
+@media (min-width: 640px){.container-site{padding:0 1.5rem}}
+@media (min-width: 1024px){.container-site{padding:0 2rem}}
+
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#0b61ff,#0b9bff);color:white;border-radius:0.5rem;font-weight:600;transition:all 0.2s;border:none;text-decoration:none}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 25px rgba(11,97,255,0.3)}
+@media (max-width: 640px){.btn-primary{padding:0.625rem 1.25rem;font-size:0.875rem}}
+
+.btn-secondary{display:inline-flex;align-items:center;justify-content:center;padding:0.75rem 1.5rem;background:rgba(255,255,255,0.9);color:#374151;border-radius:0.5rem;font-weight:600;transition:all 0.2s;border:1px solid rgba(229,231,235,0.5);text-decoration:none}
+.btn-secondary:hover{background:rgba(255,255,255,1);transform:translateY(-1px)}
+@media (max-width: 640px){.btn-secondary{padding:0.625rem 1.25rem;font-size:0.875rem}}

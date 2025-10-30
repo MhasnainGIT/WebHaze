@@ -1,0 +1,99 @@
+{
+  "id": "site-launch-kit-1",
+  "title": "WebHaze",
+  "description": "A business-focused SaaS landing template: Home, Services, My account, Contact",
+  "version": "1.0.0",
+  "meta": {
+    "category": "saas",
+    "tags": ["saas","business","landing","startup"]
+  },
+  "theme": {
+    "colors": {
+      "primary": "#0B61FF",
+      "secondary": "#0B9BFF",
+      "accent": "#00C48C",
+      "background": "#F7FAFF",
+      "text": "#0F172A",
+      "textLight": "#475569"
+    },
+    "fonts": {
+      "heading": { "family": "Inter", "weights": [600, 700] },
+      "body": { "family": "Inter", "weights": [400, 500] }
+    }
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "hero",
+      "settings": { "style": "split", "overlay": "none" },
+      "content": {
+        "heading": "Build a successful website with WebHaze in no time:",
+        "subheading": "Simple, Easier, Faster — You know your business and customers best. With WebHaze, build a professional website that reflects your expertise, tells your story, and earns trust without the tech hassle.",
+        "backgroundImage": { "desktop": "/templates/site-launch-kit/hero-desktop.webp", "mobile": "/templates/site-launch-kit/hero-mobile.webp" },
+        "cta": [
+          { "text": "Start now", "style": "primary", "action": "start-now" },
+          { "text": "Learn more", "style": "secondary", "action": "scroll-to-services" }
+        ]
+      }
+    },
+    {
+      "id": "services",
+      "type": "features",
+      "settings": { "style": "grid", "columns": 3 },
+      "content": {
+        "heading": "Home • Services • My account • Contact us",
+        "items": [
+          { "icon": "speed", "title": "Fast Launch", "description": "Get a site online quickly using curated templates and guided setup." },
+          { "icon": "customize", "title": "Easy Customization", "description": "Flexible content blocks and a simple editor tailored for business owners." },
+          { "icon": "support", "title": "Managed Services", "description": "Hosting, security updates, and analytics — we handle the tech so you don't have to." }
+        ]
+      }
+    },
+    {
+      "id": "how-it-works",
+      "type": "features",
+      "settings": { "style": "grid", "columns": 3 },
+      "content": {
+        "heading": "How it Works",
+        "items": [
+          { "icon": "briefcase", "title": "Tell Your Story", "description": "Share what makes your business unique and who you serve." },
+          { "icon": "tools", "title": "Choose a Template", "description": "Pick a professionally designed layout and customize content." },
+          { "icon": "rocket", "title": "Launch & Grow", "description": "Publish, measure, and iterate with our built-in growth tools." }
+        ]
+      }
+    },
+    {
+      "id": "testimonials",
+      "type": "testimonials",
+      "settings": { "style": "grid" },
+      "content": {
+        "heading": "Trusted by Small Businesses",
+        "items": [
+          { "quote": "WebHaze helped us get online in a weekend and doubled our bookings.", "author": "Maria R.", "rating": 5 },
+          { "quote": "The templates are beautiful and editing is simple.", "author": "Jamal K.", "rating": 5 }
+        ]
+      }
+    },
+    {
+      "id": "contact",
+      "type": "contact",
+      "settings": { "layout": "split", "map": false },
+      "content": {
+        "heading": "Start now",
+        "info": {
+          "address": "",
+          "phone": "",
+          "hours": { "weekdays": "", "weekends": "" }
+        },
+        "form": {
+          "title": "Get started",
+          "fields": [
+            { "type": "text", "name": "name", "label": "Name", "required": true },
+            { "type": "email", "name": "email", "label": "Email", "required": true },
+            { "type": "textarea", "name": "notes", "label": "Tell us about your business", "required": false }
+          ]
+        }
+      }
+    }
+  ]
+}

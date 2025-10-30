@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WebHaze Design Tokens Schema",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "version": {"type": "string"}
+      },
+      "required": ["name"]
+    },
+    "colors": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9_-]+$": {"type": "string", "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"}
+      },
+      "additionalProperties": false
+    },
+    "spacing": {
+      "type": "object",
+      "properties": {
+        "unit": {"type": "string", "default": "px"},
+        "scale": {
+          "type": "array",
+          "items": {"type": "string"},
+          "default": ["4","8","12","16","24","32","48"]
+        }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "properties": {
+        "fontStacks": {"type": "string"},
+        "fontSizes": {"type": "array", "items": {"type": "string"}},
+        "lineHeights": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "breakpoints": {
+      "type": "object",
+      "properties": {
+        "mobile": {"type": "string"},
+        "tablet": {"type": "string"},
+        "desktop": {"type": "string"}
+      },
+      "required": ["mobile"]
+    },
+    "themes": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9_-]+$": {"type": "object"}
+      }
+    },
+    "regionOverrides": {
+      "type": "object",
+      "patternProperties": {
+        "^[A-Z]{2}(-[A-Z]{2})?$": {"type": "object"}
+      }
+    }
+  },
+  "required": ["meta","colors","breakpoints"]
+}

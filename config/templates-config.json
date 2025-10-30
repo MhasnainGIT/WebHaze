@@ -1,0 +1,88 @@
+{
+  "industries": [
+    {
+      "id": "restaurant",
+      "name": "Restaurants & Cafes",
+      "templates": [
+        {
+          "id": "modern-cafe",
+          "name": "Modern Cafe",
+          "description": "Perfect for cafes, bakeries, and casual dining",
+          "features": [
+            "Online Menu System",
+            "Table Reservations",
+            "Order Management",
+            "Customer Reviews"
+          ],
+          "previewImage": "/templates/restaurant/modern-cafe/preview.jpg",
+          "demoUrl": "/demos/modern-cafe",
+          "conversionElements": {
+            "cta": {
+              "primary": "Order Now",
+              "secondary": "View Menu"
+            },
+            "trustIndicators": [
+              "Featured in Local Guides",
+              "Customer Reviews",
+              "Health Safety Badges"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "retail",
+      "name": "Retail & E-commerce",
+      "templates": [
+        {
+          "id": "fashion-store",
+          "name": "Fashion Boutique",
+          "description": "Stylish e-commerce template for fashion and accessories",
+          "features": [
+            "Product Catalog",
+            "Shopping Cart",
+            "Secure Checkout",
+            "Size Guide"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "professional",
+      "name": "Professional Services",
+      "templates": [
+        {
+          "id": "consultant",
+          "name": "Business Consultant",
+          "description": "Professional template for consultants and advisors",
+          "features": [
+            "Service Showcase",
+            "Appointment Booking",
+            "Client Testimonials",
+            "Case Studies"
+          ]
+        }
+      ]
+    }
+  ],
+  "features": {
+    "seo": {
+      "metaTags": true,
+      "sitemapGeneration": true,
+      "schemaMarkup": true
+    },
+    "marketing": {
+      "socialMedia": true,
+      "emailCapture": true,
+      "analytics": {
+        "clarity": true,
+        "googleAnalytics": true
+      }
+    },
+    "security": {
+      "ssl": true,
+      "backups": true,
+      "gdprCompliance": true
+    }
+  }
+}

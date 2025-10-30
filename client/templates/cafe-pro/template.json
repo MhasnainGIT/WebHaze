@@ -1,0 +1,235 @@
+{
+  "id": "modern-cafe-pro",
+  "version": "2.0.0",
+  "meta": {
+    "name": "Modern Cafe Professional",
+    "category": "restaurant",
+    "tags": ["cafe", "restaurant", "food-service", "dining"],
+    "description": "A premium website template for modern cafes and restaurants",
+    "preview": "/templates/cafe/preview.webp"
+  },
+  "features": {
+    "ordering": true,
+    "reservations": true,
+    "loyalty": true,
+    "analytics": true,
+    "menuManagement": true,
+    "socialMedia": true
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "hero",
+      "settings": {
+        "style": "fullscreen",
+        "overlay": "gradient",
+        "alignment": "center"
+      },
+      "content": {
+        "heading": "Welcome to {businessName}",
+        "subheading": "Artisanal Coffee & Fresh Pastries",
+        "backgroundImage": {
+          "desktop": "/templates/cafe/images/hero-bg.webp",
+          "mobile": "/templates/cafe/images/hero-bg-mobile.webp"
+        },
+        "cta": [
+          {
+            "text": "View Menu",
+            "style": "primary",
+            "action": "scroll-to-menu"
+          },
+          {
+            "text": "Reserve a Table",
+            "style": "secondary",
+            "action": "open-reservation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "features",
+      "type": "features",
+      "settings": {
+        "style": "grid",
+        "columns": 3
+      },
+      "content": {
+        "heading": "Why Choose Us",
+        "items": [
+          {
+            "icon": "coffee",
+            "title": "Artisanal Coffee",
+            "description": "Expertly roasted and perfectly brewed"
+          },
+          {
+            "icon": "croissant",
+            "title": "Fresh Pastries",
+            "description": "Baked fresh daily in-house"
+          },
+          {
+            "icon": "ambiance",
+            "title": "Cozy Atmosphere",
+            "description": "Perfect for work or relaxation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "menu",
+      "type": "menu",
+      "settings": {
+        "layout": "grid",
+        "categories": true,
+        "prices": true
+      },
+      "content": {
+        "heading": "Our Menu",
+        "categories": [
+          {
+            "name": "Coffee",
+            "items": [
+              {
+                "name": "Specialty Latte",
+                "description": "House-blend espresso with silky steamed milk",
+                "price": "4.50",
+                "image": "/templates/cafe/images/menu/latte.webp",
+                "tags": ["bestseller", "hot"]
+              },
+              {
+                "name": "Pour Over",
+                "description": "Single-origin beans, hand-poured to perfection",
+                "price": "3.75",
+                "image": "/templates/cafe/images/menu/pour-over.webp",
+                "tags": ["featured"]
+              }
+            ]
+          },
+          {
+            "name": "Pastries",
+            "items": [
+              {
+                "name": "Artisan Croissant",
+                "description": "Flaky, buttery, baked fresh daily",
+                "price": "3.95",
+                "image": "/templates/cafe/images/menu/croissant.webp",
+                "tags": ["bestseller"]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "testimonials",
+      "type": "testimonials",
+      "settings": {
+        "style": "carousel",
+        "autoplay": true
+      },
+      "content": {
+        "heading": "What Our Customers Say",
+        "items": [
+          {
+            "quote": "The best coffee in town! Love the atmosphere and friendly staff.",
+            "author": "Sarah M.",
+            "rating": 5,
+            "image": "/templates/cafe/images/testimonials/1.webp"
+          }
+        ]
+      }
+    },
+    {
+      "id": "contact",
+      "type": "contact",
+      "settings": {
+        "layout": "split",
+        "map": true
+      },
+      "content": {
+        "heading": "Visit Us",
+        "info": {
+          "address": "{businessAddress}",
+          "phone": "{businessPhone}",
+          "hours": {
+            "weekdays": "7:00 AM - 7:00 PM",
+            "weekends": "8:00 AM - 6:00 PM"
+          }
+        },
+        "form": {
+          "title": "Get in Touch",
+          "fields": [
+            {
+              "type": "text",
+              "name": "name",
+              "label": "Name",
+              "required": true
+            },
+            {
+              "type": "email",
+              "name": "email",
+              "label": "Email",
+              "required": true
+            },
+            {
+              "type": "textarea",
+              "name": "message",
+              "label": "Message",
+              "required": true
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "theme": {
+    "colors": {
+      "primary": "#4A3E37",
+      "secondary": "#D4B59E",
+      "accent": "#E6B17E",
+      "background": "#FAF7F2",
+      "text": "#2C1810",
+      "textLight": "#7C6F6A"
+    },
+    "fonts": {
+      "heading": {
+        "family": "Playfair Display",
+        "weights": [600, 700]
+      },
+      "body": {
+        "family": "Inter",
+        "weights": [400, 500]
+      }
+    },
+    "spacing": {
+      "section": {
+        "desktop": "120px",
+        "mobile": "80px"
+      }
+    }
+  },
+  "seo": {
+    "title": "{businessName} - Artisanal Coffee & Fresh Pastries",
+    "description": "Visit {businessName} for expertly crafted coffee, fresh pastries, and a cozy atmosphere perfect for work or relaxation. Located in {businessCity}.",
+    "keywords": ["cafe", "coffee", "pastries", "breakfast", "lunch", "{businessCity}"],
+    "schema": {
+      "type": "Restaurant",
+      "priceRange": "$$",
+      "servesCuisine": ["Coffee", "Cafe", "Pastries"]
+    }
+  },
+  "integrations": {
+    "analytics": {
+      "clarity": true,
+      "googleAnalytics": true
+    },
+    "marketing": {
+      "emailCapture": true,
+      "socialMedia": true,
+      "notifications": true
+    },
+    "payments": {
+      "stripe": true,
+      "squareUp": true
+    }
+  }
+}

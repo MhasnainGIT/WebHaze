@@ -22,6 +22,35 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
+// CORS configuration
+const ALLOWED_ORIGINS = process.env.CORS_ORIGINS 
+  ? process.env.CORS_ORIGINS.split(',')
+  : ['http://localhost:5173', 'http://localhost:3000'];
+
+if (NODE_ENV === 'production') {
+  // Add production domains to allowed origins
+  ALLOWED_ORIGINS.push('https://webhaze.in', 'https://www.webhaze.in');
+}
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (ALLOWED_ORIGINS.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Allow credentials (cookies, authorization headers, etc)
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
+
 // Logger setup
 const logger = winston.createLogger({
   level: 'info',
@@ -74,11 +103,15 @@ const parseOrigins = (val) => {
 };
 
 const defaultLocalOrigins = ['http://localhost:3000', 'http://localhost:5173'];
+
+// *** NEW: production fallback origins ***
+const defaultProdOrigins = ['https://webhaze.in', 'https://www.webhaze.in'];
+
 const envOrigins = parseOrigins(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN);
 
 const allowedOrigins = NODE_ENV === 'production' && envOrigins.length > 0
   ? envOrigins
-  : defaultLocalOrigins;
+  : (NODE_ENV === 'production' ? defaultProdOrigins : defaultLocalOrigins);
 
 const corsOptions = {
   origin: function(origin, cb) {

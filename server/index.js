@@ -22,35 +22,6 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-// CORS configuration
-const ALLOWED_ORIGINS = process.env.CORS_ORIGINS 
-  ? process.env.CORS_ORIGINS.split(',')
-  : ['http://localhost:5173', 'http://localhost:3000'];
-
-if (NODE_ENV === 'production') {
-  // Add production domains to allowed origins
-  ALLOWED_ORIGINS.push('https://webhaze.in', 'https://www.webhaze.in');
-}
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (ALLOWED_ORIGINS.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true, // Allow credentials (cookies, authorization headers, etc)
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
-
-// Apply CORS middleware
-app.use(cors(corsOptions));
-
 // Logger setup
 const logger = winston.createLogger({
   level: 'info',
@@ -96,28 +67,56 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
-// CORS configuration - read allowed origins from env for flexibility in production
+// CORS configuration
 const parseOrigins = (val) => {
   if (!val) return [];
   return val.split(',').map(s => s.trim()).filter(Boolean);
 };
 
 const defaultLocalOrigins = ['http://localhost:3000', 'http://localhost:5173'];
-
-// *** NEW: production fallback origins ***
 const defaultProdOrigins = ['https://webhaze.in', 'https://www.webhaze.in'];
 
 const envOrigins = parseOrigins(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN);
 
-const allowedOrigins = NODE_ENV === 'production' && envOrigins.length > 0
-  ? envOrigins
-  : (NODE_ENV === 'production' ? defaultProdOrigins : defaultLocalOrigins);
+// Build final allowed list
+let allowedOrigins = [];
+
+if (NODE_ENV === 'production' && envOrigins.length > 0) {
+  allowedOrigins = envOrigins;
+} else if (NODE_ENV === 'production') {
+  allowedOrigins = defaultProdOrigins;
+} else {
+  allowedOrigins = defaultLocalOrigins;
+}
+
+// Allow Vercel preview URLs in development
+const isVercelOrigin = (origin) => origin && origin.endsWith('.vercel.app');
+if (NODE_ENV !== 'production') {
+  allowedOrigins.push(isVercelOrigin);
+}
+// Optional: allow Vercel in prod only if explicitly listed in env
+else if (envOrigins.some(o => o.includes('.vercel.app'))) {
+  allowedOrigins.push(isVercelOrigin);
+}
 
 const corsOptions = {
-  origin: function(origin, cb) {
-    // allow non-browser requests (e.g. server-to-server, curl)
-    if (!origin) return cb(null, true);
-    if (allowedOrigins.includes(origin)) return cb(null, true);
+  origin: function (origin, cb) {
+    if (!origin) return cb(null, true); // non-browser requests
+
+    let allowed = false;
+
+    for (const item of allowedOrigins) {
+      if (typeof item === 'string' && item === origin) {
+        allowed = true;
+        break;
+      }
+      if (typeof item === 'function' && item(origin)) {
+        allowed = true;
+        break;
+      }
+    }
+
+    if (allowed) return cb(null, true);
     return cb(new Error('CORS policy: origin not allowed - ' + origin));
   },
   credentials: true,
@@ -185,7 +184,7 @@ app.use('*', (req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
   logger.error('Unhandled error:', err);
-  
+
   if (NODE_ENV === 'production') {
     res.status(500).json({
       error: 'Internal server error',
@@ -206,13 +205,12 @@ app.listen(PORT, () => {
 });
 
 // Connect to MongoDB (optional for development)
-// Accept either MONGODB_URI (common name) or MONGO_URI
 const MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/webhaze';
 
 if (process.env.SKIP_DB !== 'true') {
-  mongoose.connect(MONGO_URI, { 
-    useNewUrlParser: true, 
-    useUnifiedTopology: true 
+  mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
   })
     .then(async () => {
       console.log('Connected to MongoDB');

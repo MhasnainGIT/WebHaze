@@ -101,7 +101,7 @@ else if (envOrigins.some(o => o.includes('.vercel.app'))) {
 
 const corsOptions = {
   origin: function (origin, cb) {
-    if (!origin) return cb(null, true); // non-browser requests
+    if (!origin) return cb(null, true); // Allow non-browser requests
 
     let allowed = false;
 
@@ -116,8 +116,11 @@ const corsOptions = {
       }
     }
 
-    if (allowed) return cb(null, true);
-    return cb(new Error('CORS policy: origin not allowed - ' + origin));
+    if (allowed) {
+      return cb(null, true); // Allow the origin
+    } else {
+      return cb(null, false); // Deny safely — no 500
+    }
   },
   credentials: true,
   optionsSuccessStatus: 200

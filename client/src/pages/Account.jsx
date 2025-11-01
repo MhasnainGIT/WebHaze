@@ -162,7 +162,9 @@ const Account = () => {
                       <h4 className="font-semibold">{user.plan || 'Free'} Plan</h4>
                       <p className="text-gray-600">{user.plan === 'Professional' ? '$19.99/month' : user.plan === 'Enterprise' ? '$49.99/month' : 'Free'}</p>
                     </div>
-                    <button className="btn-secondary">Upgrade Plan</button>
+                    <Link to="/pricing" className="btn-secondary">
+                      Upgrade Plan
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -177,7 +179,12 @@ const Account = () => {
                       <h4 className="font-medium">Two-Factor Authentication</h4>
                       <p className="text-sm text-gray-600">Add an extra layer of security</p>
                     </div>
-                    <button className="btn-secondary">Enable</button>
+                    <button 
+                      className="btn-secondary"
+                      onClick={() => alert('2FA setup will be implemented soon. Please contact support for assistance.')}
+                    >
+                      Enable
+                    </button>
                   </div>
                 </div>
               </div>

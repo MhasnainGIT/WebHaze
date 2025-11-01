@@ -146,6 +146,9 @@ const Pricing = () => {
                         ))}
                     </div>
                 </div>
+                
+                {/* Additional whitespace */}
+                <div className="py-16"></div>
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import SEO from '../components/SEO';
 
 const MotionLink = motion(Link);
 
@@ -69,7 +70,7 @@ const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        Build and Scale Your Dream Website with{' '}
+                        Best Free Website Builder with AI - Create Business Websites with{' '}
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">
                             WebHaze
                         </span>
@@ -90,9 +91,9 @@ const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
-                        From lightning-fast hosting to custom development, 
-                        we provide everything you need to build, launch, and scale your 
-                        online presence. Join thousands of successful businesses who trust WebHaze.
+                        Free website builder with AI-powered tools, free domain, and affordable website maintenance packages. 
+                        Create professional business websites in India with our online website builder. 
+                        Website maintenance cost starting ₹999/month with 24/7 support.
                     </motion.p>
 
                     <motion.div
@@ -237,29 +238,30 @@ const Services = () => {
         {
             icon: (
                 <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+            ),
+            title: "Free Website Builder with AI",
+            description: "Best free website builder in India with AI-powered tools. Create professional business websites with drag-and-drop editor."
+        },
+        {
+            icon: (
+                <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
                 </svg>
             ),
-            title: "Web Hosting",
-            description: "Lightning-fast, secure hosting with 99.9% uptime guarantee. Perfect for businesses of all sizes."
+            title: "Web Hosting & Free Domain",
+            description: "Lightning-fast hosting with free domain registration. Perfect for small businesses in India with 99.9% uptime guarantee."
         },
         {
             icon: (
                 <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
             ),
-            title: "Website Development",
-            description: "Custom websites that convert visitors into customers. Built with modern tech and best practices."
-        },
-        {
-            icon: (
-                <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-            ),
-            title: "App Development",
-            description: "High-performance mobile and web apps that scale with your business growth."
+            title: "Website Maintenance Services",
+            description: "Affordable website maintenance packages starting ₹999/month. Keep your website secure, updated, and optimized."
         }
     ];
 
@@ -293,6 +295,50 @@ const Services = () => {
                         Explore Hosting Plans
                     </Link>
                 </div>
+                
+                {/* Structured Data for Services */}
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Service",
+                        "serviceType": "Web Hosting Services",
+                        "provider": {
+                            "@type": "Organization",
+                            "name": "WebHaze",
+                            "url": "https://webhaze.com"
+                        },
+                        "hasOfferCatalog": {
+                            "@type": "OfferCatalog",
+                            "name": "Web Hosting Plans",
+                            "itemListElement": [
+                                {
+                                    "@type": "Offer",
+                                    "itemOffered": {
+                                        "@type": "Service",
+                                        "name": "Shared Hosting",
+                                        "description": "Lightning-fast, secure hosting with 99.9% uptime guarantee"
+                                    }
+                                },
+                                {
+                                    "@type": "Offer",
+                                    "itemOffered": {
+                                        "@type": "Service",
+                                        "name": "Website Development",
+                                        "description": "Custom websites that convert visitors into customers"
+                                    }
+                                },
+                                {
+                                    "@type": "Offer",
+                                    "itemOffered": {
+                                        "@type": "Service",
+                                        "name": "Mobile App Development",
+                                        "description": "High-performance mobile and web apps that scale"
+                                    }
+                                }
+                            ]
+                        }
+                    })}
+                </script>
             </div>
         </section>
     );
@@ -439,13 +485,23 @@ const LearnMore = () => {
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 text-left">
                         <div>
-                            <h3 className="text-lg sm:text-xl font-semibold mb-4">🚀 Lightning Fast Performance</h3>
+                            <div className="flex items-center gap-3 mb-4">
+                                <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                <h3 className="text-lg sm:text-xl font-semibold">Lightning Fast Performance</h3>
+                            </div>
                             <p className="text-sm sm:text-base text-gray-600 mb-6">
                                 Our optimized servers and CDN ensure your website loads in under 2 seconds, 
                                 keeping your visitors engaged and improving your search rankings.
                             </p>
                             
-                            <h3 className="text-lg sm:text-xl font-semibold mb-4">🔒 Enterprise-Grade Security</h3>
+                            <div className="flex items-center gap-3 mb-4">
+                                <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                                <h3 className="text-lg sm:text-xl font-semibold">Enterprise-Grade Security</h3>
+                            </div>
                             <p className="text-sm sm:text-base text-gray-600">
                                 Advanced security measures including SSL certificates, DDoS protection, 
                                 and regular security updates keep your website and data safe.
@@ -453,13 +509,23 @@ const LearnMore = () => {
                         </div>
                         
                         <div>
-                            <h3 className="text-lg sm:text-xl font-semibold mb-4">📈 Scalable Solutions</h3>
+                            <div className="flex items-center gap-3 mb-4">
+                                <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                                </svg>
+                                <h3 className="text-lg sm:text-xl font-semibold">Scalable Solutions</h3>
+                            </div>
                             <p className="text-sm sm:text-base text-gray-600 mb-6">
                                 Start small and grow big. Our infrastructure scales with your business, 
                                 handling traffic spikes without breaking a sweat.
                             </p>
                             
-                            <h3 className="text-lg sm:text-xl font-semibold mb-4">🎯 Expert Support</h3>
+                            <div className="flex items-center gap-3 mb-4">
+                                <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z" />
+                                </svg>
+                                <h3 className="text-lg sm:text-xl font-semibold">Expert Support</h3>
+                            </div>
                             <p className="text-sm sm:text-base text-gray-600">
                                 Our team of experts is available 24/7 to help you succeed. 
                                 From technical issues to growth strategies, we've got you covered.
@@ -634,6 +700,96 @@ const HowItWorks = () => {
                                 </div>
                                 <h3 className="text-xl font-semibold mb-3 text-gray-900">{step.title}</h3>
                                 <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+const WebsiteMaintenance = () => {
+    const maintenanceServices = [
+        {
+            title: "Basic Maintenance Package",
+            price: "₹999/month",
+            features: [
+                "Website security updates",
+                "Content updates (5 pages)",
+                "Performance monitoring",
+                "Monthly backup",
+                "Email support"
+            ]
+        },
+        {
+            title: "Professional Maintenance",
+            price: "₹2499/month",
+            features: [
+                "All basic features",
+                "SEO optimization",
+                "Analytics reporting",
+                "Weekly backups",
+                "Priority support",
+                "Plugin updates"
+            ]
+        },
+        {
+            title: "Enterprise Maintenance",
+            price: "₹4999/month",
+            features: [
+                "All professional features",
+                "24/7 monitoring",
+                "Daily backups",
+                "Security scanning",
+                "Performance optimization",
+                "Dedicated support manager"
+            ]
+        }
+    ];
+
+    return (
+        <section className="py-12 sm:py-16 lg:py-24 bg-white">
+            <div className="container-site">
+                <div className="text-center mb-12 sm:mb-16 px-4 sm:px-0">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
+                        Website Maintenance Services in India
+                    </h2>
+                    <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+                        Affordable website maintenance packages with transparent pricing. Keep your website secure, updated, and performing at its best.
+                    </p>
+                </div>
+                
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                        {maintenanceServices.map((service, index) => (
+                            <motion.div
+                                key={index}
+                                className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                whileHover={{ y: -5 }}
+                            >
+                                <div className="text-center mb-6">
+                                    <h3 className="text-xl font-bold mb-2">{service.title}</h3>
+                                    <div className="text-2xl font-bold text-primary mb-4">{service.price}</div>
+                                </div>
+                                <ul className="space-y-3">
+                                    {service.features.map((feature, i) => (
+                                        <li key={i} className="flex items-center text-gray-700">
+                                            <svg className="w-5 h-5 text-primary mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            <span className="text-sm">{feature}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div className="mt-6">
+                                    <Link to="/contact" className="block w-full py-3 px-6 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-center">
+                                        Get Started
+                                    </Link>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
@@ -822,10 +978,17 @@ const FAQ = () => {
 const Home = () => {
     return (
         <div className="relative">
+            <SEO 
+                title="Best Free Website Builder with AI | WebHaze - Website Maintenance Services India"
+                description="Free website builder with AI tools, free domain & affordable website maintenance packages. Create business websites in India. Maintenance cost starting ₹999/month."
+                keywords="website builder free, best free website builder, website builder AI, website builder India, website maintenance cost, website maintenance services, website maintenance cost India, free website builder and domain, website builder for small business, WordPress website maintenance cost India"
+                canonical="/"
+            />
             <Hero />
             <Features />
             <Services />
             <HowItWorks />
+            <WebsiteMaintenance />
             <Benefits />
             <Testimonials />
             <HostingPlans />

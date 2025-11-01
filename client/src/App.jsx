@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './contexts/AuthContext';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
@@ -17,8 +18,9 @@ import './styles/main.css';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
+    <HelmetProvider>
+      <BrowserRouter>
+        <AuthProvider>
         <div className="min-h-screen bg-background text-text">
           <Navbar />
           <main>
@@ -39,7 +41,8 @@ export default function App() {
           </main>
           <Footer />
         </div>
-      </AuthProvider>
-    </BrowserRouter>
+        </AuthProvider>
+      </BrowserRouter>
+    </HelmetProvider>
   )
 }

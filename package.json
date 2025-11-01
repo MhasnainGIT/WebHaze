@@ -7,7 +7,7 @@
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "server:dev": "cd server && npm run dev",
     "client:dev": "cd client && npm run dev",
-    "build": "npm run setup && cd client && npm run build",
+    "build": "npm run setup && npm run build:client",
     "build:client": "cd client && npm run build",
     "start": "cd server && npm start",
     "start:prod": "cd server && npm run start:prod",

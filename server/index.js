@@ -66,11 +66,26 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
-// CORS configuration
+// CORS configuration - read allowed origins from env for flexibility in production
+const parseOrigins = (val) => {
+  if (!val) return [];
+  return val.split(',').map(s => s.trim()).filter(Boolean);
+};
+
+const defaultLocalOrigins = ['http://localhost:3000', 'http://localhost:5173'];
+const envOrigins = parseOrigins(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN);
+
+const allowedOrigins = NODE_ENV === 'production' && envOrigins.length > 0
+  ? envOrigins
+  : defaultLocalOrigins;
+
 const corsOptions = {
-  origin: NODE_ENV === 'production' 
-    ? ['https://webhaze.com', 'https://www.webhaze.com']
-    : ['http://localhost:3000', 'http://localhost:5173'],
+  origin: function(origin, cb) {
+    // allow non-browser requests (e.g. server-to-server, curl)
+    if (!origin) return cb(null, true);
+    if (allowedOrigins.includes(origin)) return cb(null, true);
+    return cb(new Error('CORS policy: origin not allowed - ' + origin));
+  },
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -156,7 +171,8 @@ app.listen(PORT, () => {
 });
 
 // Connect to MongoDB (optional for development)
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/webhaze';
+// Accept either MONGODB_URI (common name) or MONGO_URI
+const MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/webhaze';
 
 if (process.env.SKIP_DB !== 'true') {
   mongoose.connect(MONGO_URI, { 

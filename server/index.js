@@ -15,6 +15,7 @@ const mediaRouter = require('./routes/media');
 const templatesRouter = require('./routes/templates');
 const websitesRouter = require('./routes/websites');
 const contactRouter = require('./routes/contact');
+const healthRouter = require('./routes/health');
 const Page = require('./models/Page');
 
 const app = express();
@@ -110,6 +111,7 @@ app.use((req, res, next) => {
 app.use(clarityInjector());
 
 // API routes
+app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/pages', pagesRouter);
 app.use('/api/media', mediaRouter);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const PricingCard = ({ plan, index }) => (
     <motion.div
@@ -41,13 +42,16 @@ const PricingCard = ({ plan, index }) => (
             ))}
         </ul>
 
-        <button className={`w-full py-3 px-6 rounded-lg font-medium transition-colors ${
-            plan.popular
-                ? 'bg-primary text-white hover:bg-primary/90'
-                : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-        }`}>
+        <Link 
+            to="/contact" 
+            className={`block w-full py-3 px-6 rounded-lg font-medium transition-colors text-center ${
+                plan.popular
+                    ? 'bg-primary text-white hover:bg-primary/90'
+                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+            }`}
+        >
             Get Started
-        </button>
+        </Link>
     </motion.div>
 );
 

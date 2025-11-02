@@ -132,18 +132,18 @@ const About = () => {
             />
             
             {/* Hero Section */}
-            <section className="py-20 bg-white">
-                <div className="container-site">
+            <section className="py-16 sm:py-24">
+                <div className="container-site px-4 sm:px-6">
                     <div className="max-w-4xl mx-auto">
                         <motion.h1 
-                            className="text-4xl lg:text-5xl font-bold mb-8 text-gray-900"
+                            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 text-gray-900 leading-tight"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                         >
                             About WebHaze
                         </motion.h1>
                         <motion.div 
-                            className="space-y-6 text-lg text-gray-600 leading-relaxed"
+                            className="space-y-6 text-base sm:text-lg text-gray-600 leading-relaxed"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
@@ -154,7 +154,7 @@ const About = () => {
                             <p>
                                 We noticed that many entrepreneurs wanted professional websites but didn't have access to affordable, reliable, or tech-savvy partners — and that's where WebHaze stepped in.
                             </p>
-                            <p className="text-xl font-medium text-gray-800">
+                            <p className="text-lg sm:text-xl font-medium text-gray-800">
                                 Today, we serve as a <span className="text-gray-900 font-semibold">full-stack web servicing startup</span>, helping businesses of all sizes bring their digital ideas to life through innovative design, smart technology, and end-to-end support.
                             </p>
                         </motion.div>
@@ -163,31 +163,35 @@ const About = () => {
             </section>
 
             {/* What We Do Section */}
-            <section className="py-20 bg-gray-50">
-                <div className="container-site">
-                    <div className="max-w-4xl mx-auto mb-16">
-                        <h2 className="text-3xl font-bold mb-4 text-gray-900">
+            <section className="py-16 sm:py-20 border-t border-gray-100">
+                <div className="container-site px-4 sm:px-6">
+                    <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-900">
                             What We Do
                         </h2>
-                        <p className="text-lg text-gray-600">
+                        <p className="text-base sm:text-lg text-gray-600">
                             We specialize in creating digital solutions that drive business growth
                         </p>
                     </div>
                     
-                    <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
                         {services.map((service, index) => (
                             <motion.div
                                 key={index}
-                                className="p-8 bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow duration-200"
+                                className="flex flex-col sm:flex-row gap-6 sm:gap-8 pb-8 sm:pb-12 border-b border-gray-100 last:border-b-0"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
                             >
-                                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
-                                    {service.icon}
+                                <div className="flex-shrink-0">
+                                    <div className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
+                                        {service.icon}
+                                    </div>
                                 </div>
-                                <h3 className="text-xl font-semibold mb-3 text-gray-900">{service.title}</h3>
-                                <p className="text-gray-600 leading-relaxed">{service.description}</p>
+                                <div className="flex-1">
+                                    <h3 className="text-xl sm:text-2xl font-semibold mb-3 text-gray-900">{service.title}</h3>
+                                    <p className="text-gray-600 leading-relaxed">{service.description}</p>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
@@ -195,30 +199,30 @@ const About = () => {
             </section>
 
             {/* Why Choose WebHaze Section */}
-            <section className="py-20 bg-white">
-                <div className="container-site">
-                    <div className="max-w-4xl mx-auto mb-16">
-                        <h2 className="text-3xl font-bold mb-4 text-gray-900">
+            <section className="py-16 sm:py-20 border-t border-gray-100">
+                <div className="container-site px-4 sm:px-6">
+                    <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-900">
                             Why Choose WebHaze?
                         </h2>
                     </div>
                     
-                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
                         {whyChoose.map((item, index) => (
                             <motion.div
                                 key={index}
-                                className="flex gap-4 p-6"
+                                className="flex gap-4 sm:gap-6 pb-6 sm:pb-8 border-b border-gray-100 last:border-b-0"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
                             >
                                 <div className="flex-shrink-0">
-                                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                    <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center">
                                         {item.icon}
                                     </div>
                                 </div>
-                                <div>
-                                    <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+                                <div className="flex-1">
+                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">{item.title}</h3>
                                     <p className="text-gray-600 leading-relaxed">{item.description}</p>
                                 </div>
                             </motion.div>
@@ -228,28 +232,32 @@ const About = () => {
             </section>
 
             {/* Our Values Section */}
-            <section className="py-20 bg-gray-50">
-                <div className="container-site">
-                    <div className="max-w-4xl mx-auto mb-16">
-                        <h2 className="text-3xl font-bold mb-4 text-gray-900">
+            <section className="py-16 sm:py-20 border-t border-gray-100">
+                <div className="container-site px-4 sm:px-6">
+                    <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-900">
                             Our Values
                         </h2>
                     </div>
                     
-                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
                         {values.map((value, index) => (
                             <motion.div
                                 key={index}
-                                className="p-8 bg-white rounded-lg border border-gray-200"
+                                className="flex flex-col sm:flex-row gap-6 sm:gap-8 pb-8 sm:pb-12 border-b border-gray-100 last:border-b-0"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
                             >
-                                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
-                                    {value.icon}
+                                <div className="flex-shrink-0">
+                                    <div className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
+                                        {value.icon}
+                                    </div>
                                 </div>
-                                <h3 className="text-xl font-semibold mb-3 text-gray-900">{value.title}</h3>
-                                <p className="text-gray-600 leading-relaxed">{value.description}</p>
+                                <div className="flex-1">
+                                    <h3 className="text-xl sm:text-2xl font-semibold mb-3 text-gray-900">{value.title}</h3>
+                                    <p className="text-gray-600 leading-relaxed">{value.description}</p>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
@@ -257,33 +265,33 @@ const About = () => {
             </section>
 
             {/* Meet the Founder Section */}
-            <section className="py-20 bg-white">
-                <div className="container-site">
-                    <div className="max-w-4xl mx-auto mb-16">
-                        <h2 className="text-3xl font-bold mb-4 text-gray-900">
+            <section className="py-16 sm:py-20 border-t border-gray-100">
+                <div className="container-site px-4 sm:px-6">
+                    <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-900">
                             Meet the Founder
                         </h2>
                     </div>
                     
                     <div className="max-w-3xl mx-auto">
                         <motion.div
-                            className="bg-gray-50 rounded-lg p-8 lg:p-12"
+                            className="flex flex-col sm:flex-row gap-6 sm:gap-8"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                         >
-                            <div className="flex items-start gap-6">
-                                <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div className="flex-shrink-0">
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
+                                    <svg className="w-8 h-8 sm:w-10 sm:h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                 </div>
-                                <div>
-                                    <h3 className="text-2xl font-bold mb-2 text-gray-900">Mohammed Hasnain</h3>
-                                    <p className="text-primary font-semibold mb-4">Founder & Full Stack Developer</p>
-                                    <p className="text-gray-600 leading-relaxed">
-                                        A Computer Science Engineer specializing in AI & ML, passionate about building scalable digital products and simplifying web solutions for businesses.
-                                    </p>
-                                </div>
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900">Mohammed Hasnain</h3>
+                                <p className="text-primary font-semibold mb-4">Founder & Full Stack Developer</p>
+                                <p className="text-gray-600 leading-relaxed">
+                                    A Computer Science Engineer specializing in AI & ML, passionate about building scalable digital products and simplifying web solutions for businesses.
+                                </p>
                             </div>
                         </motion.div>
                     </div>
@@ -291,17 +299,17 @@ const About = () => {
             </section>
 
             {/* Vision Section */}
-            <section className="py-20 bg-gray-50">
-                <div className="container-site">
+            <section className="py-16 sm:py-20 border-t border-gray-100">
+                <div className="container-site px-4 sm:px-6">
                     <motion.div
                         className="max-w-4xl mx-auto"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                     >
-                        <h2 className="text-3xl font-bold mb-6 text-gray-900">
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900">
                             Our Vision
                         </h2>
-                        <p className="text-xl text-gray-600 leading-relaxed">
+                        <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
                             To become one of the world's most trusted names in web servicing — empowering startups, creators, and businesses globally to go digital with confidence.
                         </p>
                     </motion.div>
@@ -309,21 +317,21 @@ const About = () => {
             </section>
 
             {/* CTA Section */}
-            <section className="py-20 bg-primary text-white">
-                <div className="container-site text-center">
+            <section className="py-16 sm:py-20 border-t border-gray-900 bg-gray-900 text-white">
+                <div className="container-site px-4 sm:px-6 text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                     >
-                        <h2 className="text-3xl font-bold mb-6">
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-6">
                             Ready to Grow with WebHaze?
                         </h2>
-                        <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+                        <p className="text-lg sm:text-xl mb-8 opacity-90 max-w-2xl mx-auto">
                             Let's turn your vision into a beautiful, functional, and growth-ready website.
                         </p>
                         <Link 
                             to="/contact" 
-                            className="inline-block bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+                            className="inline-block bg-white text-gray-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
                         >
                             Get Started Today
                         </Link>

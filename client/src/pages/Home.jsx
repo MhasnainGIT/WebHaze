@@ -92,9 +92,9 @@ const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
-                        Free website builder with AI-powered tools, free domain, and affordable website maintenance packages. 
-                        Create professional business websites in India with our online website builder. 
-                        Website maintenance cost starting ₹999/month with 24/7 support.
+                        Professional web development services worldwide with AI-powered tools, free domain, and affordable website maintenance packages. 
+                        Hire website developers globally to create portfolio websites and business websites with our WebHaze web services platform. 
+                        Serving clients in USA, Canada, UK, Germany, Australia and globally with 24/7 support.
                     </motion.p>
 
                     <motion.div
@@ -252,7 +252,7 @@ const Services = () => {
                 </svg>
             ),
             title: "Web Hosting & Free Domain",
-            description: "Lightning-fast hosting with free domain registration. Perfect for small businesses in India with 99.9% uptime guarantee."
+            description: "Lightning-fast hosting with free domain registration. Perfect for businesses worldwide with 99.9% uptime guarantee."
         },
         {
             icon: (
@@ -262,7 +262,7 @@ const Services = () => {
                 </svg>
             ),
             title: "Website Maintenance Services",
-            description: "Affordable website maintenance packages starting ₹999/month. Keep your website secure, updated, and optimized."
+            description: "Affordable website maintenance packages for global clients. Keep your website secure, updated, and optimized with 24/7 support."
         }
     ];
 
@@ -761,10 +761,10 @@ const WebsiteMaintenance = () => {
             <div className="container-site">
                 <div className="text-center mb-12 sm:mb-16 px-4 sm:px-0">
                     <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
-                        Website Maintenance Services in India
+                        Website Maintenance Services Worldwide
                     </h2>
                     <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
-                        Affordable website maintenance packages with transparent pricing. Keep your website secure, updated, and performing at its best.
+                        Affordable website maintenance packages with transparent pricing for clients worldwide. Serving USA, Canada, UK, Germany, Australia and globally. Keep your website secure, updated, and performing at its best.
                     </p>
                 </div>
                 

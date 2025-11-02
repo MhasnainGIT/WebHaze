@@ -6,6 +6,7 @@ import { CurrencyProvider } from './contexts/CurrencyContext';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import StructuredData from './components/StructuredData';
 import ServicePage from './pages/services/ServicePage';
 import Contact from './pages/Contact';
 import Account from './pages/Account';
@@ -24,6 +25,7 @@ export default function App() {
         <AuthProvider>
           <CurrencyProvider>
             <div className="min-h-screen bg-background text-text">
+          <StructuredData />
           <Navbar />
           <main>
             <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div></div>}>

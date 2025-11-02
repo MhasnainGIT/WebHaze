@@ -292,7 +292,14 @@ const Services = () => {
                 </div>
 
                 <div className="text-center mt-12">
-                    <Link to="/pricing" className="btn-primary">
+                    <Link 
+                        to="/pricing" 
+                        className="btn-primary"
+                        onClick={() => {
+                            clarityAnalytics.trackEvent('explore_hosting_plans_clicked');
+                            clarityAnalytics.setTag('page_section', 'services');
+                        }}
+                    >
                         Explore Hosting Plans
                     </Link>
                 </div>

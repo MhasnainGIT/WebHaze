@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import clarityAnalytics from '../utils/clarity';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -9,6 +10,11 @@ const Contact = () => {
         subject: '',
         message: ''
     });
+
+    useEffect(() => {
+        clarityAnalytics.setTag('page', 'contact');
+        clarityAnalytics.trackEvent('contact_page_viewed');
+    }, []);
 
     const handleChange = (e) => {
         setFormData({
@@ -20,6 +26,11 @@ const Contact = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
+        // Track contact form submission attempt
+        clarityAnalytics.trackEvent('contact_form_submitted');
+        clarityAnalytics.setTag('form_subject', formData.subject);
+        clarityAnalytics.upgradeSession('contact_form_submission');
+        
         try {
             const response = await fetch('http://localhost:4000/api/contact/submit', {
                 method: 'POST',
@@ -30,13 +41,16 @@ const Contact = () => {
             });
             
             if (response.ok) {
+                clarityAnalytics.trackEvent('contact_form_success');
                 alert('Thank you for your message! We\'ll get back to you soon.');
                 setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
             } else {
+                clarityAnalytics.trackEvent('contact_form_error');
                 const error = await response.json();
                 alert('Error: ' + (error.message || 'Failed to send message'));
             }
         } catch (error) {
+            clarityAnalytics.trackEvent('contact_form_error');
             console.error('Error submitting form:', error);
             alert('Error: Failed to send message. Please try again.');
         }

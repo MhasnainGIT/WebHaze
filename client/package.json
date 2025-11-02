@@ -12,6 +12,7 @@
     "@dnd-kit/sortable": "^7.0.0",
     "@headlessui/react": "^1.7.19",
     "@heroicons/react": "^2.0.18",
+    "@microsoft/clarity": "^1.0.0",
     "@tiptap/pm": "^2.1.0",
     "@tiptap/react": "^2.1.0",
     "@tiptap/starter-kit": "^2.1.0",

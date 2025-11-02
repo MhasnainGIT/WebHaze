@@ -101,10 +101,16 @@ else if (envOrigins.some(o => o.includes('.vercel.app'))) {
 
 const corsOptions = {
   origin: function (origin, cb) {
-    if (!origin) return cb(null, true); // Allow non-browser requests
-
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return cb(null, true);
+    
+    // Allow webhaze.in domains
+    if (origin.includes('webhaze.in') || origin.includes('localhost')) {
+      return cb(null, true);
+    }
+    
+    // Check against allowed origins
     let allowed = false;
-
     for (const item of allowedOrigins) {
       if (typeof item === 'string' && item === origin) {
         allowed = true;
@@ -115,17 +121,13 @@ const corsOptions = {
         break;
       }
     }
-
-    if (allowed) {
-      return cb(null, true); // Allow the origin
-    } else {
-      return cb(null, false); // Deny safely — no 500
-    }
+    
+    return cb(null, allowed);
   },
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 };
 
 app.use(cors(corsOptions));

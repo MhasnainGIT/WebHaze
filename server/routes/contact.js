@@ -24,15 +24,29 @@ router.post('/submit', contactLimiter, async (req, res) => {
     }
 
     // Create contact entry
-    const contact = new Contact({
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      phone: phone.trim(),
-      subject: subject.trim(),
-      message: message.trim()
-    });
-
-    await contact.save();
+    let contact;
+    if (process.env.SKIP_DB === 'true') {
+      // Store in memory for development
+      contact = {
+        _id: Date.now().toString(),
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        phone: phone.trim(),
+        subject: subject.trim(),
+        message: message.trim(),
+        createdAt: new Date()
+      };
+      console.log('Contact form submission (memory):', contact);
+    } else {
+      contact = new Contact({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        phone: phone.trim(),
+        subject: subject.trim(),
+        message: message.trim()
+      });
+      await contact.save();
+    }
 
     res.status(201).json({
       message: 'Contact form submitted successfully',

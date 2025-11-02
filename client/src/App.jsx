@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './contexts/AuthContext';
+import { CurrencyProvider } from './contexts/CurrencyContext';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -21,7 +22,8 @@ export default function App() {
     <HelmetProvider>
       <BrowserRouter>
         <AuthProvider>
-        <div className="min-h-screen bg-background text-text">
+          <CurrencyProvider>
+            <div className="min-h-screen bg-background text-text">
           <Navbar />
           <main>
             <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div></div>}>
@@ -40,7 +42,8 @@ export default function App() {
             </Suspense>
           </main>
           <Footer />
-        </div>
+            </div>
+          </CurrencyProvider>
         </AuthProvider>
       </BrowserRouter>
     </HelmetProvider>

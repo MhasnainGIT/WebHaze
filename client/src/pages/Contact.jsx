@@ -50,7 +50,7 @@ const Contact = () => {
                 </svg>
             ),
             title: "Email Us",
-            details: "support@webhaze.com",
+            details: "webhaze.in@gmail.com",
             description: "Send us an email anytime"
         },
         {
@@ -60,8 +60,8 @@ const Contact = () => {
                 </svg>
             ),
             title: "Call Us",
-            details: "+1 (555) 123-4567",
-            description: "Mon-Fri 9AM-6PM EST"
+            details: "+91 8919019679",
+            description: "Mon-Fri 9AM-6PM IST"
         },
         {
             icon: (
@@ -70,8 +70,8 @@ const Contact = () => {
                 </svg>
             ),
             title: "Live Chat",
-            details: "Available 24/7",
-            description: "Get instant support"
+            details: "Coming Soon",
+            description: "Will be available soon"
         }
     ];
 

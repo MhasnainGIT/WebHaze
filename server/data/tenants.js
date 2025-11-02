@@ -10,7 +10,7 @@ module.exports = {
     analytics: {
       clarity: {
         enabled: true,
-        projectId: 'abcd1234' // placeholder
+        projectId: 'tzoym72rii'
       }
     }
   },

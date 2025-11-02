@@ -132,45 +132,44 @@ const About = () => {
             />
             
             {/* Hero Section */}
-            <section className="py-16 bg-gradient-to-br from-primary/5 via-secondary/5 to-primary/5 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(11,97,255,0.1)_0%,transparent_50%)] pointer-events-none" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,196,140,0.1)_0%,transparent_50%)] pointer-events-none" />
-                
-                <div className="container-site text-center relative">
-                    <motion.h1 
-                        className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                    >
-                        About WebHaze
-                    </motion.h1>
-                    <motion.div 
-                        className="max-w-4xl mx-auto space-y-6 text-lg text-gray-700 leading-relaxed"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        <p>
-                            Founded in <span className="font-semibold text-primary">2025</span> by <span className="font-semibold text-primary">Mohammed Hasnain</span>, WebHaze began as a small vision to simplify the web development process for startups, freelancers, and local businesses.
-                        </p>
-                        <p>
-                            We noticed that many entrepreneurs wanted professional websites but didn't have access to affordable, reliable, or tech-savvy partners — and that's where WebHaze stepped in.
-                        </p>
-                        <p className="text-xl font-medium text-gray-800">
-                            Today, we serve as a <span className="text-primary font-semibold">full-stack web servicing startup</span>, helping businesses of all sizes bring their digital ideas to life through innovative design, smart technology, and end-to-end support.
-                        </p>
-                    </motion.div>
+            <section className="py-20 bg-white">
+                <div className="container-site">
+                    <div className="max-w-4xl mx-auto">
+                        <motion.h1 
+                            className="text-4xl lg:text-5xl font-bold mb-8 text-gray-900"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                        >
+                            About WebHaze
+                        </motion.h1>
+                        <motion.div 
+                            className="space-y-6 text-lg text-gray-600 leading-relaxed"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                        >
+                            <p>
+                                Founded in <span className="font-semibold text-gray-900">2025</span> by <span className="font-semibold text-gray-900">Mohammed Hasnain</span>, WebHaze began as a small vision to simplify the web development process for startups, freelancers, and local businesses.
+                            </p>
+                            <p>
+                                We noticed that many entrepreneurs wanted professional websites but didn't have access to affordable, reliable, or tech-savvy partners — and that's where WebHaze stepped in.
+                            </p>
+                            <p className="text-xl font-medium text-gray-800">
+                                Today, we serve as a <span className="text-gray-900 font-semibold">full-stack web servicing startup</span>, helping businesses of all sizes bring their digital ideas to life through innovative design, smart technology, and end-to-end support.
+                            </p>
+                        </motion.div>
+                    </div>
                 </div>
             </section>
 
             {/* What We Do Section */}
-            <section className="py-20 bg-white">
+            <section className="py-20 bg-gray-50">
                 <div className="container-site">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-gray-900">
-                            💼 What We Do
+                    <div className="max-w-4xl mx-auto mb-16">
+                        <h2 className="text-3xl font-bold mb-4 text-gray-900">
+                            What We Do
                         </h2>
-                        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                        <p className="text-lg text-gray-600">
                             We specialize in creating digital solutions that drive business growth
                         </p>
                     </div>
@@ -179,16 +178,15 @@ const About = () => {
                         {services.map((service, index) => (
                             <motion.div
                                 key={index}
-                                className="group p-8 bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
+                                className="p-8 bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow duration-200"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                whileHover={{ y: -5, scale: 1.02 }}
                             >
-                                <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
                                     {service.icon}
                                 </div>
-                                <h3 className="text-xl font-bold mb-3 text-gray-900">{service.title}</h3>
+                                <h3 className="text-xl font-semibold mb-3 text-gray-900">{service.title}</h3>
                                 <p className="text-gray-600 leading-relaxed">{service.description}</p>
                             </motion.div>
                         ))}
@@ -197,31 +195,32 @@ const About = () => {
             </section>
 
             {/* Why Choose WebHaze Section */}
-            <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+            <section className="py-20 bg-white">
                 <div className="container-site">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-gray-900">
-                            🌟 Why Choose WebHaze?
+                    <div className="max-w-4xl mx-auto mb-16">
+                        <h2 className="text-3xl font-bold mb-4 text-gray-900">
+                            Why Choose WebHaze?
                         </h2>
                     </div>
                     
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                         {whyChoose.map((item, index) => (
                             <motion.div
                                 key={index}
-                                className="p-6 bg-white/80 backdrop-blur-xl rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 group"
+                                className="flex gap-4 p-6"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                whileHover={{ y: -3 }}
                             >
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className="p-2 bg-primary/10 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                                <div className="flex-shrink-0">
+                                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                                         {item.icon}
                                     </div>
-                                    <h3 className="font-semibold text-gray-900">{item.title}</h3>
                                 </div>
-                                <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                                <div>
+                                    <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+                                    <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
@@ -229,28 +228,27 @@ const About = () => {
             </section>
 
             {/* Our Values Section */}
-            <section className="py-20 bg-white">
+            <section className="py-20 bg-gray-50">
                 <div className="container-site">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-gray-900">
-                            💚 Our Values
+                    <div className="max-w-4xl mx-auto mb-16">
+                        <h2 className="text-3xl font-bold mb-4 text-gray-900">
+                            Our Values
                         </h2>
                     </div>
                     
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                         {values.map((value, index) => (
                             <motion.div
                                 key={index}
-                                className="text-center p-8 bg-gradient-to-br from-white to-gray-50/50 backdrop-blur-xl rounded-2xl shadow-lg border border-gray-100 group"
+                                className="p-8 bg-white rounded-lg border border-gray-200"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                whileHover={{ y: -5, scale: 1.02 }}
                             >
-                                <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
                                     {value.icon}
                                 </div>
-                                <h3 className="text-xl font-bold mb-3 text-gray-900">{value.title}</h3>
+                                <h3 className="text-xl font-semibold mb-3 text-gray-900">{value.title}</h3>
                                 <p className="text-gray-600 leading-relaxed">{value.description}</p>
                             </motion.div>
                         ))}
@@ -259,49 +257,51 @@ const About = () => {
             </section>
 
             {/* Meet the Founder Section */}
-            <section className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
+            <section className="py-20 bg-white">
                 <div className="container-site">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-gray-900">
-                            👥 Meet the Founder
+                    <div className="max-w-4xl mx-auto mb-16">
+                        <h2 className="text-3xl font-bold mb-4 text-gray-900">
+                            Meet the Founder
                         </h2>
                     </div>
                     
-                    <div className="max-w-4xl mx-auto">
+                    <div className="max-w-3xl mx-auto">
                         <motion.div
-                            className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-8 lg:p-12 text-center"
+                            className="bg-gray-50 rounded-lg p-8 lg:p-12"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            whileHover={{ y: -5, scale: 1.02 }}
-                            transition={{ duration: 0.5 }}
                         >
-                            <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <svg className="w-12 h-12 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
+                            <div className="flex items-start gap-6">
+                                <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 className="text-2xl font-bold mb-2 text-gray-900">Mohammed Hasnain</h3>
+                                    <p className="text-primary font-semibold mb-4">Founder & Full Stack Developer</p>
+                                    <p className="text-gray-600 leading-relaxed">
+                                        A Computer Science Engineer specializing in AI & ML, passionate about building scalable digital products and simplifying web solutions for businesses.
+                                    </p>
+                                </div>
                             </div>
-                            <h3 className="text-2xl font-bold mb-2 text-gray-900">Mohammed Hasnain</h3>
-                            <p className="text-primary font-semibold mb-4">Founder & Full Stack Developer</p>
-                            <p className="text-gray-600 leading-relaxed max-w-2xl mx-auto">
-                                A Computer Science Engineer specializing in AI & ML, passionate about building scalable digital products and simplifying web solutions for businesses.
-                            </p>
                         </motion.div>
                     </div>
                 </div>
             </section>
 
             {/* Vision Section */}
-            <section className="py-20 bg-white">
-                <div className="container-site text-center">
+            <section className="py-20 bg-gray-50">
+                <div className="container-site">
                     <motion.div
                         className="max-w-4xl mx-auto"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                     >
-                        <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-900">
-                            🌍 Our Vision
+                        <h2 className="text-3xl font-bold mb-6 text-gray-900">
+                            Our Vision
                         </h2>
-                        <p className="text-xl text-gray-700 leading-relaxed mb-8">
+                        <p className="text-xl text-gray-600 leading-relaxed">
                             To become one of the world's most trusted names in web servicing — empowering startups, creators, and businesses globally to go digital with confidence.
                         </p>
                     </motion.div>
@@ -309,24 +309,23 @@ const About = () => {
             </section>
 
             {/* CTA Section */}
-            <section className="py-20 bg-gradient-to-r from-primary to-secondary text-white relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1)_0%,transparent_50%)] pointer-events-none" />
-                <div className="container-site text-center relative">
+            <section className="py-20 bg-primary text-white">
+                <div className="container-site text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                     >
-                        <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-                            💬 Ready to Grow with WebHaze?
+                        <h2 className="text-3xl font-bold mb-6">
+                            Ready to Grow with WebHaze?
                         </h2>
                         <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
                             Let's turn your vision into a beautiful, functional, and growth-ready website.
                         </p>
                         <Link 
                             to="/contact" 
-                            className="inline-block bg-white text-primary px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                            className="inline-block bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
                         >
-                            👉 Get Started Today
+                            Get Started Today
                         </Link>
                     </motion.div>
                 </div>

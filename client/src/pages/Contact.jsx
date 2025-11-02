@@ -32,7 +32,12 @@ const Contact = () => {
         clarityAnalytics.upgradeSession('contact_form_submission');
         
         try {
-            const response = await fetch('http://localhost:4000/api/contact/submit', {
+            // Use environment variable or fallback to production API
+            const apiUrl = process.env.NODE_ENV === 'development' 
+                ? 'http://localhost:4000/api/contact/submit'
+                : 'https://webhaze.onrender.com/api/contact/submit';
+                
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,13 +51,19 @@ const Contact = () => {
                 setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
             } else {
                 clarityAnalytics.trackEvent('contact_form_error');
-                const error = await response.json();
+                const error = await response.json().catch(() => ({ message: 'Server error' }));
                 alert('Error: ' + (error.message || 'Failed to send message'));
             }
         } catch (error) {
             clarityAnalytics.trackEvent('contact_form_error');
             console.error('Error submitting form:', error);
-            alert('Error: Failed to send message. Please try again.');
+            
+            // Show user-friendly message based on error type
+            if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                alert('Unable to connect to server. Please check your internet connection and try again.');
+            } else {
+                alert('Error: Failed to send message. Please try again later.');
+            }
         }
     };
 

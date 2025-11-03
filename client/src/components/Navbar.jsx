@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const navItems = [
-    { name: 'About', to: '/about' },
     { name: 'Account', to: '/account' },
+    { name: 'About', to: '/about' },
     { name: 'Contact us', to: '/contact' }
 ];
 

@@ -1,21 +1,22 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://www.webhaze.in/sitemap.xml
-
-# Disallow admin and private areas
-Disallow: /admin/
-Disallow: /api/
-Disallow: /dashboard/
-Disallow: /account/
+# Prioritize homepage
+Allow: /$
 
 # Allow important pages
-Allow: /
 Allow: /about
-Allow: /pricing
 Allow: /contact
 Allow: /services/
+Allow: /pricing
 
-# Crawl delay
-Crawl-delay: 1
+# Block admin and private areas
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /account/
+Disallow: /login
+Disallow: /signup
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://www.webhaze.in/sitemap.xml

@@ -71,10 +71,10 @@ const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        Best Free Website Builder with AI - Create Business Websites with{' '}
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">
                             WebHaze
                         </span>
+                        {' '}Website-as-a-Service Platform - Build Professional Websites Rapidly
                     </motion.h1>
 
                     <motion.p
@@ -92,23 +92,47 @@ const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
-                        Professional web development services worldwide with AI-powered tools, free domain, and affordable website maintenance packages. 
-                        Hire website developers globally to create portfolio websites and business websites with our WebHaze web services platform. 
-                        Serving clients in USA, Canada, UK, Germany, Australia and globally with 24/7 support.
+                        WebHaze is a scalable, config-driven Website-as-a-Service platform that enables non-technical users to build, customize, and deploy professional websites rapidly. 
+                        Lightning-fast hosting with 99.9% uptime guarantee, custom website development, mobile app development, and 24/7 expert support for businesses worldwide.
                     </motion.p>
 
                     <motion.div
-                        className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4 sm:px-0"
+                        className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4 sm:px-0 mb-8"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
                         <Link to={user ? "/contact" : "/signup"} className="btn-primary">
-                            {user ? "Get Started" : "Start now"}
+                            {user ? "Get Started" : "Start Building Your Website"}
                         </Link>
                         <button onClick={scrollToServices} className="btn-secondary">
-                            Learn more
+                            Explore Services
                         </button>
+                    </motion.div>
+                    
+                    {/* Quick Services Overview */}
+                    <motion.div
+                        className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto px-4 sm:px-0"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.6 }}
+                    >
+                        <div className="text-center p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20">
+                            <div className="text-2xl font-bold text-primary mb-1">99.9%</div>
+                            <div className="text-sm text-gray-600">Uptime Guarantee</div>
+                        </div>
+                        <div className="text-center p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20">
+                            <div className="text-2xl font-bold text-primary mb-1">24/7</div>
+                            <div className="text-sm text-gray-600">Expert Support</div>
+                        </div>
+                        <div className="text-center p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20">
+                            <div className="text-2xl font-bold text-primary mb-1">Free</div>
+                            <div className="text-sm text-gray-600">SSL Certificate</div>
+                        </div>
+                        <div className="text-center p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20">
+                            <div className="text-2xl font-bold text-primary mb-1">Global</div>
+                            <div className="text-sm text-gray-600">CDN Network</div>
+                        </div>
                     </motion.div>
                 </div>
             </div>
@@ -271,10 +295,10 @@ const Services = () => {
             <div className="container-site">
                 <div className="text-center mb-12 sm:mb-16 px-4 sm:px-0">
                     <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
-                        Our Services
+                        WebHaze Services
                     </h2>
                     <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                        From hosting to development, we provide comprehensive solutions to power your online success.
+                        WebHaze provides comprehensive Website-as-a-Service solutions to power your online success. From lightning-fast hosting to custom development, we've got you covered.
                     </p>
                 </div>
 
@@ -553,18 +577,18 @@ const GetStarted = () => {
         <section id="get-started" className="py-12 sm:py-16 lg:py-24 bg-gradient-to-r from-primary to-secondary text-white">
             <div className="container-site text-center px-4 sm:px-0">
                 <h2 className="text-2xl sm:text-3xl font-bold mb-6">
-                    Ready to Get Started?
+                    Ready to Build with WebHaze?
                 </h2>
                 <p className="text-base sm:text-lg lg:text-xl mb-8 opacity-90">
-                    Join thousands of businesses that trust WebHaze for their online presence.
+                    Join thousands of businesses worldwide that trust WebHaze's Website-as-a-Service platform for their professional online presence.
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link to={user ? "/contact" : "/signup"} className="bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm sm:text-base">
-                        Get Started
+                        Start Building Your Website
                     </Link>
                     <Link to="/contact" className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-white hover:text-primary transition-colors text-sm sm:text-base">
-                        Talk to Sales
+                        Contact WebHaze Team
                     </Link>
                 </div>
             </div>
@@ -987,11 +1011,39 @@ const Home = () => {
     return (
         <div className="relative">
             <SEO 
-                title="Best Free Website Builder with AI | WebHaze - Website Maintenance Services India"
-                description="Free website builder with AI tools, free domain & affordable website maintenance packages. Create business websites in India. Maintenance cost starting ₹999/month."
-                keywords="website builder free, best free website builder, website builder AI, website builder India, website maintenance cost, website maintenance services, website maintenance cost India, free website builder and domain, website builder for small business, WordPress website maintenance cost India"
+                title="WebHaze - Website-as-a-Service Platform | Professional Web Development & Hosting"
+                description="WebHaze is a scalable Website-as-a-Service platform that enables businesses to build, customize, and deploy professional websites rapidly. Lightning-fast hosting with 99.9% uptime guarantee, custom development, and 24/7 expert support."
+                keywords="WebHaze, website-as-a-service, professional web development, website hosting, custom website development, business websites, web hosting services, website builder, scalable hosting, professional hosting"
                 canonical="/"
             />
+            
+            {/* Organization Structured Data */}
+            <script type="application/ld+json">
+                {JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "Organization",
+                    "name": "WebHaze",
+                    "url": "https://www.webhaze.in/",
+                    "logo": "https://www.webhaze.in/logo.png",
+                    "description": "WebHaze is a scalable Website-as-a-Service platform that enables businesses to build, customize, and deploy professional websites rapidly.",
+                    "foundingDate": "2024",
+                    "contactPoint": {
+                        "@type": "ContactPoint",
+                        "telephone": "+91-8919019679",
+                        "contactType": "customer service",
+                        "email": "webhaze.in@gmail.com",
+                        "availableLanguage": "English"
+                    },
+                    "sameAs": [
+                        "https://www.webhaze.in/"
+                    ],
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressCountry": "IN"
+                    }
+                })}
+            </script>
+            
             <Hero />
             <Features />
             <Services />

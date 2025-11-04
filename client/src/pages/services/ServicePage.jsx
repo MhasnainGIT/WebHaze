@@ -70,9 +70,9 @@ const ServicePage = () => {
         { name: 'App Store Deployment', description: 'We handle the app store submission process' }
       ],
       plans: [
-        { name: 'MVP', price: '$4999', features: ['Basic Features', 'iOS or Android', '3 Months Support'] },
-        { name: 'Professional', price: '$9999', features: ['Advanced Features', 'iOS & Android', '6 Months Support'] },
-        { name: 'Enterprise', price: '$19999', features: ['Custom Features', 'Backend API', '12 Months Support', 'Maintenance'] }
+        { name: 'MVP', price: '$2999', features: ['Basic Features', 'iOS or Android', '3 Months Support'] },
+        { name: 'Professional', price: '$5999', features: ['Advanced Features', 'iOS & Android', '6 Months Support'] },
+        { name: 'Enterprise', price: '$12999', features: ['Custom Features', 'Backend API', '12 Months Support', 'Maintenance'] }
       ],
       icon: (
         <svg className="w-12 h-12 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -47,9 +47,9 @@ const ServicePage = () => {
         { name: 'Analytics Integration', description: 'Track your website performance' }
       ],
       plans: [
-        { name: 'Basic', price: '$999', features: ['5 Pages', 'Responsive Design', 'Contact Form'] },
-        { name: 'Professional', price: '$1999', features: ['10 Pages', 'CMS', 'SEO Setup', 'Analytics'] },
-        { name: 'Enterprise', price: '$3999', features: ['Unlimited Pages', 'E-commerce', 'Custom Features', 'Priority Support'] }
+        { name: 'Basic', price: '$599', features: ['5 Pages', 'Responsive Design', 'Contact Form'] },
+        { name: 'Professional', price: '$1299', features: ['10 Pages', 'CMS', 'SEO Setup', 'Analytics'] },
+        { name: 'Enterprise', price: '$2499', features: ['Unlimited Pages', 'E-commerce', 'Custom Features', 'Priority Support'] }
       ],
       icon: (
         <svg className="w-12 h-12 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -58,53 +58,56 @@ const PricingCard = ({ plan, index }) => (
 const Pricing = () => {
     const plans = [
         {
-            name: "Starter",
-            price: "$9.99",
+            name: "Shared Hosting",
+            price: "$4.99",
             period: "/month",
-            description: "Perfect for personal websites and small projects",
+            description: "Launch your website without the hassle. Speed, security, and simplicity.",
             features: [
-                "1 Website",
-                "10GB Storage",
+                "Host 1 Website",
+                "5GB SSD Disk Space",
+                "Unmetered Bandwidth",
+                "2 Email Accounts",
+                "2 Sub domains",
+                "24/7 Technical Support",
+                "99.9% Uptime Guarantee",
                 "Free SSL Certificate",
-                "24/7 Support",
-                "99.9% Uptime",
-                "Basic Analytics"
+                "24/7 Auto Backups"
             ],
             popular: false
         },
         {
-            name: "Professional",
-            price: "$19.99",
+            name: "WordPress Hosting",
+            price: "$7.99",
             period: "/month",
-            description: "Ideal for growing businesses and e-commerce",
+            description: "Build faster with ease. Optimized for speed, security, and effortless management.",
             features: [
-                "5 Websites",
-                "50GB Storage",
+                "Host 1 Website",
+                "7GB SSD Disk Space",
+                "Unmetered Bandwidth",
+                "2 Email Accounts",
+                "2 Sub domains",
+                "24/7 Technical Support",
+                "WordPress acceleration (LiteSpeed)",
                 "Free SSL Certificate",
-                "Priority Support",
-                "99.9% Uptime",
-                "Free Domain",
-                "Advanced Analytics",
-                "Email Accounts"
+                "24/7 Auto Backups"
             ],
             popular: true
         },
         {
-            name: "Enterprise",
-            price: "$39.99",
+            name: "E-commerce Hosting",
+            price: "$12.99",
             period: "/month",
-            description: "For large businesses with high traffic",
+            description: "Start selling online with confidence. Speed, security, and tools your store needs.",
             features: [
-                "Unlimited Websites",
-                "200GB Storage",
+                "Host 1 Website",
+                "25GB SSD Disk Space",
+                "Unmetered Bandwidth",
+                "4 Email Accounts",
+                "2 Sub domains",
+                "24/7 Technical Support",
+                "WooCommerce acceleration (LiteSpeed)",
                 "Free SSL Certificate",
-                "24/7 Priority Support",
-                "99.9% Uptime",
-                "Free Domain",
-                "Advanced Analytics",
-                "CDN Included",
-                "Daily Backups",
-                "Staging Environment"
+                "24/7 Auto Backups"
             ],
             popular: false
         }

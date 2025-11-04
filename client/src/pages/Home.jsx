@@ -380,7 +380,7 @@ const HostingPlans = () => {
     const plans = [
         {
             name: "Shared Hosting",
-            price: "$2",
+            price: "$4.99",
             description: "Launch your website without the hassle. Our shared hosting offers everything you need speed, security, and simplicity.",
             features: [
                 "Host 1 Websites",
@@ -397,7 +397,7 @@ const HostingPlans = () => {
         },
         {
             name: "E-commerce Hosting",
-            price: "$4.8",
+            price: "$12.99",
             description: "Start selling online with confidence. Our e-commerce hosting delivers the speed, security, and tools your store needs.",
             features: [
                 "Host 1 Websites",
@@ -414,7 +414,7 @@ const HostingPlans = () => {
         },
         {
             name: "WordPress Hosting",
-            price: "$3",
+            price: "$7.99",
             description: "Build faster with ease. Our WordPress hosting is optimized for speed, security, and effortless site management.",
             features: [
                 "Host 1 Websites",

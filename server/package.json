@@ -13,6 +13,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "build": "echo 'Server build complete'",
+    "seed:plans": "node scripts/seedPlans.js",
     "logs": "tail -f logs/combined.log",
     "logs:error": "tail -f logs/error.log"
   },

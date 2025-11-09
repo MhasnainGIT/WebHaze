@@ -20,6 +20,7 @@ import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import './styles/main.css';
 import './styles/design-system.css';
+import './styles/black-white.css';
 
 export default function App() {
   const LoadingSpinner = () => (

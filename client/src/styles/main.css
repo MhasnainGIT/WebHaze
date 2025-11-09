@@ -5,25 +5,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* Colors */
-    --color-primary: 11 97 255;
-    --color-primary-dark: 0 53 179;
-    --color-primary-light: 215 228 255;
-    
-    --color-secondary: 11 155 255;
-    --color-secondary-dark: 2 132 199;
-    --color-secondary-light: 224 242 254;
-    
-    --color-success: 0 196 140;
-    --color-success-dark: 4 120 87;
-    --color-success-light: 209 250 229;
 
-    --color-background: 247 250 255;
-    --color-surface: 255 255 255;
-    --color-text: 15 23 42;
-    --color-text-light: 71 85 105;
-  }
 
   html {
     @apply scroll-smooth antialiased;
@@ -100,17 +82,11 @@
   }
 
   .btn-primary {
-    @apply btn bg-white/90 text-black hover:bg-white
-           shadow-lg hover:shadow-xl hover:shadow-white/25
-           active:shadow-md active:translate-y-0.5;
-    backdrop-filter: blur(20px);
+    @apply btn bg-white text-black hover:bg-black hover:text-white border-2 border-black;
   }
 
   .btn-secondary {
-    @apply btn bg-white/10 text-white border border-white/20
-           hover:bg-white/20 hover:border-white/40
-           shadow-sm hover:shadow-md active:shadow-sm active:translate-y-0.5;
-    backdrop-filter: blur(20px);
+    @apply btn bg-black text-white border-2 border-white hover:bg-white hover:text-black;
   }
 
   /* Cards */
@@ -121,10 +97,9 @@
 
   /* Forms */
   .form-input {
-    @apply block w-full rounded-lg border border-gray-600 px-4 py-3
-           text-white placeholder-gray-400 bg-gray-900 transition duration-200
-           hover:border-white/50 focus:border-white focus:outline-none
-           focus:ring-2 focus:ring-white/20;
+    @apply block w-full rounded-lg border-2 border-black px-4 py-3
+           text-black bg-white transition duration-200
+           hover:border-black focus:border-black focus:outline-none;
   }
 
   .form-label {
@@ -164,14 +139,14 @@
 }
 
 .glass-morphism {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid white;
 }
 
 .glass-morphism:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: white;
+  color: black;
+  border: 1px solid black;
 }
 
 .perspective-1000 {

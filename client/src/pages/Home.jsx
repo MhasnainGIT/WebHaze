@@ -60,7 +60,7 @@ const Hero = () => {
             </motion.div> */}
 
             <motion.h1
-              className="text-4xl md:text-6xl lg:text-8xl font-black leading-[0.9] mb-12 tracking-tight mt-8"
+              className="text-4xl md:text-6xl lg:text-8xl font-black leading-[0.9] mb-8 tracking-tight mt-8"
               initial={{ opacity: 0, y: 100, rotateX: -45, scale: 0.8 }}
               animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
               transition={{ duration: 1.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -71,115 +71,173 @@ const Hero = () => {
               }}
             >
               <motion.span 
-                className="block"
+                className="block text-white"
                 initial={{ x: -100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 1, delay: 0.6 }}
               >
-                WE CREATE
+                LAUNCH YOUR WEBSITE
               </motion.span>
               <motion.span 
-                className="block text-white"
+                className="block text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text"
                 initial={{ x: 100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 1, delay: 0.8 }}
               >
-                DIGITAL EXPERIENCES
-              </motion.span>
-              <motion.span 
-                className="block text-white/60 text-2xl md:text-4xl lg:text-5xl mt-4"
-                initial={{ y: 50, opacity: 0, scale: 0.5 }}
-                animate={{ y: 0, opacity: 1, scale: 1 }}
-                transition={{ duration: 1, delay: 1.2 }}
-              >
-                WebHaze Studios
+                IN 48 HOURS
               </motion.span>
             </motion.h1>
-
+            
             <motion.div
-              className="flex items-center justify-center gap-8 mb-12 text-lg font-medium"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.4 }}
+              className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-full text-lg font-bold mb-8 inline-block"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 1.0 }}
+              whileHover={{ scale: 1.05 }}
             >
-              <motion.span 
-                className="glass-morphism px-4 py-2 rounded-full"
-                whileHover={{ scale: 1.1, rotateZ: 5 }}
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 1.6 }}
-              >
-                Fast.
-              </motion.span>
-              <motion.span 
-                className="glass-morphism px-4 py-2 rounded-full"
-                whileHover={{ scale: 1.1, rotateZ: -5 }}
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 1.8 }}
-              >
-                Secure.
-              </motion.span>
-              <motion.span 
-                className="glass-morphism px-4 py-2 rounded-full"
-                whileHover={{ scale: 1.1, rotateZ: 5 }}
-                initial={{ x: 50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 2.0 }}
-              >
-                Reliable.
-              </motion.span>
+              🚀 Limited Time: 50% OFF Launch Week!
             </motion.div>
 
+
+
             <motion.p
-              className="text-lg md:text-xl text-gray-400 mb-12 max-w-4xl mx-auto leading-relaxed"
+              className="text-xl md:text-2xl text-gray-300 mb-6 max-w-4xl mx-auto leading-relaxed font-medium"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1 }}
             >
-              WebHaze is a scalable, config-driven Website-as-a-Service platform that enables non-technical users to build, customize, and deploy professional websites rapidly. Lightning-fast hosting with 99.9% uptime guarantee, custom website development, mobile app development, and 24/7 expert support for businesses worldwide.
+              From concept to live website in just 48 hours. No coding required.
+            </motion.p>
+            
+            <motion.p
+              className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.2 }}
+            >
+              Join 500+ businesses worldwide who chose WebHaze for lightning-fast hosting, professional design, and 24/7 expert support.
             </motion.p>
 
             <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.2 }}
+              transition={{ duration: 0.8, delay: 1.4 }}
             >
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link to={user ? "/contact" : "/signup"} className="btn-primary">
-                  Get Started
+                <Link 
+                  to={user ? "/contact" : "/signup"} 
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 inline-flex items-center gap-2"
+                >
+                  🚀 Launch My Website Now
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })} className="btn-secondary">
-                  Explore Services
-                </button>
+                <Link 
+                  to="/pricing" 
+                  className="border-2 border-white/30 hover:border-white text-white hover:bg-white hover:text-black px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 inline-flex items-center gap-2"
+                >
+                  💰 View Pricing (50% OFF)
+                </Link>
               </motion.div>
             </motion.div>
 
             <motion.div
-              className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto"
+              className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.4 }}
+              transition={{ duration: 0.8, delay: 1.6 }}
             >
               {[
-                { value: "99.9%", label: "Uptime Guarantee" },
-                { value: "24/7", label: "Expert Support" },
-                { value: "Free", label: "SSL Certificate" },
-                { value: "Global", label: "CDN Network" }
+                { value: "500+", label: "Websites Built", icon: "🌐" },
+                { value: "48hrs", label: "Average Launch", icon: "⚡" },
+                { value: "25+", label: "Countries Served", icon: "🌍" },
+                { value: "99.9%", label: "Uptime Guarantee", icon: "🛡️" }
               ].map((item, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold mb-2">{item.value}</div>
-                  <div className="text-sm text-gray-400">{item.label}</div>
-                </div>
+                <motion.div 
+                  key={index} 
+                  className="text-center"
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="text-3xl mb-2">{item.icon}</div>
+                  <div className="text-2xl md:text-3xl font-bold mb-2 text-white">{item.value}</div>
+                  <div className="text-sm text-gray-300 font-medium">{item.label}</div>
+                </motion.div>
               ))}
             </motion.div>
           </div>
         </div>
       </motion.div>
     </section>
+  );
+};
+
+const TrustIndicators = () => {
+  return (
+    <AnimatedSection className="py-16 border-b border-white/10">
+      <div className="container-site">
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <p className="text-gray-400 text-lg mb-8">Trusted by businesses worldwide</p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-60">
+            {[
+              "TechFlow Solutions", "Bella Vista Restaurant", "GreenLeaf Consulting", 
+              "Urban Threads", "Digital Dynamics", "Creative Studios"
+            ].map((company, index) => (
+              <motion.div
+                key={index}
+                className="text-white/70 font-semibold text-lg tracking-wide"
+                whileHover={{ scale: 1.1, opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                {company}
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <motion.div
+            className="p-6 glass-morphism rounded-xl"
+            whileHover={{ scale: 1.05, y: -5 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="text-4xl mb-4">🚀</div>
+            <h3 className="text-xl font-bold mb-2">48-Hour Launch</h3>
+            <p className="text-gray-400">From concept to live website in just 2 days</p>
+          </motion.div>
+          
+          <motion.div
+            className="p-6 glass-morphism rounded-xl"
+            whileHover={{ scale: 1.05, y: -5 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="text-4xl mb-4">📞</div>
+            <h3 className="text-xl font-bold mb-2">WhatsApp Support</h3>
+            <p className="text-gray-400">Direct line to our Hyderabad-based team</p>
+          </motion.div>
+          
+          <motion.div
+            className="p-6 glass-morphism rounded-xl"
+            whileHover={{ scale: 1.05, y: -5 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="text-4xl mb-4">💰</div>
+            <h3 className="text-xl font-bold mb-2">Money-Back Guarantee</h3>
+            <p className="text-gray-400">30-day full refund if not satisfied</p>
+          </motion.div>
+        </div>
+      </div>
+    </AnimatedSection>
   );
 };
 
@@ -936,6 +994,7 @@ const Home = () => {
       />
       
       <Hero />
+      <TrustIndicators />
       <Features />
       <Services />
       <HowItWorks />

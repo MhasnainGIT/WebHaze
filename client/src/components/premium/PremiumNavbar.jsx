@@ -275,7 +275,7 @@ const PremiumNavbar = () => {
                 ) : (
                   <Link 
                     to="/signup"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={closeMobileMenu}
                     className="px-8 py-3 bg-white text-black text-lg font-semibold rounded-full hover:bg-white/90 transition-all duration-300"
                   >
                     GET STARTED

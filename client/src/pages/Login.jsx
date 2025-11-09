@@ -34,7 +34,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pt-32">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pt-24 md:pt-32">
       <SEO 
         title="Login - WebHaze"
         description="Login to your WebHaze account to access your dashboard and manage your websites."

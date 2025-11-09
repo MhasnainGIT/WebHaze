@@ -8,6 +8,14 @@ const PremiumNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, logout } = useAuth();
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -15,6 +23,17 @@ const PremiumNavbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
 
   return (
     <motion.nav
@@ -90,7 +109,7 @@ const PremiumNavbar = () => {
 
           <div className="md:hidden flex items-center space-x-4">
             <motion.button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={toggleMobileMenu}
               className="text-white p-2 rounded-lg hover:bg-white/10 transition-colors duration-300"
               whileTap={{ scale: 0.95 }}
             >
@@ -154,11 +173,25 @@ const PremiumNavbar = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="flex flex-col items-center justify-center h-full space-y-8">
-              <div className="flex flex-col items-center space-y-6">
+            <div className="flex flex-col h-full">
+              <div className="flex items-center justify-between p-6 border-b border-white/10">
+                <motion.button
+                  onClick={closeMobileMenu}
+                  className="flex items-center gap-2 text-white hover:text-gray-300 transition-colors duration-300"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  <span className="font-medium">Back</span>
+                </motion.button>
+                <span className="text-white font-medium">Menu</span>
+                <div className="w-12"></div>
+              </div>
+              <div className="flex flex-col items-center justify-center flex-1 space-y-6 px-6">
                 <Link 
                   to="/" 
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={closeMobileMenu}
                   className="text-white text-2xl font-medium tracking-wide hover:text-gray-300 transition-colors duration-300"
                 >
                   HOME
@@ -168,21 +201,21 @@ const PremiumNavbar = () => {
                   <div className="flex flex-col space-y-2">
                     <Link 
                       to="/services/web-hosting" 
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      onClick={closeMobileMenu}
                       className="text-white/70 text-lg hover:text-white transition-colors duration-300"
                     >
                       Web Hosting
                     </Link>
                     <Link 
                       to="/services/website-development" 
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      onClick={closeMobileMenu}
                       className="text-white/70 text-lg hover:text-white transition-colors duration-300"
                     >
                       Website Development
                     </Link>
                     <Link 
                       to="/services/app-development" 
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      onClick={closeMobileMenu}
                       className="text-white/70 text-lg hover:text-white transition-colors duration-300"
                     >
                       App Development
@@ -191,7 +224,7 @@ const PremiumNavbar = () => {
                 </div>
                 <Link 
                   to="/contact" 
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={closeMobileMenu}
                   className="text-white text-2xl font-medium tracking-wide hover:text-gray-300 transition-colors duration-300"
                 >
                   CONTACT
@@ -199,7 +232,7 @@ const PremiumNavbar = () => {
                 {user && (
                   <Link 
                     to="/account" 
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={closeMobileMenu}
                     className="text-white text-2xl font-medium tracking-wide hover:text-gray-300 transition-colors duration-300"
                   >
                     ACCOUNT
@@ -220,12 +253,17 @@ const PremiumNavbar = () => {
                     </div>
                     <span className="text-white/70 text-lg">{user.name}</span>
                     <div className="flex flex-col space-y-2">
-                      <Link to="/dashboard" className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors">Dashboard</Link>
+                      <Link 
+                        to="/dashboard" 
+                        onClick={closeMobileMenu}
+                        className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
+                      >
+                        Dashboard
+                      </Link>
                       <button 
                         onClick={() => {
-                          console.log('Mobile logout clicked');
                           logout();
-                          setIsMobileMenuOpen(false);
+                          closeMobileMenu();
                           window.location.href = '/';
                         }} 
                         className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"

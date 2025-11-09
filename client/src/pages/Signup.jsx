@@ -41,7 +41,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pt-32">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pt-24 md:pt-32">
       <SEO 
         title="Sign Up - WebHaze"
         description="Create your WebHaze account and start building professional websites today."

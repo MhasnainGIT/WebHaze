@@ -291,7 +291,7 @@ const PremiumNavbar = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center">
+                  <div className="text-center mb-8">
                     <Link 
                       to="/signup"
                       onClick={closeMobileMenu}

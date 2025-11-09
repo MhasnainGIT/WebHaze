@@ -6,6 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 const PremiumNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showMobileServices, setShowMobileServices] = useState(false);
   const { user, logout } = useAuth();
 
   const toggleMobileMenu = () => {
@@ -14,6 +15,7 @@ const PremiumNavbar = () => {
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
+    setShowMobileServices(false);
   };
 
   useEffect(() => {
@@ -197,30 +199,46 @@ const PremiumNavbar = () => {
                   HOME
                 </Link>
                 <div className="text-center">
-                  <span className="text-white text-2xl font-medium tracking-wide mb-4 block">SERVICES</span>
-                  <div className="flex flex-col space-y-2">
-                    <Link 
-                      to="/services/web-hosting" 
-                      onClick={closeMobileMenu}
-                      className="text-white/70 text-lg hover:text-white transition-colors duration-300"
+                  <button
+                    onClick={() => setShowMobileServices(!showMobileServices)}
+                    className="text-white text-2xl font-medium tracking-wide mb-4 flex items-center justify-center gap-2 mx-auto hover:text-gray-300 transition-colors duration-300"
+                  >
+                    SERVICES
+                    <svg className={`w-5 h-5 transition-transform duration-200 ${showMobileServices ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {showMobileServices && (
+                    <motion.div 
+                      className="flex flex-col space-y-2"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
                     >
-                      Web Hosting
-                    </Link>
-                    <Link 
-                      to="/services/website-development" 
-                      onClick={closeMobileMenu}
-                      className="text-white/70 text-lg hover:text-white transition-colors duration-300"
-                    >
-                      Website Development
-                    </Link>
-                    <Link 
-                      to="/services/app-development" 
-                      onClick={closeMobileMenu}
-                      className="text-white/70 text-lg hover:text-white transition-colors duration-300"
-                    >
-                      App Development
-                    </Link>
-                  </div>
+                      <Link 
+                        to="/services/web-hosting" 
+                        onClick={closeMobileMenu}
+                        className="text-white/70 text-lg hover:text-white transition-colors duration-300"
+                      >
+                        Web Hosting
+                      </Link>
+                      <Link 
+                        to="/services/website-development" 
+                        onClick={closeMobileMenu}
+                        className="text-white/70 text-lg hover:text-white transition-colors duration-300"
+                      >
+                        Website Development
+                      </Link>
+                      <Link 
+                        to="/services/app-development" 
+                        onClick={closeMobileMenu}
+                        className="text-white/70 text-lg hover:text-white transition-colors duration-300"
+                      >
+                        App Development
+                      </Link>
+                    </motion.div>
+                  )}
                 </div>
                 <Link 
                   to="/contact" 
@@ -273,13 +291,15 @@ const PremiumNavbar = () => {
                     </div>
                   </div>
                 ) : (
-                  <Link 
-                    to="/signup"
-                    onClick={closeMobileMenu}
-                    className="px-8 py-3 bg-white text-black text-lg font-semibold rounded-full hover:bg-white/90 transition-all duration-300"
-                  >
-                    GET STARTED
-                  </Link>
+                  <div className="text-center">
+                    <Link 
+                      to="/signup"
+                      onClick={closeMobileMenu}
+                      className="inline-block px-8 py-3 bg-white text-black text-lg font-semibold rounded-full hover:bg-white/90 transition-all duration-300"
+                    >
+                      GET STARTED
+                    </Link>
+                  </div>
                 )}
               </motion.div>
             </div>

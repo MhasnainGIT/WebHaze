@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require('tailwindcss/defaultTheme');
-const designSystem = require('./src/styles/design-system.json');
 
 module.exports = {
   content: [
@@ -11,25 +10,28 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: 'rgb(var(--color-primary) / <alpha-value>)',
-          dark: 'rgb(var(--color-primary-dark) / <alpha-value>)',
-          light: 'rgb(var(--color-primary-light) / <alpha-value>)',
+          DEFAULT: '#0b61ff',
+          50: '#eff6ff',
+          100: '#dbeafe',
+          500: '#0b61ff',
+          600: '#0952d9',
+          700: '#0743b3',
+          900: '#1e3a8a'
         },
         secondary: {
-          DEFAULT: 'rgb(var(--color-secondary) / <alpha-value>)',
-          dark: 'rgb(var(--color-secondary-dark) / <alpha-value>)',
-          light: 'rgb(var(--color-secondary-light) / <alpha-value>)',
+          DEFAULT: '#0b9bff',
+          500: '#0b9bff'
         },
         success: {
-          DEFAULT: 'rgb(var(--color-success) / <alpha-value>)',
-          dark: 'rgb(var(--color-success-dark) / <alpha-value>)',
-          light: 'rgb(var(--color-success-light) / <alpha-value>)',
+          DEFAULT: '#00c48c',
+          dark: '#047857',
+          light: '#d1fae5',
         },
-        background: 'rgb(var(--color-background) / <alpha-value>)',
-        surface: 'rgb(var(--color-surface) / <alpha-value>)',
+        background: '#f7faff',
+        surface: '#ffffff',
         text: {
-          DEFAULT: 'rgb(var(--color-text) / <alpha-value>)',
-          light: 'rgb(var(--color-text-light) / <alpha-value>)',
+          DEFAULT: '#0f172a',
+          light: '#475569',
         },
       },
       fontFamily: {
@@ -37,12 +39,10 @@ module.exports = {
         heading: ['Inter', ...defaultTheme.fontFamily.sans],
       },
       spacing: {
-        'site-x': designSystem.spacing.site.x,
-        'site-y': designSystem.spacing.site.y,
-        'section-y': designSystem.spacing.section.y,
+        'site-x': '1.5rem',
+        'site-y': '2rem',
+        'section-y': '6rem',
       },
-      borderRadius: designSystem.radius,
-      boxShadow: designSystem.shadows,
     },
   },
   plugins: [

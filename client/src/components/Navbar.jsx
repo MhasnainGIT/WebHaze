@@ -40,7 +40,7 @@ const Navbar = () => {
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <div className="flex-shrink-0">
-                        <a href="/" className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                        <a href="/" className="text-2xl font-bold bg-gradient-to-r from-primary-500 to-secondary bg-clip-text text-transparent">
                             WebHaze
                         </a>
                     </div>
@@ -96,7 +96,7 @@ const Navbar = () => {
                         {user ? (
                             <Menu as="div" className="relative inline-block text-left">
                                 <Menu.Button className="flex items-center gap-3 px-4 py-2 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-all duration-200 border border-gray-200/50">
-                                    <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white text-sm font-bold">
+                                    <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary rounded-lg flex items-center justify-center text-white text-sm font-bold">
                                         {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                                     </div>
                                     <span className="text-gray-700 font-medium">{user.name}</span>

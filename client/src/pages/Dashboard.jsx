@@ -187,7 +187,7 @@ const Dashboard = () => {
           <div className="glass-morphism rounded-lg p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-white">Your Websites</h2>
-              <Link to="/create-website" className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 backdrop-blur-sm transition-all duration-300 text-sm font-medium">
+              <Link to="/create-website" className="px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-lg hover:bg-gray-700 transition-all duration-300 text-sm font-medium">
                 Create New
               </Link>
             </div>
@@ -195,7 +195,7 @@ const Dashboard = () => {
               {websites.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-gray-400 mb-4">No websites created yet</p>
-                  <Link to="/create-website" className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 backdrop-blur-sm transition-all duration-300 text-sm font-medium">
+                  <Link to="/create-website" className="px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-lg hover:bg-gray-700 transition-all duration-300 text-sm font-medium">
                     Create Your First Website
                   </Link>
                 </div>

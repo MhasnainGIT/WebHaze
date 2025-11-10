@@ -30,7 +30,7 @@ const Dashboard = () => {
             return sum + visitors;
           }, 0);
           
-          const storageUsed = (savedWebsites.length * 0.7 + Math.random() * 2).toFixed(1);
+          const storageUsed = savedWebsites.length === 0 ? 0 : (savedWebsites.length * 0.7 + Math.random() * 2).toFixed(1);
           
           setStats({
             activeWebsites: savedWebsites.length,
@@ -62,7 +62,7 @@ const Dashboard = () => {
           setStats({
             activeWebsites: data.websites?.length || 0,
             totalVisitors: data.totalVisitors?.toLocaleString() || '0',
-            uptime: `${(data.uptime || 99.9).toFixed(1)}%`,
+            uptime: data.uptime === 0 ? '0%' : `${(data.uptime || 99.9).toFixed(1)}%`,
             storageUsed: `${(data.storageUsed || 0).toFixed(1)} GB`
           });
           setRecentActivity(data.recentActivity || []);

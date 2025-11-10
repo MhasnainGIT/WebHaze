@@ -30,7 +30,7 @@ const Dashboard = () => {
             return sum + visitors;
           }, 0);
           
-          const storageUsed = savedWebsites.length === 0 ? '0' : (savedWebsites.length * 0.7 + Math.random() * 2).toFixed(1);
+          const storageUsed = '0';
           
           setStats({
             activeWebsites: savedWebsites.length,
@@ -80,7 +80,7 @@ const Dashboard = () => {
           return sum + visitors;
         }, 0);
         
-        const storageUsed = savedWebsites.length === 0 ? '0' : (savedWebsites.length * 0.7 + Math.random() * 2).toFixed(1);
+        const storageUsed = '0';
         
         setStats({
           activeWebsites: savedWebsites.length,
@@ -188,7 +188,7 @@ const Dashboard = () => {
           <div className="glass-morphism rounded-lg p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-white">Your Websites</h2>
-              <Link to="/create-website" className="px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-lg hover:bg-gray-700 transition-all duration-300 text-sm font-medium">
+              <Link to="/create-website" className="px-4 py-2 glass-morphism text-white rounded-lg hover:bg-white/20 transition-all duration-300 text-sm font-medium">
                 Create New
               </Link>
             </div>
@@ -196,19 +196,19 @@ const Dashboard = () => {
               {websites.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-gray-400 mb-4">No websites created yet</p>
-                  <Link to="/create-website" className="px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-lg hover:bg-gray-700 transition-all duration-300 text-sm font-medium">
+                  <Link to="/create-website" className="px-4 py-2 glass-morphism text-white rounded-lg hover:bg-white/20 transition-all duration-300 text-sm font-medium">
                     Create Your First Website
                   </Link>
                 </div>
               ) : (
                 websites.map((website, index) => (
-                  <div key={website.id || index} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                  <div key={website.id || index} className="flex items-center justify-between p-4 glass-morphism rounded-lg">
                     <div>
                       <h3 className="font-semibold">{website.name}</h3>
                       <p className="text-gray-400 text-sm">{website.domain}</p>
                     </div>
                     <div className="text-right">
-                      <span className="inline-block px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs mb-1">
+                      <span className="inline-block px-2 py-1 glass-morphism text-green-400 rounded-full text-xs mb-1">
                         {website.status}
                       </span>
                       <p className="text-gray-400 text-sm">{website.visitors || Math.floor(Math.random() * 10000).toLocaleString()} visitors</p>
@@ -230,7 +230,7 @@ const Dashboard = () => {
               ) : (
                 recentActivity.map((activity, index) => (
                   <div key={index} className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <div className="w-2 h-2 bg-white/40 rounded-full mt-2 flex-shrink-0"></div>
                     <div>
                       <p className="text-sm">
                         <span className="font-medium">{activity.action}</span> for{' '}

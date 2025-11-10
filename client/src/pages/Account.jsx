@@ -240,7 +240,7 @@ const Account = () => {
           <div className="lg:col-span-1">
             <div className="glass-card p-6 mb-8">
               <div className="text-center mb-6">
-                <div className="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
+                <div className="w-20 h-20 glass-morphism rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
                   {(formData.name || user?.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
                 </div>
                 <h3 className="text-xl font-semibold">{formData.name || user?.name || 'User'}</h3>
@@ -371,7 +371,7 @@ const Account = () => {
                         >
                           <div className="flex items-center justify-between mb-4">
                             <h3 className="font-semibold">{site.name}</h3>
-                            <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">
+                            <span className="px-2 py-1 glass-morphism text-green-400 rounded-full text-xs">
                               {site.status}
                             </span>
                           </div>
@@ -393,7 +393,7 @@ const Account = () => {
                             </button>
                             <button 
                               onClick={() => deleteWebsite(site.id)}
-                              className="px-3 py-1 bg-red-500/20 border border-red-500/30 text-red-400 rounded text-xs hover:bg-red-500/30 transition-all duration-300"
+                              className="px-3 py-1 glass-morphism border border-red-500/30 text-red-400 rounded text-xs hover:bg-red-500/30 transition-all duration-300"
                             >
                               Delete
                             </button>
@@ -481,7 +481,7 @@ const Account = () => {
                             type="checkbox"
                             checked={notifications.emailUpdates}
                             onChange={(e) => handleNotificationToggle('emailUpdates', e.target.checked)}
-                            className="w-4 h-4 bg-white/10 border border-white/20 rounded text-white focus:ring-white/20"
+                            className="w-4 h-4 glass-morphism border border-white/20 rounded text-white focus:ring-white/20"
                           />
                         </label>
                         <label className="flex items-center justify-between">
@@ -490,7 +490,7 @@ const Account = () => {
                             type="checkbox"
                             checked={notifications.smsAlerts}
                             onChange={(e) => handleNotificationToggle('smsAlerts', e.target.checked)}
-                            className="w-4 h-4 bg-white/10 border border-white/20 rounded text-white focus:ring-white/20"
+                            className="w-4 h-4 glass-morphism border border-white/20 rounded text-white focus:ring-white/20"
                           />
                         </label>
                         <label className="flex items-center justify-between">
@@ -499,7 +499,7 @@ const Account = () => {
                             type="checkbox"
                             checked={notifications.marketingEmails}
                             onChange={(e) => handleNotificationToggle('marketingEmails', e.target.checked)}
-                            className="w-4 h-4 bg-white/10 border border-white/20 rounded text-white focus:ring-white/20"
+                            className="w-4 h-4 glass-morphism border border-white/20 rounded text-white focus:ring-white/20"
                           />
                         </label>
                         <button 
@@ -510,12 +510,12 @@ const Account = () => {
                         </button>
                       </div>
                     </div>
-                    <div className="glass-card p-6 border-red-500/20 bg-red-500/10">
+                    <div className="glass-card p-6 border-red-500/20">
                       <h3 className="font-semibold mb-2 text-red-400">Danger Zone</h3>
                       <p className="text-gray-400 mb-4">Permanently delete your account and all data</p>
                       <button 
                         onClick={handleDeleteAccount}
-                        className="glass-button bg-red-500/20 border-red-500/30 text-red-400 hover:bg-red-500/30"
+                        className="glass-button border-red-500/30 text-red-400 hover:bg-red-500/30"
                       >
                         Delete Account
                       </button>

@@ -159,7 +159,7 @@ const PremiumNavbar = () => {
             </a>
             {user ? (
               <div className="relative group">
-                <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-white text-sm font-bold cursor-pointer">
+                <div className="w-8 h-8 glass-morphism rounded-full flex items-center justify-center text-white text-sm font-bold cursor-pointer">
                   {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                 </div>
                 <div className="absolute right-0 top-12 w-48 bg-black/90 backdrop-blur-xl border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
@@ -318,7 +318,7 @@ const PremiumNavbar = () => {
               >
                 {user ? (
                   <div className="flex flex-col items-center space-y-3">
-                    <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                    <div className="w-16 h-16 glass-morphism rounded-full flex items-center justify-center text-white text-xl font-bold">
                       {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                     </div>
                     <span className="text-white/70 text-lg">{user.name}</span>
@@ -340,7 +340,7 @@ const PremiumNavbar = () => {
                           closeMobileMenu();
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
+                        className="px-4 py-2 glass-morphism text-white rounded-lg hover:bg-white/20 transition-colors"
                       >
                         Dashboard
                       </Link>
@@ -350,7 +350,7 @@ const PremiumNavbar = () => {
                           closeMobileMenu();
                           window.location.href = '/';
                         }} 
-                        className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
+                        className="px-4 py-2 glass-morphism text-white rounded-lg hover:bg-white/20 transition-colors"
                       >
                         Sign Out
                       </button>

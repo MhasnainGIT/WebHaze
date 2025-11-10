@@ -30,7 +30,7 @@ const Dashboard = () => {
             return sum + visitors;
           }, 0);
           
-          const storageUsed = savedWebsites.length === 0 ? 0 : (savedWebsites.length * 0.7 + Math.random() * 2).toFixed(1);
+          const storageUsed = savedWebsites.length === 0 ? '0' : (savedWebsites.length * 0.7 + Math.random() * 2).toFixed(1);
           
           setStats({
             activeWebsites: savedWebsites.length,
@@ -80,7 +80,7 @@ const Dashboard = () => {
           return sum + visitors;
         }, 0);
         
-        const storageUsed = (savedWebsites.length * 0.7 + Math.random() * 2).toFixed(1);
+        const storageUsed = savedWebsites.length === 0 ? '0' : (savedWebsites.length * 0.7 + Math.random() * 2).toFixed(1);
         
         setStats({
           activeWebsites: savedWebsites.length,

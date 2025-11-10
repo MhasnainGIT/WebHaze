@@ -202,6 +202,57 @@ router.get('/me', async (req, res) => {
   }
 });
 
+// Update password endpoint
+router.put('/password', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    
+    if (!token) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'Current password and new password are required' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: 'New password must be at least 6 characters long' });
+    }
+
+    let user;
+    if (process.env.SKIP_DB === 'true') {
+      user = await memoryStore.findUserById(decoded.userId);
+      if (!user || !user.isActive) {
+        return res.status(401).json({ error: 'User not found' });
+      }
+      const isValidPassword = await memoryStore.comparePassword(currentPassword, user.password);
+      if (!isValidPassword) {
+        return res.status(400).json({ error: 'Current password is incorrect' });
+      }
+      await memoryStore.updateUserPassword(decoded.userId, newPassword);
+    } else {
+      user = await User.findById(decoded.userId).select('+password');
+      if (!user || !user.isActive) {
+        return res.status(401).json({ error: 'User not found' });
+      }
+      const isValidPassword = await user.comparePassword(currentPassword);
+      if (!isValidPassword) {
+        return res.status(400).json({ error: 'Current password is incorrect' });
+      }
+      user.password = newPassword;
+      await user.save();
+    }
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.error('Password update error:', error);
+    res.status(500).json({ error: 'Password update failed' });
+  }
+});
+
 // Logout endpoint (client-side token removal)
 router.post('/logout', (req, res) => {
   res.json({

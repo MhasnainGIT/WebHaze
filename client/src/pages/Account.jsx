@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { API_BASE_URL } from '../config/api';
 import SEO from '../components/SEO';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -68,7 +69,7 @@ const Account = () => {
     toast.success('Profile updated successfully!');
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = async (e) => {
     e.preventDefault();
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       toast.error('Passwords do not match!');
@@ -78,9 +79,32 @@ const Account = () => {
       toast.error('Password must be at least 6 characters!');
       return;
     }
-    // Update password logic here
-    toast.success('Password updated successfully!');
-    setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/api/auth/password`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        toast.success('Password updated successfully!');
+        setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      } else {
+        toast.error(data.error || 'Password update failed!');
+      }
+    } catch (error) {
+      toast.error('Password update failed!');
+    }
   };
 
   const handleNotificationUpdate = async () => {
@@ -457,7 +481,7 @@ const Account = () => {
                             type="checkbox"
                             checked={notifications.emailUpdates}
                             onChange={(e) => handleNotificationToggle('emailUpdates', e.target.checked)}
-                            className="w-4 h-4"
+                            className="w-4 h-4 bg-white/10 border border-white/20 rounded text-white focus:ring-white/20"
                           />
                         </label>
                         <label className="flex items-center justify-between">
@@ -466,7 +490,7 @@ const Account = () => {
                             type="checkbox"
                             checked={notifications.smsAlerts}
                             onChange={(e) => handleNotificationToggle('smsAlerts', e.target.checked)}
-                            className="w-4 h-4"
+                            className="w-4 h-4 bg-white/10 border border-white/20 rounded text-white focus:ring-white/20"
                           />
                         </label>
                         <label className="flex items-center justify-between">
@@ -475,7 +499,7 @@ const Account = () => {
                             type="checkbox"
                             checked={notifications.marketingEmails}
                             onChange={(e) => handleNotificationToggle('marketingEmails', e.target.checked)}
-                            className="w-4 h-4"
+                            className="w-4 h-4 bg-white/10 border border-white/20 rounded text-white focus:ring-white/20"
                           />
                         </label>
                         <button 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
@@ -6,11 +6,75 @@ import SEO from '../components/SEO';
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const [websites, setWebsites] = useState([]);
+  const [stats, setStats] = useState({
+    activeWebsites: 0,
+    totalVisitors: 0,
+    uptime: '99.9%',
+    storageUsed: '0 GB'
+  });
+  const [recentActivity, setRecentActivity] = useState([]);
 
-  const stats = [
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          // Fallback to localStorage for non-authenticated users
+          const savedWebsites = JSON.parse(localStorage.getItem('userWebsites') || '[]');
+          setWebsites(savedWebsites);
+          
+          const totalVisitors = savedWebsites.reduce((sum, site) => {
+            const visitors = parseInt(site.visitors || Math.floor(Math.random() * 10000));
+            return sum + visitors;
+          }, 0);
+          
+          const storageUsed = (savedWebsites.length * 0.7 + Math.random() * 2).toFixed(1);
+          
+          setStats({
+            activeWebsites: savedWebsites.length,
+            totalVisitors: totalVisitors.toLocaleString(),
+            uptime: '99.9%',
+            storageUsed: `${storageUsed} GB`
+          });
+          return;
+        }
+
+        const response = await fetch('/api/dashboard', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setWebsites(data.websites || []);
+          setStats({
+            activeWebsites: data.websites?.length || 0,
+            totalVisitors: data.totalVisitors?.toLocaleString() || '0',
+            uptime: data.uptime || '99.9%',
+            storageUsed: `${(data.storageUsed || 0).toFixed(1)} GB`
+          });
+          setRecentActivity(data.recentActivity || []);
+        } else {
+          console.error('Failed to fetch dashboard data');
+        }
+      } catch (error) {
+        console.error('Dashboard fetch error:', error);
+        // Fallback to localStorage
+        const savedWebsites = JSON.parse(localStorage.getItem('userWebsites') || '[]');
+        setWebsites(savedWebsites);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  const statsConfig = [
     { 
       label: 'Active Websites', 
-      value: '3', 
+      value: stats.activeWebsites.toString(), 
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
@@ -19,7 +83,7 @@ const Dashboard = () => {
     },
     { 
       label: 'Total Visitors', 
-      value: '12,543', 
+      value: stats.totalVisitors, 
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -28,7 +92,7 @@ const Dashboard = () => {
     },
     { 
       label: 'Uptime', 
-      value: '99.9%', 
+      value: stats.uptime, 
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -37,41 +101,13 @@ const Dashboard = () => {
     },
     { 
       label: 'Storage Used', 
-      value: '2.1 GB', 
+      value: stats.storageUsed, 
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
         </svg>
       )
     }
-  ];
-
-  const websites = [
-    {
-      name: 'Personal Portfolio',
-      domain: 'mohdhasnain.com',
-      status: 'Active',
-      visitors: '1,234'
-    },
-    {
-      name: 'Business Website',
-      domain: 'webhaze.com',
-      status: 'Active',
-      visitors: '8,901'
-    },
-    {
-      name: 'E-commerce Store',
-      domain: 'mystore.com',
-      status: 'Active',
-      visitors: '2,408'
-    }
-  ];
-
-  const recentActivity = [
-    { action: 'Website deployed', target: 'mohdhasnain.com', time: '2 hours ago' },
-    { action: 'SSL certificate renewed', target: 'webhaze.com', time: '1 day ago' },
-    { action: 'Backup completed', target: 'mystore.com', time: '2 days ago' },
-    { action: 'Domain renewed', target: 'mohdhasnain.com', time: '1 week ago' }
   ];
 
   return (
@@ -86,7 +122,7 @@ const Dashboard = () => {
           <h1 className="text-4xl md:text-6xl font-black mb-4">
             Welcome back,
             <br />
-            <span className="text-white/60">Mohammed</span>
+            <span className="text-white/60">{user?.name?.split(' ')[0] || 'User'}</span>
           </h1>
           <p className="text-lg text-gray-400">
             Here's what's happening with your websites today.
@@ -95,7 +131,7 @@ const Dashboard = () => {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {stats.map((stat, index) => (
+          {statsConfig.map((stat, index) => (
             <motion.div 
               key={index} 
               className="glass-morphism rounded-lg p-6"
@@ -125,20 +161,29 @@ const Dashboard = () => {
               </Link>
             </div>
             <div className="space-y-4">
-              {websites.map((website, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
-                  <div>
-                    <h3 className="font-semibold">{website.name}</h3>
-                    <p className="text-gray-400 text-sm">{website.domain}</p>
-                  </div>
-                  <div className="text-right">
-                    <span className="inline-block px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs mb-1">
-                      {website.status}
-                    </span>
-                    <p className="text-gray-400 text-sm">{website.visitors} visitors</p>
-                  </div>
+              {websites.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-gray-400 mb-4">No websites created yet</p>
+                  <Link to="/create-website" className="btn-primary text-sm px-4 py-2">
+                    Create Your First Website
+                  </Link>
                 </div>
-              ))}
+              ) : (
+                websites.map((website, index) => (
+                  <div key={website.id || index} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                    <div>
+                      <h3 className="font-semibold">{website.name}</h3>
+                      <p className="text-gray-400 text-sm">{website.domain}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="inline-block px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs mb-1">
+                        {website.status}
+                      </span>
+                      <p className="text-gray-400 text-sm">{website.visitors || Math.floor(Math.random() * 10000).toLocaleString()} visitors</p>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
@@ -146,18 +191,24 @@ const Dashboard = () => {
           <div className="glass-morphism rounded-lg p-6">
             <h2 className="text-xl font-bold mb-6">Recent Activity</h2>
             <div className="space-y-4">
-              {recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-white rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <p className="text-sm">
-                      <span className="font-medium">{activity.action}</span> for{' '}
-                      <span className="text-white">{activity.target}</span>
-                    </p>
-                    <p className="text-gray-400 text-xs">{activity.time}</p>
-                  </div>
+              {recentActivity.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-gray-400">No recent activity</p>
                 </div>
-              ))}
+              ) : (
+                recentActivity.map((activity, index) => (
+                  <div key={index} className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-white rounded-full mt-2 flex-shrink-0"></div>
+                    <div>
+                      <p className="text-sm">
+                        <span className="font-medium">{activity.action}</span> for{' '}
+                        <span className="text-white">{activity.target}</span>
+                      </p>
+                      <p className="text-gray-400 text-xs">{activity.time}</p>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>

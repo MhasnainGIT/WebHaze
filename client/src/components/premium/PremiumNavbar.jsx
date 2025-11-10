@@ -29,11 +29,24 @@ const PremiumNavbar = () => {
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${window.scrollY}px`;
+      document.body.style.width = '100%';
     } else {
-      document.body.style.overflow = 'unset';
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.overflow = '';
+      document.body.style.width = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.overflow = '';
+      document.body.style.width = '';
     };
   }, [isMobileMenuOpen]);
 
@@ -146,7 +159,7 @@ const PremiumNavbar = () => {
             </a>
             {user ? (
               <div className="relative group">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-black text-sm font-bold cursor-pointer">
+                <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-white text-sm font-bold cursor-pointer">
                   {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                 </div>
                 <div className="absolute right-0 top-12 w-48 bg-black/90 backdrop-blur-xl border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
@@ -159,7 +172,7 @@ const PremiumNavbar = () => {
                       logout();
                       window.location.href = '/';
                     }} 
-                    className="block w-full text-left px-4 py-3 text-sm hover:bg-white/10 transition-colors rounded-b-lg"
+                    className="block w-full text-left px-4 py-3 pb-4 text-sm hover:bg-white/10 transition-colors rounded-b-lg"
                   >
                     Sign Out
                   </button>
@@ -168,7 +181,7 @@ const PremiumNavbar = () => {
             ) : (
               <Link 
                 to="/signup"
-                className="px-6 py-2 bg-black text-black text-sm font-semibold rounded-full hover:bg-gray/90 transition-all duration-100"
+                className="px-6 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-semibold rounded-full hover:bg-white/20 transition-all duration-300"
               >
                 GET STARTED
               </Link>
@@ -180,7 +193,16 @@ const PremiumNavbar = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-xl"
+            className="md:hidden fixed inset-0 z-50 bg-black/95 backdrop-blur-xl"
+            style={{ 
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: '100vh',
+              width: '100vw'
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -204,7 +226,10 @@ const PremiumNavbar = () => {
               <div className="flex flex-col items-center justify-center flex-1 space-y-6 px-6">
                 <Link 
                   to="/" 
-                  onClick={closeMobileMenu}
+                  onClick={() => {
+                    closeMobileMenu();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
                   className="text-white text-2xl font-medium tracking-wide hover:text-gray-300 transition-colors duration-300"
                 >
                   HOME
@@ -229,21 +254,30 @@ const PremiumNavbar = () => {
                     >
                       <Link 
                         to="/services/web-hosting" 
-                        onClick={closeMobileMenu}
+                        onClick={() => {
+                          closeMobileMenu();
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
                         className="text-white/70 text-lg hover:text-white transition-colors duration-300"
                       >
                         Web Hosting
                       </Link>
                       <Link 
                         to="/services/website-development" 
-                        onClick={closeMobileMenu}
+                        onClick={() => {
+                          closeMobileMenu();
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
                         className="text-white/70 text-lg hover:text-white transition-colors duration-300"
                       >
                         Website Development
                       </Link>
                       <Link 
                         to="/services/app-development" 
-                        onClick={closeMobileMenu}
+                        onClick={() => {
+                          closeMobileMenu();
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
                         className="text-white/70 text-lg hover:text-white transition-colors duration-300"
                       >
                         App Development
@@ -253,7 +287,10 @@ const PremiumNavbar = () => {
                 </div>
                 <Link 
                   to="/contact" 
-                  onClick={closeMobileMenu}
+                  onClick={() => {
+                    closeMobileMenu();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
                   className="text-white text-2xl font-medium tracking-wide hover:text-gray-300 transition-colors duration-300"
                 >
                   CONTACT
@@ -261,7 +298,10 @@ const PremiumNavbar = () => {
                 {user && (
                   <Link 
                     to="/account" 
-                    onClick={closeMobileMenu}
+                    onClick={() => {
+                      closeMobileMenu();
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                     className="text-white text-2xl font-medium tracking-wide hover:text-gray-300 transition-colors duration-300"
                   >
                     ACCOUNT
@@ -277,11 +317,11 @@ const PremiumNavbar = () => {
               >
                 {user ? (
                   <div className="flex flex-col items-center space-y-3">
-                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-black text-xl font-bold">
+                    <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center text-white text-xl font-bold">
                       {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                     </div>
                     <span className="text-white/70 text-lg">{user.name}</span>
-                    <div className="flex flex-col space-y-2">
+                    <div className="flex flex-col space-y-2 mb-8">
                       {/* <a 
                         href="https://wa.me/918919019679" 
                         target="_blank" 
@@ -295,7 +335,10 @@ const PremiumNavbar = () => {
                       </a> */}
                       <Link 
                         to="/dashboard" 
-                        onClick={closeMobileMenu}
+                        onClick={() => {
+                          closeMobileMenu();
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
                         className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
                       >
                         Dashboard
@@ -313,11 +356,14 @@ const PremiumNavbar = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center mb-8">
+                  <div className="text-center mb-12">
                     <Link 
                       to="/signup"
-                      onClick={closeMobileMenu}
-                      className="inline-block px-8 py-3 bg-white text-black text-lg font-semibold rounded-full hover:bg-white/90 transition-all duration-300"
+                      onClick={() => {
+                        closeMobileMenu();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="inline-block px-8 py-3 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-lg font-semibold rounded-full hover:bg-white/20 transition-all duration-300"
                     >
                       GET STARTED
                     </Link>

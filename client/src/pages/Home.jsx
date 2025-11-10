@@ -4,25 +4,83 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import SEO from '../components/SEO';
 
+const MobileAnimatedCard = ({ children, index = 0 }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  const isMobile = window.innerWidth < 768;
+  
+  const y = useTransform(scrollYProgress, [0, 0.5, 1], [100, 0, -100]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.9]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [15, 0, -15]);
+  
+  if (!isMobile) {
+    return (
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: index * 0.1 }}
+        viewport={{ once: true }}
+      >
+        {children}
+      </motion.div>
+    );
+  }
+  
+  return (
+    <motion.div
+      ref={ref}
+      style={{ y, opacity, scale, rotateX, perspective: 1000 }}
+      className="transform-gpu will-change-transform"
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const AnimatedSection = ({ children, className = "", animation = "slideUp" }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isMobile = window.innerWidth < 768;
+  
+  const y = useTransform(scrollYProgress, [0, 0.5, 1], [50, 0, -50]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
   
   const animations = {
     slideUp: { initial: { opacity: 0, y: 100 }, animate: { opacity: 1, y: 0 } },
     slideLeft: { initial: { opacity: 0, x: -100 }, animate: { opacity: 1, x: 0 } },
     slideRight: { initial: { opacity: 0, x: 100 }, animate: { opacity: 1, x: 0 } },
-    scale: { initial: { opacity: 0, scale: 0.8 }, animate: { opacity: 1, scale: 1 } },
+    scale: { initial: { opacity: 0, scale: 0.9 }, animate: { opacity: 1, scale: 1 } },
     rotate: { initial: { opacity: 0, rotateY: -45 }, animate: { opacity: 1, rotateY: 0 } }
   };
+  
+  if (!isMobile) {
+    return (
+      <motion.div
+        ref={ref}
+        initial={animations[animation].initial}
+        animate={isInView ? animations[animation].animate : animations[animation].initial}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className={className}
+      >
+        {children}
+      </motion.div>
+    );
+  }
   
   return (
     <motion.div
       ref={ref}
-      initial={animations[animation].initial}
-      animate={isInView ? animations[animation].animate : animations[animation].initial}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={className}
+      style={{ y, opacity }}
+      className={`${className} transform-gpu will-change-transform relative z-10`}
     >
       {children}
     </motion.div>
@@ -99,12 +157,17 @@ const Hero = () => {
 
 
             <motion.p
-              className="text-lg md:text-xl text-gray-400 mb-12 max-w-4xl mx-auto leading-relaxed"
+              className="text-base md:text-lg lg:text-xl text-gray-400 mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed px-4 md:px-0"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1 }}
             >
-              WebHaze is a scalable, config-driven Website-as-a-Service platform that enables non-technical users to build, customize, and deploy professional websites rapidly. Lightning-fast hosting with 99.9% uptime guarantee, custom website development, mobile app development, and 24/7 expert support for businesses worldwide.
+              <span className="hidden md:inline">
+                WebHaze is a scalable, config-driven Website-as-a-Service platform that enables non-technical users to build, customize, and deploy professional websites rapidly. Lightning-fast hosting with 99.9% uptime guarantee, custom website development, mobile app development, and 24/7 expert support for businesses worldwide.
+              </span>
+              <span className="md:hidden">
+                Professional Website-as-a-Service platform. Lightning-fast hosting, custom development, and 24/7 support for businesses worldwide.
+              </span>
             </motion.p>
 
             <motion.div
@@ -119,7 +182,19 @@ const Hero = () => {
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })} className="btn-secondary">
+                <button 
+                  onClick={() => {
+                    const servicesSection = document.getElementById('services');
+                    if (servicesSection) {
+                      servicesSection.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start',
+                        inline: 'nearest'
+                      });
+                    }
+                  }} 
+                  className="btn-secondary"
+                >
                   Explore Services
                 </button>
               </motion.div>
@@ -183,22 +258,51 @@ const Features = () => {
             Secure, scalable, and reliable hosting services
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              className="text-center p-6 border border-white/10 rounded-lg hover:border-white/30 transition-colors"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-full flex items-center justify-center text-white">
-                {feature.icon}
-              </div>
-              <h3 className="text-lg font-semibold mb-3">{feature.title}</h3>
-              <p className="text-gray-400 text-sm">{feature.description}</p>
-            </motion.div>
+            <MobileAnimatedCard key={index} index={index}>
+              <motion.div
+                className="text-center p-4 md:p-6 border border-white/10 rounded-lg hover:border-white/30 transition-all duration-300 glass-morphism"
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <motion.div 
+                  className="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-full flex items-center justify-center text-white relative"
+                  animate={{ 
+                    boxShadow: [
+                      '0 0 0 0 rgba(255, 255, 255, 0)',
+                      '0 0 0 4px rgba(255, 255, 255, 0.1)',
+                      '0 0 0 0 rgba(255, 255, 255, 0)'
+                    ]
+                  }}
+                  transition={{ 
+                    duration: 2, 
+                    repeat: Infinity, 
+                    ease: 'easeInOut' 
+                  }}
+                >
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.1, 1],
+                      filter: [
+                        'drop-shadow(0 0 0px rgba(255, 255, 255, 0))',
+                        'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))',
+                        'drop-shadow(0 0 0px rgba(255, 255, 255, 0))'
+                      ]
+                    }}
+                    transition={{ 
+                      duration: 2, 
+                      repeat: Infinity, 
+                      ease: 'easeInOut' 
+                    }}
+                  >
+                    {feature.icon}
+                  </motion.div>
+                </motion.div>
+                <h3 className="text-lg font-semibold mb-3">{feature.title}</h3>
+                <p className="text-gray-400 text-sm">{feature.description}</p>
+              </motion.div>
+            </MobileAnimatedCard>
           ))}
         </div>
       </div>
@@ -257,9 +361,41 @@ const Services = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <div className="w-16 h-16 mb-6 bg-white/10 rounded-lg flex items-center justify-center text-white">
-                {service.icon}
-              </div>
+              <motion.div 
+                className="w-16 h-16 mb-6 bg-white/10 rounded-lg flex items-center justify-center text-white relative"
+                animate={{ 
+                  boxShadow: [
+                    '0 0 0 0 rgba(255, 255, 255, 0)',
+                    '0 0 0 3px rgba(255, 255, 255, 0.08)',
+                    '0 0 0 0 rgba(255, 255, 255, 0)'
+                  ]
+                }}
+                transition={{ 
+                  duration: 3, 
+                  repeat: Infinity, 
+                  ease: 'easeInOut',
+                  delay: Math.random() * 2
+                }}
+              >
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    filter: [
+                      'drop-shadow(0 0 0px rgba(255, 255, 255, 0))',
+                      'drop-shadow(0 0 6px rgba(255, 255, 255, 0.2))',
+                      'drop-shadow(0 0 0px rgba(255, 255, 255, 0))'
+                    ]
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    ease: 'easeInOut',
+                    delay: Math.random() * 2
+                  }}
+                >
+                  {service.icon}
+                </motion.div>
+              </motion.div>
               <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
               <p className="text-gray-400 flex-grow">{service.description}</p>
             </motion.div>
@@ -313,9 +449,41 @@ const HowItWorks = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <div className="w-16 h-16 bg-white text-black rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">
-                {step.number}
-              </div>
+              <motion.div 
+                className="w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6 relative"
+                animate={{ 
+                  boxShadow: [
+                    '0 0 0 0 rgba(156, 163, 175, 0)',
+                    '0 0 0 4px rgba(156, 163, 175, 0.2)',
+                    '0 0 0 0 rgba(156, 163, 175, 0)'
+                  ]
+                }}
+                transition={{ 
+                  duration: 2.5, 
+                  repeat: Infinity, 
+                  ease: 'easeInOut',
+                  delay: index * 0.5
+                }}
+              >
+                <motion.span
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    textShadow: [
+                      '0 0 0px rgba(255, 255, 255, 0)',
+                      '0 0 8px rgba(255, 255, 255, 0.5)',
+                      '0 0 0px rgba(255, 255, 255, 0)'
+                    ]
+                  }}
+                  transition={{ 
+                    duration: 2.5, 
+                    repeat: Infinity, 
+                    ease: 'easeInOut',
+                    delay: index * 0.5
+                  }}
+                >
+                  {step.number}
+                </motion.span>
+              </motion.div>
               <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
               <p className="text-gray-400">{step.description}</p>
             </motion.div>
@@ -655,7 +823,7 @@ const HostingPlans = () => {
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-white text-black px-4 py-2 rounded-full text-sm font-semibold">
+                  <span className="bg-gray-800 text-white px-4 py-2 rounded-full text-sm font-semibold">
                     Most Popular
                   </span>
                 </div>

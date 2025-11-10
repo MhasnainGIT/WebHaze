@@ -157,6 +157,7 @@ app.use('/api/media', mediaRouter);
 app.use('/api/templates', templatesRouter);
 app.use('/api/websites', websitesRouter);
 app.use('/api/contact', contactRouter);
+app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/plans', require('./routes/plans'));
 

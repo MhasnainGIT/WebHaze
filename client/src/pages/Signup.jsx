@@ -12,7 +12,7 @@ const Signup = () => {
     confirmPassword: ''
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { signup } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -24,7 +24,7 @@ const Signup = () => {
     
     setIsLoading(true);
     try {
-      await signup(formData.name, formData.email, formData.password);
+      await register(formData.email, formData.password, formData.name);
       navigate('/dashboard');
     } catch (error) {
       console.error('Signup failed:', error);

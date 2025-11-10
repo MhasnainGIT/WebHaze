@@ -1,57 +1,57 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
 
 const Pricing = () => {
   const plans = [
     {
-      name: "Shared Hosting",
-      price: "$4.99",
+      name: "Starter",
+      price: "$9.99",
       period: "/month",
-      description: "Perfect for personal websites and small businesses",
+      description: "Perfect for small businesses and personal websites",
       features: [
         "1 Website",
-        "5GB SSD Storage",
-        "Unmetered Bandwidth",
-        "2 Email Accounts",
+        "10GB SSD Storage",
+        "Unlimited Bandwidth",
         "Free SSL Certificate",
         "24/7 Support",
-        "99.9% Uptime"
+        "Basic SEO Tools"
       ],
       popular: false
     },
     {
-      name: "WordPress Hosting",
-      price: "$7.99",
+      name: "Professional",
+      price: "$29.99",
       period: "/month",
-      description: "Optimized for WordPress websites",
+      description: "Ideal for growing businesses and e-commerce",
       features: [
-        "1 WordPress Site",
-        "10GB SSD Storage",
-        "Unmetered Bandwidth",
-        "5 Email Accounts",
+        "5 Websites",
+        "50GB SSD Storage",
+        "Unlimited Bandwidth",
         "Free SSL Certificate",
-        "WordPress Optimization",
-        "24/7 Expert Support",
-        "Auto Backups"
+        "Priority Support",
+        "Advanced SEO Tools",
+        "E-commerce Ready",
+        "Custom Domain"
       ],
       popular: true
     },
     {
-      name: "E-commerce Hosting",
-      price: "$12.99",
+      name: "Enterprise",
+      price: "$99.99",
       period: "/month",
-      description: "Built for online stores and e-commerce",
+      description: "For large businesses with high traffic",
       features: [
-        "1 E-commerce Site",
-        "25GB SSD Storage",
-        "Unmetered Bandwidth",
-        "10 Email Accounts",
+        "Unlimited Websites",
+        "500GB SSD Storage",
+        "Unlimited Bandwidth",
         "Free SSL Certificate",
-        "WooCommerce Ready",
-        "24/7 Priority Support",
-        "Daily Backups"
+        "Dedicated Support",
+        "Advanced Analytics",
+        "White-label Solution",
+        "API Access",
+        "Custom Integrations"
       ],
       popular: false
     }
@@ -61,34 +61,35 @@ const Pricing = () => {
     <div className="min-h-screen bg-black text-white pt-24">
       <SEO 
         title="Pricing - WebHaze"
-        description="Choose the perfect hosting plan for your website. Affordable pricing with premium features."
+        description="Choose the perfect plan for your website needs. Transparent pricing with no hidden fees."
       />
       
       <div className="container-site py-16">
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-black mb-6">
-            Simple, Transparent
-            <br />
-            <span className="text-white/60">Pricing</span>
+          <h1 className="text-4xl md:text-6xl font-black mb-4">
+            Simple <span className="text-white/60">Pricing</span>
           </h1>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Choose the plan that fits your needs. All plans include our core features with no hidden fees.
+          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+            Choose the perfect plan for your needs. All plans include our core features with no hidden fees.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {plans.map((plan, index) => (
-            <div
+            <motion.div
               key={index}
-              className={`relative p-8 rounded-lg border transition-colors ${
+              className={`relative p-8 rounded-2xl backdrop-blur-sm border transition-all duration-300 ${
                 plan.popular 
-                  ? 'border-white bg-white/5' 
-                  : 'border-white/10 hover:border-white/30'
+                  ? 'border-white/30 bg-white/10 scale-105' 
+                  : 'border-white/10 bg-white/5 hover:border-white/20'
               }`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-white text-black px-4 py-2 rounded-full text-sm font-semibold">
+                  <span className="bg-gray-800 text-white px-4 py-2 rounded-full text-sm font-semibold">
                     Most Popular
                   </span>
                 </div>
@@ -100,42 +101,28 @@ const Pricing = () => {
                   <span className="text-4xl font-black">{plan.price}</span>
                   <span className="text-gray-400">{plan.period}</span>
                 </div>
-                <p className="text-gray-400">{plan.description}</p>
+                <p className="text-gray-400 text-sm">{plan.description}</p>
               </div>
 
               <ul className="space-y-4 mb-8">
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex items-center">
-                    <svg className="w-5 h-5 text-white mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-gray-300">{feature}</span>
+                    <span className="text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <Link 
                 to="/contact" 
-                className={`block w-full py-4 px-6 rounded-lg font-semibold text-center transition-colors ${
-                  plan.popular
-                    ? 'bg-white text-black hover:bg-gray-200'
-                    : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
-                }`}
+                className="w-full inline-block text-center px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-all duration-300 font-semibold"
               >
                 Get Started
               </Link>
-            </div>
+            </motion.div>
           ))}
-        </div>
-
-        <div className="text-center mt-16">
-          <h2 className="text-2xl font-bold mb-4">Need a Custom Solution?</h2>
-          <p className="text-gray-400 mb-8">
-            Contact us for enterprise plans and custom requirements.
-          </p>
-          <Link to="/contact" className="btn-primary">
-            Contact Sales
-          </Link>
         </div>
       </div>
     </div>

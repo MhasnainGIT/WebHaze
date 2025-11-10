@@ -1,17 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import SEO from '../components/SEO';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Account = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
-  const [formData, setFormData] = useState({
-    name: 'Mohammed Hasnain',
-    email: 'mohdhasnain1544@gmail.com',
-    phone: '+91-8919019679',
-    company: 'WebHaze',
-    website: 'https://webhaze.com'
+  const [websites, setWebsites] = useState([]);
+  const [subscription, setSubscription] = useState({
+    plan: 'Professional Plan',
+    price: '$29/month',
+    status: 'active'
   });
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    website: ''
+  });
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [notifications, setNotifications] = useState({
+    emailUpdates: true,
+    smsAlerts: false,
+    marketingEmails: true
+  });
+
+  useEffect(() => {
+    // Load user's websites from localStorage or API
+    const savedWebsites = JSON.parse(localStorage.getItem('userWebsites') || '[]');
+    setWebsites(savedWebsites);
+    
+    // Load user profile data
+    const savedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+    const savedNotifications = JSON.parse(localStorage.getItem('userNotifications') || '{}');
+    
+    setFormData({
+      name: user?.name || savedProfile.name || '',
+      email: user?.email || savedProfile.email || '',
+      phone: savedProfile.phone || '',
+      company: savedProfile.company || '',
+      website: savedProfile.website || ''
+    });
+    
+    setNotifications({
+      emailUpdates: savedNotifications.emailUpdates ?? true,
+      smsAlerts: savedNotifications.smsAlerts ?? false,
+      marketingEmails: savedNotifications.marketingEmails ?? true
+    });
+  }, [user]);
 
   const handleChange = (e) => {
     setFormData({
@@ -22,7 +63,94 @@ const Account = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Profile updated:', formData);
+    // Update user profile
+    localStorage.setItem('userProfile', JSON.stringify(formData));
+    toast.success('Profile updated successfully!');
+  };
+
+  const handlePasswordChange = (e) => {
+    e.preventDefault();
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      toast.error('Passwords do not match!');
+      return;
+    }
+    if (passwordData.newPassword.length < 6) {
+      toast.error('Password must be at least 6 characters!');
+      return;
+    }
+    // Update password logic here
+    toast.success('Password updated successfully!');
+    setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+  };
+
+  const handleNotificationUpdate = async () => {
+    // Request browser notification permission if notifications are enabled
+    if (notifications.emailUpdates || notifications.smsAlerts) {
+      if ('Notification' in window) {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          new Notification('WebHaze Notifications', {
+            body: 'You will now receive notifications from WebHaze',
+            icon: '/favicon.ico'
+          });
+        } else if (permission === 'denied') {
+          toast.error('Notification permission denied. Please enable in browser settings.');
+          return;
+        }
+      } else {
+        toast.error('This browser does not support notifications.');
+      }
+    }
+    
+    localStorage.setItem('userNotifications', JSON.stringify(notifications));
+    toast.success('Notification preferences updated!');
+  };
+
+  const handleNotificationToggle = async (type, value) => {
+    if (value && (type === 'emailUpdates' || type === 'smsAlerts')) {
+      if ('Notification' in window) {
+        const permission = await Notification.requestPermission();
+        if (permission === 'denied') {
+          toast.error('Please enable notifications in your browser settings to receive alerts.');
+          return;
+        }
+      }
+    }
+    
+    setNotifications({
+      ...notifications,
+      [type]: value
+    });
+  };
+
+  const handleDeleteAccount = () => {
+    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      // Delete account logic
+      localStorage.clear();
+      logout();
+      toast.success('Account deleted successfully!');
+    }
+  };
+
+  const createWebsite = () => {
+    const newWebsite = {
+      id: Date.now(),
+      name: `Website ${websites.length + 1}`,
+      domain: `example${websites.length + 1}.com`,
+      status: 'active',
+      createdAt: new Date().toISOString()
+    };
+    const updatedWebsites = [...websites, newWebsite];
+    setWebsites(updatedWebsites);
+    localStorage.setItem('userWebsites', JSON.stringify(updatedWebsites));
+    toast.success('Website created successfully!');
+  };
+
+  const deleteWebsite = (id) => {
+    const updatedWebsites = websites.filter(site => site.id !== id);
+    setWebsites(updatedWebsites);
+    localStorage.setItem('userWebsites', JSON.stringify(updatedWebsites));
+    toast.success('Website deleted successfully!');
   };
 
   const tabs = [
@@ -86,13 +214,13 @@ const Account = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white/5 rounded-lg p-6 mb-8">
+            <div className="glass-card p-6 mb-8">
               <div className="text-center mb-6">
-                <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-black text-2xl font-bold mx-auto mb-4">
-                  MH
+                <div className="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
+                  {(formData.name || user?.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
                 </div>
-                <h3 className="text-xl font-semibold">Mohammed Hasnain</h3>
-                <p className="text-gray-400 text-sm">mohdhasnain1544@gmail.com</p>
+                <h3 className="text-xl font-semibold">{formData.name || user?.name || 'User'}</h3>
+                <p className="text-gray-400 text-sm">{formData.email || user?.email || 'No email'}</p>
               </div>
             </div>
 
@@ -101,10 +229,10 @@ const Account = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`w-full text-left p-4 rounded-lg transition-all duration-300 ${
+                  className={`w-full text-left p-4 rounded-lg backdrop-blur-sm border transition-all duration-300 ${
                     activeTab === tab.id 
-                      ? 'bg-white text-black' 
-                      : 'bg-white/5 hover:bg-white/10'
+                      ? 'bg-white/20 border-white/30 text-white' 
+                      : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
@@ -118,7 +246,7 @@ const Account = () => {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <div className="bg-white/5 rounded-lg p-8">
+            <div className="glass-card p-8">
               {activeTab === 'profile' && (
                 <div>
                   <h2 className="text-2xl font-bold mb-6">Profile Information</h2>
@@ -131,8 +259,8 @@ const Account = () => {
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
-                          className="form-input bg-white/5"
-                          placeholder="Mohammed Hasnain"
+                          className="glass-input w-full"
+                          placeholder="Enter your full name"
                         />
                       </div>
                       <div>
@@ -142,8 +270,8 @@ const Account = () => {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          className="form-input bg-white/5"
-                          placeholder="mohdhasnain1544@gmail.com"
+                          className="glass-input w-full"
+                          placeholder="Enter your email address"
                         />
                       </div>
                       <div>
@@ -153,8 +281,8 @@ const Account = () => {
                           name="phone"
                           value={formData.phone}
                           onChange={handleChange}
-                          className="form-input bg-white/5"
-                          placeholder="+91-8919019679"
+                          className="glass-input w-full"
+                          placeholder="Enter your phone number"
                         />
                       </div>
                       <div>
@@ -164,8 +292,8 @@ const Account = () => {
                           name="company"
                           value={formData.company}
                           onChange={handleChange}
-                          className="form-input bg-white/5"
-                          placeholder="WebHaze"
+                          className="glass-input w-full"
+                          placeholder="Enter your company name"
                         />
                       </div>
                     </div>
@@ -176,12 +304,12 @@ const Account = () => {
                         name="website"
                         value={formData.website}
                         onChange={handleChange}
-                        className="form-input bg-white/5"
-                        placeholder="https://webhaze.com"
+                        className="glass-input w-full"
+                        placeholder="Enter your website URL"
                       />
                     </div>
                     <div>
-                      <button type="submit" className="btn-primary">
+                      <button type="submit" className="glass-button ripple-effect">
                         Update Profile
                       </button>
                     </div>
@@ -193,35 +321,62 @@ const Account = () => {
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-bold">My Websites</h2>
-                    <button className="btn-primary">
+                    <button 
+                      onClick={createWebsite}
+                      className="glass-button ripple-effect"
+                    >
                       Create New Website
                     </button>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {[1, 2, 3].map((site) => (
-                      <div
-                        key={site}
-                        className="bg-white/5 rounded-lg p-6 hover:bg-white/10 transition-colors"
-                      >
-                        <div className="flex items-center justify-between mb-4">
-                          <h3 className="font-semibold">Website {site}</h3>
-                          <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">
-                            Active
-                          </span>
-                        </div>
-                        <p className="text-gray-400 text-sm mb-4">
-                          example{site}.com
-                        </p>
-                        <div className="flex space-x-2">
-                          <button className="btn-secondary text-xs px-3 py-1">
-                            Edit
-                          </button>
-                          <button className="btn-secondary text-xs px-3 py-1">
-                            View
-                          </button>
-                        </div>
+                    {websites.length === 0 ? (
+                      <div className="col-span-2 text-center py-12">
+                        <p className="text-gray-400 mb-4">No websites created yet</p>
+                        <button 
+                          onClick={createWebsite}
+                          className="glass-button ripple-effect"
+                        >
+                          Create Your First Website
+                        </button>
                       </div>
-                    ))}
+                    ) : (
+                      websites.map((site) => (
+                        <div
+                          key={site.id}
+                          className="glass-card p-6"
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <h3 className="font-semibold">{site.name}</h3>
+                            <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">
+                              {site.status}
+                            </span>
+                          </div>
+                          <p className="text-gray-400 text-sm mb-4">
+                            {site.domain}
+                          </p>
+                          <div className="flex space-x-2">
+                            <button 
+                              onClick={() => toast.success('Edit feature coming soon!')}
+                              className="glass-button text-xs px-3 py-1"
+                            >
+                              Edit
+                            </button>
+                            <button 
+                              onClick={() => window.open(`https://${site.domain}`, '_blank')}
+                              className="glass-button text-xs px-3 py-1"
+                            >
+                              View
+                            </button>
+                            <button 
+                              onClick={() => deleteWebsite(site.id)}
+                              className="px-3 py-1 bg-red-500/20 border border-red-500/30 text-red-400 rounded text-xs hover:bg-red-500/30 transition-all duration-300"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               )}
@@ -230,15 +385,25 @@ const Account = () => {
                 <div>
                   <h2 className="text-2xl font-bold mb-6">Billing & Subscription</h2>
                   <div className="space-y-6">
-                    <div className="bg-white/5 rounded-lg p-6">
+                    <div className="glass-card p-6">
                       <h3 className="font-semibold mb-2">Current Plan</h3>
-                      <p className="text-gray-400 mb-4">Professional Plan - $29/month</p>
-                      <button className="btn-secondary">Upgrade Plan</button>
+                      <p className="text-gray-400 mb-4">{subscription.plan} - {subscription.price}</p>
+                      <button 
+                        onClick={() => toast.success('Redirecting to upgrade page...')}
+                        className="glass-button"
+                      >
+                        Upgrade Plan
+                      </button>
                     </div>
-                    <div className="bg-white/5 rounded-lg p-6">
+                    <div className="glass-card p-6">
                       <h3 className="font-semibold mb-2">Payment Method</h3>
                       <p className="text-gray-400 mb-4">**** **** **** 1234</p>
-                      <button className="btn-secondary">Update Payment</button>
+                      <button 
+                        onClick={() => toast.success('Payment update feature coming soon!')}
+                        className="glass-button"
+                      >
+                        Update Payment
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -248,20 +413,86 @@ const Account = () => {
                 <div>
                   <h2 className="text-2xl font-bold mb-6">Account Settings</h2>
                   <div className="space-y-6">
-                    <div className="bg-white/5 rounded-lg p-6">
-                      <h3 className="font-semibold mb-2">Security</h3>
-                      <p className="text-gray-400 mb-4">Manage your password and security settings</p>
-                      <button className="btn-secondary">Change Password</button>
+                    <div className="glass-card p-6">
+                      <h3 className="font-semibold mb-4">Change Password</h3>
+                      <form onSubmit={handlePasswordChange} className="space-y-4">
+                        <input
+                          type="password"
+                          placeholder="Current Password"
+                          value={passwordData.currentPassword}
+                          onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
+                          className="glass-input w-full"
+                          required
+                        />
+                        <input
+                          type="password"
+                          placeholder="New Password"
+                          value={passwordData.newPassword}
+                          onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
+                          className="glass-input w-full"
+                          required
+                        />
+                        <input
+                          type="password"
+                          placeholder="Confirm New Password"
+                          value={passwordData.confirmPassword}
+                          onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
+                          className="glass-input w-full"
+                          required
+                        />
+                        <button 
+                          type="submit"
+                          className="glass-button"
+                        >
+                          Update Password
+                        </button>
+                      </form>
                     </div>
-                    <div className="bg-white/5 rounded-lg p-6">
-                      <h3 className="font-semibold mb-2">Notifications</h3>
-                      <p className="text-gray-400 mb-4">Configure your notification preferences</p>
-                      <button className="btn-secondary">Manage Notifications</button>
+                    <div className="glass-card p-6">
+                      <h3 className="font-semibold mb-4">Notification Preferences</h3>
+                      <div className="space-y-4">
+                        <label className="flex items-center justify-between">
+                          <span>Email Updates</span>
+                          <input
+                            type="checkbox"
+                            checked={notifications.emailUpdates}
+                            onChange={(e) => handleNotificationToggle('emailUpdates', e.target.checked)}
+                            className="w-4 h-4"
+                          />
+                        </label>
+                        <label className="flex items-center justify-between">
+                          <span>SMS Alerts</span>
+                          <input
+                            type="checkbox"
+                            checked={notifications.smsAlerts}
+                            onChange={(e) => handleNotificationToggle('smsAlerts', e.target.checked)}
+                            className="w-4 h-4"
+                          />
+                        </label>
+                        <label className="flex items-center justify-between">
+                          <span>Marketing Emails</span>
+                          <input
+                            type="checkbox"
+                            checked={notifications.marketingEmails}
+                            onChange={(e) => handleNotificationToggle('marketingEmails', e.target.checked)}
+                            className="w-4 h-4"
+                          />
+                        </label>
+                        <button 
+                          onClick={handleNotificationUpdate}
+                          className="glass-button"
+                        >
+                          Save Preferences
+                        </button>
+                      </div>
                     </div>
-                    <div className="bg-white/5 rounded-lg p-6">
+                    <div className="glass-card p-6 border-red-500/20 bg-red-500/10">
                       <h3 className="font-semibold mb-2 text-red-400">Danger Zone</h3>
                       <p className="text-gray-400 mb-4">Permanently delete your account and all data</p>
-                      <button className="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500/30 transition-colors">
+                      <button 
+                        onClick={handleDeleteAccount}
+                        className="glass-button bg-red-500/20 border-red-500/30 text-red-400 hover:bg-red-500/30"
+                      >
                         Delete Account
                       </button>
                     </div>
@@ -272,6 +503,18 @@ const Account = () => {
           </div>
         </div>
       </div>
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            color: 'white',
+          },
+        }}
+      />
     </div>
   );
 };

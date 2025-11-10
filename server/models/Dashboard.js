@@ -65,13 +65,17 @@ const dashboardSchema = new mongoose.Schema({
     default: 0
   },
   uptime: {
-    type: String,
-    default: '99.9%'
+    type: Number,
+    default: 99.9
   },
   storageUsed: {
     type: Number,
     default: 0
   },
+  uptimeHistory: [{
+    timestamp: { type: Date, default: Date.now },
+    uptime: { type: Number, default: 99.9 }
+  }],
   recentActivity: [activitySchema],
   lastUpdated: {
     type: Date,

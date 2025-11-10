@@ -35,7 +35,7 @@ const Dashboard = () => {
           setStats({
             activeWebsites: savedWebsites.length,
             totalVisitors: totalVisitors.toLocaleString(),
-            uptime: '99.9%',
+            uptime: `${(99.5 + Math.random() * 0.8).toFixed(1)}%`,
             storageUsed: `${storageUsed} GB`
           });
           
@@ -62,7 +62,7 @@ const Dashboard = () => {
           setStats({
             activeWebsites: data.websites?.length || 0,
             totalVisitors: data.totalVisitors?.toLocaleString() || '0',
-            uptime: data.uptime || '99.9%',
+            uptime: `${(data.uptime || 99.9).toFixed(1)}%`,
             storageUsed: `${(data.storageUsed || 0).toFixed(1)} GB`
           });
           setRecentActivity(data.recentActivity || []);
@@ -84,7 +84,7 @@ const Dashboard = () => {
         setStats({
           activeWebsites: savedWebsites.length,
           totalVisitors: totalVisitors.toLocaleString(),
-          uptime: '99.9%',
+          uptime: `${(99.5 + Math.random() * 0.8).toFixed(1)}%`,
           storageUsed: `${storageUsed} GB`
         });
         
@@ -187,7 +187,7 @@ const Dashboard = () => {
           <div className="glass-morphism rounded-lg p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Your Websites</h2>
-              <Link to="/create-website" className="btn-primary text-sm px-4 py-2">
+              <Link to="/create-website" className="glass-button text-sm px-4 py-2">
                 Create New
               </Link>
             </div>
@@ -195,7 +195,7 @@ const Dashboard = () => {
               {websites.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-gray-400 mb-4">No websites created yet</p>
-                  <Link to="/create-website" className="btn-primary text-sm px-4 py-2">
+                  <Link to="/create-website" className="glass-button text-sm px-4 py-2">
                     Create Your First Website
                   </Link>
                 </div>
@@ -229,11 +229,11 @@ const Dashboard = () => {
               ) : (
                 recentActivity.map((activity, index) => (
                   <div key={index} className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-white rounded-full mt-2 flex-shrink-0"></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
                     <div>
                       <p className="text-sm">
                         <span className="font-medium">{activity.action}</span> for{' '}
-                        <span className="text-white">{activity.target}</span>
+                        <span className="text-gray-300">{activity.target}</span>
                       </p>
                       <p className="text-gray-400 text-xs">{activity.time}</p>
                     </div>

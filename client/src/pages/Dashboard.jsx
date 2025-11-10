@@ -67,6 +67,7 @@ const Dashboard = () => {
           });
           setRecentActivity(data.recentActivity || []);
         } else {
+          // API not available, will use fallback
           throw new Error('API not available');
         }
       } catch (error) {

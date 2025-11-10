@@ -321,7 +321,7 @@ const PremiumNavbar = () => {
                       {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                     </div>
                     <span className="text-white/70 text-lg">{user.name}</span>
-                    <div className="flex flex-col space-y-2 mb-8">
+                    <div className="flex flex-col space-y-2 mb-12">
                       {/* <a 
                         href="https://wa.me/918919019679" 
                         target="_blank" 
@@ -356,7 +356,7 @@ const PremiumNavbar = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center mb-12">
+                  <div className="text-center mb-16">
                     <Link 
                       to="/signup"
                       onClick={() => {

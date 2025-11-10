@@ -35,7 +35,7 @@ const Dashboard = () => {
           setStats({
             activeWebsites: savedWebsites.length,
             totalVisitors: totalVisitors.toLocaleString(),
-            uptime: `${(99.5 + Math.random() * 0.8).toFixed(1)}%`,
+            uptime: (savedWebsites.length === 0 && totalVisitors === 0) ? '0%' : `${(99.5 + Math.random() * 0.8).toFixed(1)}%`,
             storageUsed: `${storageUsed} GB`
           });
           
@@ -62,7 +62,7 @@ const Dashboard = () => {
           setStats({
             activeWebsites: data.websites?.length || 0,
             totalVisitors: data.totalVisitors?.toLocaleString() || '0',
-            uptime: data.uptime === 0 ? '0%' : `${(data.uptime || 99.9).toFixed(1)}%`,
+            uptime: (data.uptime === 0 || (data.websites?.length === 0 && data.totalVisitors === 0)) ? '0%' : `${(data.uptime || 99.9).toFixed(1)}%`,
             storageUsed: `${(data.storageUsed || 0).toFixed(1)} GB`
           });
           setRecentActivity(data.recentActivity || []);
@@ -84,7 +84,7 @@ const Dashboard = () => {
         setStats({
           activeWebsites: savedWebsites.length,
           totalVisitors: totalVisitors.toLocaleString(),
-          uptime: `${(99.5 + Math.random() * 0.8).toFixed(1)}%`,
+          uptime: (savedWebsites.length === 0 && totalVisitors === 0) ? '0%' : `${(99.5 + Math.random() * 0.8).toFixed(1)}%`,
           storageUsed: `${storageUsed} GB`
         });
         

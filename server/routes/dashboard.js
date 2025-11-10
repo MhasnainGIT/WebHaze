@@ -148,8 +148,9 @@ router.put('/websites/:websiteId/stats', auth, async (req, res) => {
 // Helper functions
 function calculateUptime(dashboard) {
   const totalWebsites = dashboard.websites.length;
+  const totalVisitors = dashboard.totalVisitors || 0;
   
-  if (totalWebsites === 0) return 0;
+  if (totalWebsites === 0 && totalVisitors === 0) return 0;
   
   const activeWebsites = dashboard.websites.filter(w => w.status === 'active').length;
   let uptime = 99.5 + (Math.random() * 0.8);
@@ -162,7 +163,10 @@ function calculateUptime(dashboard) {
 }
 
 function calculateTotalStorage(dashboard) {
-  if (dashboard.websites.length === 0) return 0;
+  const totalWebsites = dashboard.websites.length;
+  const totalVisitors = dashboard.totalVisitors || 0;
+  
+  if (totalWebsites === 0 && totalVisitors === 0) return 0;
   
   return dashboard.websites.reduce((total, website) => {
     return total + (website.storageUsed || 0);

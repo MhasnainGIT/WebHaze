@@ -6,16 +6,36 @@ import SEO from '../components/SEO';
 
 const MobileAnimatedCard = ({ children, index = 0 }) => {
   const ref = useRef(null);
+  const [scrollDirection, setScrollDirection] = React.useState('down');
+  const [lastScrollY, setLastScrollY] = React.useState(0);
+  
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
   const isMobile = window.innerWidth < 768;
   
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], [100, 0, -100]);
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
+      setLastScrollY(currentScrollY);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+  
+  const y = useTransform(scrollYProgress, [0, 0.5, 1], 
+    scrollDirection === 'up' ? [-100, 0, 100] : [100, 0, -100]
+  );
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.9]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [15, 0, -15]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], 
+    scrollDirection === 'up' ? [0.9, 1, 0.8] : [0.8, 1, 0.9]
+  );
+  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], 
+    scrollDirection === 'up' ? [-15, 0, 15] : [15, 0, -15]
+  );
   
   if (!isMobile) {
     return (
@@ -44,14 +64,30 @@ const MobileAnimatedCard = ({ children, index = 0 }) => {
 
 const AnimatedSection = ({ children, className = "", animation = "slideUp" }) => {
   const ref = useRef(null);
+  const [scrollDirection, setScrollDirection] = React.useState('down');
+  const [lastScrollY, setLastScrollY] = React.useState(0);
+  
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: false, margin: "-50px" });
   const isMobile = window.innerWidth < 768;
   
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], [50, 0, -50]);
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
+      setLastScrollY(currentScrollY);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+  
+  const y = useTransform(scrollYProgress, [0, 0.5, 1], 
+    scrollDirection === 'up' ? [-50, 0, 50] : [50, 0, -50]
+  );
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
   
   const animations = {
@@ -63,11 +99,21 @@ const AnimatedSection = ({ children, className = "", animation = "slideUp" }) =>
   };
   
   if (!isMobile) {
+    const reverseAnimations = {
+      slideUp: { initial: { opacity: 0, y: -100 }, animate: { opacity: 1, y: 0 } },
+      slideLeft: { initial: { opacity: 0, x: 100 }, animate: { opacity: 1, x: 0 } },
+      slideRight: { initial: { opacity: 0, x: -100 }, animate: { opacity: 1, x: 0 } },
+      scale: { initial: { opacity: 0, scale: 1.1 }, animate: { opacity: 1, scale: 1 } },
+      rotate: { initial: { opacity: 0, rotateY: 45 }, animate: { opacity: 1, rotateY: 0 } }
+    };
+    
+    const currentAnimation = scrollDirection === 'up' ? reverseAnimations[animation] : animations[animation];
+    
     return (
       <motion.div
         ref={ref}
-        initial={animations[animation].initial}
-        animate={isInView ? animations[animation].animate : animations[animation].initial}
+        initial={currentAnimation.initial}
+        animate={isInView ? currentAnimation.animate : currentAnimation.initial}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className={className}
       >
@@ -341,14 +387,8 @@ const Services = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {services.map((service, index) => (
-            <motion.div
-              key={index}
-              className="p-8 border border-white/10 rounded-lg hover:border-white/30 transition-colors flex flex-col h-full"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
+            <MobileAnimatedCard key={index} index={index}>
+              <div className="p-8 border border-white/10 rounded-lg hover:border-white/30 transition-colors flex flex-col h-full">
               <motion.div 
                 className="w-16 h-16 mb-6 bg-white/10 rounded-lg flex items-center justify-center text-white relative"
                 animate={{ 
@@ -386,7 +426,8 @@ const Services = () => {
               </motion.div>
               <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
               <p className="text-gray-400 flex-grow">{service.description}</p>
-            </motion.div>
+              </div>
+            </MobileAnimatedCard>
           ))}
         </div>
         <div className="text-center">
@@ -429,14 +470,8 @@ const HowItWorks = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {steps.map((step, index) => (
-            <motion.div
-              key={index}
-              className="text-center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
+            <MobileAnimatedCard key={index} index={index}>
+              <div className="text-center">
               <motion.div 
                 className="w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6 relative"
                 animate={{ 
@@ -474,7 +509,8 @@ const HowItWorks = () => {
               </motion.div>
               <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
               <p className="text-gray-400">{step.description}</p>
-            </motion.div>
+              </div>
+            </MobileAnimatedCard>
           ))}
         </div>
       </div>

@@ -182,21 +182,9 @@ const Hero = () => {
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <button 
-                  onClick={() => {
-                    const servicesSection = document.getElementById('services');
-                    if (servicesSection) {
-                      servicesSection.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'start',
-                        inline: 'nearest'
-                      });
-                    }
-                  }} 
-                  className="btn-secondary"
-                >
+                <Link to="/pricing" className="btn-secondary">
                   Explore Services
-                </button>
+                </Link>
               </motion.div>
             </motion.div>
 

@@ -6,7 +6,7 @@ const CookieConsent = () => {
 
   useEffect(() => {
     // Check if user has already given consent
-    const consent = checkCookieConsent();
+    const consent = localStorage.getItem('cookieConsent');
     if (!consent) {
       setShowBanner(true);
     }

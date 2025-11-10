@@ -17,7 +17,7 @@ router.get('/', auth, async (req, res) => {
         uptime: 99.9,
         storageUsed: 0,
         recentActivity: [],
-        uptimeHistory: [{ timestamp: new Date(), uptime: 99.9 }]
+
       });
       await dashboard.save();
     }
@@ -26,15 +26,8 @@ router.get('/', auth, async (req, res) => {
     const currentUptime = calculateUptime(dashboard);
     const totalStorage = calculateTotalStorage(dashboard);
     
-    // Update uptime history
-    dashboard.uptimeHistory.push({ timestamp: new Date(), uptime: currentUptime });
-    if (dashboard.uptimeHistory.length > 100) {
-      dashboard.uptimeHistory = dashboard.uptimeHistory.slice(-100);
-    }
-    
     dashboard.uptime = currentUptime;
     dashboard.storageUsed = totalStorage;
-    await dashboard.save();
     
     res.json(dashboard);
   } catch (error) {

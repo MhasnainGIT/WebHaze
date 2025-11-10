@@ -186,8 +186,8 @@ const Dashboard = () => {
           {/* Websites */}
           <div className="glass-morphism rounded-lg p-6">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold">Your Websites</h2>
-              <Link to="/create-website" className="glass-button text-sm px-4 py-2">
+              <h2 className="text-xl font-bold text-white">Your Websites</h2>
+              <Link to="/create-website" className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 backdrop-blur-sm transition-all duration-300 text-sm font-medium">
                 Create New
               </Link>
             </div>
@@ -195,7 +195,7 @@ const Dashboard = () => {
               {websites.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-gray-400 mb-4">No websites created yet</p>
-                  <Link to="/create-website" className="glass-button text-sm px-4 py-2">
+                  <Link to="/create-website" className="px-4 py-2 bg-white/10 text-white border border-white/20 rounded-lg hover:bg-white/20 backdrop-blur-sm transition-all duration-300 text-sm font-medium">
                     Create Your First Website
                   </Link>
                 </div>
@@ -220,7 +220,7 @@ const Dashboard = () => {
 
           {/* Recent Activity */}
           <div className="glass-morphism rounded-lg p-6">
-            <h2 className="text-xl font-bold mb-6">Recent Activity</h2>
+            <h2 className="text-xl font-bold mb-6 text-white">Recent Activity</h2>
             <div className="space-y-4">
               {recentActivity.length === 0 ? (
                 <div className="text-center py-8">
@@ -246,7 +246,7 @@ const Dashboard = () => {
 
         {/* Quick Actions */}
         <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-6">Quick Actions</h2>
+          <h2 className="text-2xl font-bold mb-6 text-white">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link to="/create-website" className="glass-morphism rounded-lg p-6 hover:bg-white/10 transition-colors">
               <div className="mb-4 text-white">

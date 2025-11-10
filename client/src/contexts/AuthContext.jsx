@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import { API_BASE_URL } from '../config/api';
 
 // Configure axios base URL
@@ -44,34 +45,46 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    const response = await axios.post('/api/auth/login', { email, password });
-    const { token, user } = response.data;
-    localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    setUser(user);
-    
-    // Track user login with Clarity
-    clarityAnalytics?.identify(user.id, null, null, user.name);
-    clarityAnalytics?.trackEvent('user_login');
-    clarityAnalytics?.setTag('user_plan', user.plan);
-    
-    return user;
+    try {
+      const response = await axios.post('/api/auth/login', { email, password });
+      const { token, user } = response.data;
+      localStorage.setItem('token', token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setUser(user);
+      
+      // Track user login with Clarity
+      clarityAnalytics?.identify(user.id, null, null, user.name);
+      clarityAnalytics?.trackEvent('user_login');
+      clarityAnalytics?.setTag('user_plan', user.plan);
+      
+      toast.success(`Welcome back, ${user.name}!`);
+      return user;
+    } catch (error) {
+      toast.error('Login failed. Please check your credentials.');
+      throw error;
+    }
   };
 
   const register = async (email, password, name) => {
-    const response = await axios.post('/api/auth/register', { email, password, name });
-    const { token, user } = response.data;
-    localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    setUser(user);
-    
-    // Track user registration with Clarity
-    clarityAnalytics?.identify(user.id, null, null, user.name);
-    clarityAnalytics?.trackEvent('user_registration');
-    clarityAnalytics?.setTag('user_plan', user.plan);
-    clarityAnalytics?.upgradeSession('new_user_registration');
-    
-    return user;
+    try {
+      const response = await axios.post('/api/auth/register', { email, password, name });
+      const { token, user } = response.data;
+      localStorage.setItem('token', token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setUser(user);
+      
+      // Track user registration with Clarity
+      clarityAnalytics?.identify(user.id, null, null, user.name);
+      clarityAnalytics?.trackEvent('user_registration');
+      clarityAnalytics?.setTag('user_plan', user.plan);
+      clarityAnalytics?.upgradeSession('new_user_registration');
+      
+      toast.success(`Account created successfully! Welcome to WebHaze, ${user.name}!`);
+      return user;
+    } catch (error) {
+      toast.error('Registration failed. Please try again.');
+      throw error;
+    }
   };
 
   const logout = () => {
@@ -81,6 +94,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     delete axios.defaults.headers.common['Authorization'];
     setUser(null);
+    toast.success('Logged out successfully!');
   };
 
   const value = {

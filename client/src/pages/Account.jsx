@@ -127,8 +127,8 @@ const Account = () => {
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       // Delete account logic
       localStorage.clear();
-      logout();
       toast.success('Account deleted successfully!');
+      logout();
     }
   };
 

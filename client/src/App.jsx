@@ -79,15 +79,18 @@ export default function App() {
               <Footer />
               <CookieConsent />
               <Toaster 
-                position="top-right"
+                position="top-center"
                 toastOptions={{
                   duration: 3000,
                   style: {
-                    background: 'rgba(0, 0, 0, 0.8)',
+                    background: 'rgba(0, 0, 0, 0.9)',
                     backdropFilter: 'blur(10px)',
                     border: '1px solid rgba(255, 255, 255, 0.2)',
                     color: 'white',
                     borderRadius: '12px',
+                    fontSize: '14px',
+                    maxWidth: '90vw',
+                    margin: '0 auto',
                   },
                   success: {
                     iconTheme: {

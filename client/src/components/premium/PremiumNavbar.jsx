@@ -314,6 +314,7 @@ const PremiumNavbar = () => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 50, opacity: 0 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
+                className="pb-8"
               >
                 {user ? (
                   <div className="flex flex-col items-center space-y-3">

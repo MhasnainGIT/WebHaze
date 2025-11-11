@@ -61,7 +61,7 @@ const CreateWebsite = () => {
                     name="siteName"
                     value={formData.siteName}
                     onChange={handleChange}
-                    className="form-input glass-morphism"
+                    className="glass-input w-full"
                     placeholder="My Awesome Website"
                     required
                   />
@@ -73,7 +73,7 @@ const CreateWebsite = () => {
                     name="domain"
                     value={formData.domain}
                     onChange={handleChange}
-                    className="form-input glass-morphism"
+                    className="glass-input w-full"
                     placeholder="mywebsite.com"
                     required
                   />
@@ -84,7 +84,7 @@ const CreateWebsite = () => {
                     name="category"
                     value={formData.category}
                     onChange={handleChange}
-                    className="form-input glass-morphism"
+                    className="glass-input w-full"
                     required
                   >
                     <option value="">Select a category</option>

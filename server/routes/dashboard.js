@@ -6,11 +6,17 @@ const auth = require('../middleware/auth');
 // Get dashboard data
 router.get('/', auth, async (req, res) => {
   try {
+    const userId = req.user.id || req.user.userId;
+    
+    if (!userId) {
+      return res.status(401).json({ message: 'User ID not found' });
+    }
+    
     // Check if database is available
     if (process.env.SKIP_DB === 'true') {
       // Return mock data when DB is not available
       const mockDashboard = {
-        userId: req.user.id,
+        userId: userId,
         websites: [],
         totalVisitors: 0,
         uptime: 0,
@@ -21,12 +27,12 @@ router.get('/', auth, async (req, res) => {
       return res.json(mockDashboard);
     }
 
-    let dashboard = await Dashboard.findOne({ userId: req.user.id });
+    let dashboard = await Dashboard.findOne({ userId: userId });
     
     if (!dashboard) {
       // Create default dashboard for new users
       dashboard = new Dashboard({
-        userId: req.user.id,
+        userId: userId,
         websites: [],
         totalVisitors: 0,
         uptime: 99.9,
@@ -49,7 +55,7 @@ router.get('/', auth, async (req, res) => {
     
     // Return fallback data on error
     const fallbackDashboard = {
-      userId: req.user?.id || 'unknown',
+      userId: req.user?.id || req.user?.userId || 'unknown',
       websites: [],
       totalVisitors: 0,
       uptime: 0,

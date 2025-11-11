@@ -138,16 +138,7 @@
   100% { background-position: 200% 0; }
 }
 
-.glass-morphism {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid white;
-}
 
-.glass-morphism:hover {
-  background: white;
-  color: black;
-  border: 1px solid black;
-}
 
 .perspective-1000 {
   perspective: 1000px;

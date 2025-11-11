@@ -1,0 +1,77 @@
+/* Cross-browser reset and compatibility */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Mobile viewport fixes */
+@viewport {
+  width: device-width;
+  zoom: 1.0;
+}
+
+@-ms-viewport {
+  width: device-width;
+  zoom: 1.0;
+}
+
+/* Prevent horizontal scroll on mobile */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Fix for iOS Safari viewport issues */
+@supports (-webkit-touch-callout: none) {
+  html {
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Backdrop filter support */
+@supports (backdrop-filter: blur(10px)) {
+  .glass-morphism,
+  .glass-button,
+  .glass-card,
+  .glass-input {
+    backdrop-filter: blur(10px);
+  }
+}
+
+@supports (-webkit-backdrop-filter: blur(10px)) {
+  .glass-morphism,
+  .glass-button,
+  .glass-card,
+  .glass-input {
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+  .glass-morphism,
+  .glass-button,
+  .glass-card,
+  .glass-input {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}

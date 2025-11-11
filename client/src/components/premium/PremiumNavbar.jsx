@@ -201,7 +201,11 @@ const PremiumNavbar = () => {
               right: 0,
               bottom: 0,
               height: '100vh',
-              width: '100vw'
+              width: '100vw',
+              maxHeight: '100vh',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              zIndex: 9999
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

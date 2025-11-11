@@ -86,7 +86,20 @@
 }
 
 .glass-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(156, 163, 175, 0.7) !important;
+}
+
+.glass-input::-webkit-input-placeholder {
+  color: rgba(156, 163, 175, 0.7) !important;
+}
+
+.glass-input::-moz-placeholder {
+  color: rgba(156, 163, 175, 0.7) !important;
+  opacity: 1;
+}
+
+.glass-input:-ms-input-placeholder {
+  color: rgba(156, 163, 175, 0.7) !important;
 }
 
 /* Mobile optimizations */
@@ -145,4 +158,41 @@
 .ripple-effect:active::after {
   width: 300px;
   height: 300px;
+}
+
+/* Form styles */
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: white;
+  font-size: 14px;
+}
+
+/* Cross-browser compatibility */
+.glass-morphism,
+.glass-button,
+.glass-card,
+.glass-input {
+  -webkit-backdrop-filter: blur(10px);
+  -moz-backdrop-filter: blur(10px);
+  -ms-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Ensure proper rendering on all browsers */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* Fix for mobile viewport issues */
+@supports (-webkit-touch-callout: none) {
+  .glass-morphism,
+  .glass-button,
+  .glass-card,
+  .glass-input {
+    -webkit-backdrop-filter: blur(10px);
+  }
 }

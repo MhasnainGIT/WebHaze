@@ -53,8 +53,8 @@ const PremiumNavbar = () => {
   return (
     <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-          ? 'py-4 bg-black/80 backdrop-blur-xl border-b border-white/10'
-          : 'py-6 bg-transparent'
+        ? 'py-4 bg-black/80 backdrop-blur-xl border-b border-white/10'
+        : 'py-6 bg-transparent'
         }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -357,11 +357,12 @@ const PremiumNavbar = () => {
                         closeMobileMenu();
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
-                      className="inline-block px-8 py-3  text-black text-lg font-semibold rounded-full hover:bg-gray-100 transition-all duration-300"
+                      className="inline-block px-8 py-3 text-lg font-semibold rounded-full text-white backdrop-blur-md bg-white/10 border border-white/20 shadow-lg hover:bg-white/20 hover:shadow-xl transition-all duration-300"
                     >
                       GET STARTED
                     </Link>
                   </div>
+
                 )}
               </motion.div>
             </div>

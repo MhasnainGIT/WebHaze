@@ -357,7 +357,7 @@ const PremiumNavbar = () => {
                         closeMobileMenu();
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
-                      className="inline-block px-8 py-3 bg-white text-black text-lg font-semibold rounded-full hover:bg-gray-100 transition-all duration-300"
+                      className="inline-block px-8 py-3  text-black text-lg font-semibold rounded-full hover:bg-gray-100 transition-all duration-300"
                     >
                       GET STARTED
                     </Link>

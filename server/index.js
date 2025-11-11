@@ -104,8 +104,8 @@ const corsOptions = {
     // Allow requests with no origin (mobile apps, curl, etc.)
     if (!origin) return cb(null, true);
     
-    // Allow webhaze.in domains
-    if (origin.includes('webhaze.in') || origin.includes('localhost')) {
+    // Allow webhaze.in domains and vercel.app domains
+    if (origin.includes('webhaze.in') || origin.includes('localhost') || origin.includes('vercel.app')) {
       return cb(null, true);
     }
     

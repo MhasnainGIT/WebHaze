@@ -80,18 +80,17 @@ export const FloatingElements = ({ children, count = 3, className = '' }) => {
   const floatingElements = Array.from({ length: count }, (_, i) => (
     <motion.div
       key={i}
-      className="absolute w-4 h-4 bg-white/20 rounded-full"
+      className="absolute w-1 h-1 bg-white/10 rounded-full"
       style={{
         x: useTransform(scrollYProgress, [0, 1], [
-          Math.sin(i * 2) * 100,
-          Math.sin(i * 2 + Math.PI) * 100
+          Math.sin(i * 2) * 50,
+          Math.sin(i * 2 + Math.PI) * 50
         ]),
         y: useTransform(scrollYProgress, [0, 1], [
-          Math.cos(i * 2) * 50 * (scrollDirection === 'up' ? -1 : 1),
-          Math.cos(i * 2 + Math.PI) * 50 * (scrollDirection === 'up' ? -1 : 1)
+          Math.cos(i * 2) * 30 * (scrollDirection === 'up' ? -1 : 1),
+          Math.cos(i * 2 + Math.PI) * 30 * (scrollDirection === 'up' ? -1 : 1)
         ]),
-        scale: useTransform(() => 1 + (scrollVelocity * 0.3)),
-        opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.8, 0.3])
+        opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.2, 0.5, 0.2])
       }}
     />
   ));

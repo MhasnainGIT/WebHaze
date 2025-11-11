@@ -327,8 +327,7 @@ const PremiumNavbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      </AnimatePresence >
-    </motion.nav >
+    </motion.nav>
   );
 };
 

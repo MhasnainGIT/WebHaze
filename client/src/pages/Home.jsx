@@ -3,11 +3,13 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import SEO from '../components/SEO';
+import { useLenis } from 'lenis/react';
+import { ParallaxSection, ScrollReveal, StaggeredReveal, StaggeredItem } from '../components/ScrollAnimations';
 
 const MobileAnimatedCard = ({ children, index = 0 }) => {
   const ref = useRef(null);
   const [scrollDirection, setScrollDirection] = React.useState('down');
-  const [lastScrollY, setLastScrollY] = React.useState(0);
+  const lenis = useLenis();
   
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -16,25 +18,25 @@ const MobileAnimatedCard = ({ children, index = 0 }) => {
   const isMobile = window.innerWidth < 768;
   
   React.useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
-      setLastScrollY(currentScrollY);
+    if (!lenis) return;
+    
+    const handleScroll = ({ direction }) => {
+      setScrollDirection(direction === 1 ? 'down' : 'up');
     };
     
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+    lenis.on('scroll', handleScroll);
+    return () => lenis.off('scroll', handleScroll);
+  }, [lenis]);
   
   const y = useTransform(scrollYProgress, [0, 0.5, 1], 
-    scrollDirection === 'up' ? [-100, 0, 100] : [100, 0, -100]
+    scrollDirection === 'up' ? [-80, 0, 80] : [80, 0, -80]
   );
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], 
-    scrollDirection === 'up' ? [0.9, 1, 0.8] : [0.8, 1, 0.9]
+    scrollDirection === 'up' ? [0.95, 1, 0.85] : [0.85, 1, 0.95]
   );
   const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], 
-    scrollDirection === 'up' ? [-15, 0, 15] : [15, 0, -15]
+    scrollDirection === 'up' ? [-10, 0, 10] : [10, 0, -10]
   );
   
   if (!isMobile) {
@@ -65,7 +67,7 @@ const MobileAnimatedCard = ({ children, index = 0 }) => {
 const AnimatedSection = ({ children, className = "", animation = "slideUp" }) => {
   const ref = useRef(null);
   const [scrollDirection, setScrollDirection] = React.useState('down');
-  const [lastScrollY, setLastScrollY] = React.useState(0);
+  const lenis = useLenis();
   
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -75,20 +77,20 @@ const AnimatedSection = ({ children, className = "", animation = "slideUp" }) =>
   const isMobile = window.innerWidth < 768;
   
   React.useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
-      setLastScrollY(currentScrollY);
+    if (!lenis) return;
+    
+    const handleScroll = ({ direction }) => {
+      setScrollDirection(direction === 1 ? 'down' : 'up');
     };
     
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+    lenis.on('scroll', handleScroll);
+    return () => lenis.off('scroll', handleScroll);
+  }, [lenis]);
   
   const y = useTransform(scrollYProgress, [0, 0.5, 1], 
-    scrollDirection === 'up' ? [-50, 0, 50] : [50, 0, -50]
+    scrollDirection === 'up' ? [-30, 0, 30] : [30, 0, -30]
   );
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
   
   const animations = {
     slideUp: { initial: { opacity: 0, y: 100 }, animate: { opacity: 1, y: 0 } },
@@ -141,12 +143,22 @@ const Hero = () => {
     offset: ["start start", "end start"]
   });
   
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <motion.div style={{ y, opacity }} className="w-full pt-32">
+    <section 
+      ref={containerRef} 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
+      <ParallaxSection speed={-0.3} className="absolute inset-0">
+        <div className="w-full h-full bg-gradient-to-br from-gray-900/20 via-black/40 to-gray-900/20" />
+      </ParallaxSection>
+      <motion.div 
+        style={{ y, opacity, scale }} 
+        className="w-full pt-32"
+      >
         <div className="container-site">
           <div className="max-w-6xl mx-auto text-center">
             {/* <motion.div
@@ -173,6 +185,7 @@ const Hero = () => {
                 rotateY: [0, 5, -5, 0],
                 transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
               }}
+
             >
               <motion.span 
                 className="block"
@@ -287,19 +300,22 @@ const Features = () => {
   return (
     <AnimatedSection className="py-24">
       <div className="container-site">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            Secure, scalable, and reliable hosting services
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          {features.map((feature, index) => (
-            <MobileAnimatedCard key={index} index={index}>
-              <motion.div
-                className="text-center p-4 md:p-6 border border-white/10 rounded-lg hover:border-white/30 transition-all duration-300 glass-morphism"
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-              >
+        <ScrollReveal>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
+              Secure, scalable, and reliable hosting services
+            </h2>
+          </div>
+        </ScrollReveal>
+        <StaggeredReveal staggerDelay={0.1}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {features.map((feature, index) => (
+              <StaggeredItem key={index}>
+                <motion.div
+                  className="text-center p-4 md:p-6 border border-white/10 rounded-lg hover:border-white/30 transition-all duration-300 glass-morphism"
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                 <motion.div 
                   className="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-full flex items-center justify-center text-white relative"
                   animate={{ 
@@ -335,10 +351,11 @@ const Features = () => {
                 </motion.div>
                 <h3 className="text-lg font-semibold mb-3">{feature.title}</h3>
                 <p className="text-gray-400 text-sm">{feature.description}</p>
-              </motion.div>
-            </MobileAnimatedCard>
-          ))}
-        </div>
+                </motion.div>
+              </StaggeredItem>
+            ))}
+          </div>
+        </StaggeredReveal>
       </div>
     </AnimatedSection>
   );
@@ -377,18 +394,37 @@ const Services = () => {
   ];
 
   return (
-    <AnimatedSection id="services" className="py-24">
+    <AnimatedSection id="services" className="py-24" data-scroll-section>
       <div className="container-site">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">WebHaze Services</h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+        <div 
+          className="text-center mb-16"
+          data-scroll
+          data-scroll-speed="0.1"
+        >
+          <h2 
+            className="text-3xl md:text-5xl font-bold mb-4"
+            data-scroll
+            data-scroll-speed="0.2"
+          >
+            WebHaze Services
+          </h2>
+          <p 
+            className="text-lg text-gray-400 max-w-3xl mx-auto"
+            data-scroll
+            data-scroll-speed="0.15"
+          >
             WebHaze provides comprehensive Website-as-a-Service solutions to power your online success. From lightning-fast hosting to custom development, we've got you covered.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {services.map((service, index) => (
             <MobileAnimatedCard key={index} index={index}>
-              <div className="p-8 border border-white/10 rounded-lg hover:border-white/30 transition-colors flex flex-col h-full">
+              <div 
+                className="p-8 border border-white/10 rounded-lg hover:border-white/30 transition-colors flex flex-col h-full"
+                data-scroll
+                data-scroll-speed={0.1 + index * 0.05}
+                data-scroll-delay={index * 0.1}
+              >
               <motion.div 
                 className="w-16 h-16 mb-6 bg-white/10 rounded-lg flex items-center justify-center text-white relative"
                 animate={{ 
@@ -430,7 +466,11 @@ const Services = () => {
             </MobileAnimatedCard>
           ))}
         </div>
-        <div className="text-center">
+        <div 
+          className="text-center"
+          data-scroll
+          data-scroll-speed="0.1"
+        >
           <Link to="/pricing" className="btn-primary">
             Explore Hosting Plans
           </Link>
@@ -460,18 +500,37 @@ const HowItWorks = () => {
   ];
 
   return (
-    <AnimatedSection className="py-24">
+    <AnimatedSection className="py-24" data-scroll-section>
       <div className="container-site">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">How it works</h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+        <div 
+          className="text-center mb-16"
+          data-scroll
+          data-scroll-speed="0.1"
+        >
+          <h2 
+            className="text-3xl md:text-5xl font-bold mb-4"
+            data-scroll
+            data-scroll-speed="0.2"
+          >
+            How it works
+          </h2>
+          <p 
+            className="text-lg text-gray-400 max-w-3xl mx-auto"
+            data-scroll
+            data-scroll-speed="0.15"
+          >
             From choosing a package to ongoing support, our streamlined process makes launching your custom website simple, fast, and stress-free.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {steps.map((step, index) => (
             <MobileAnimatedCard key={index} index={index}>
-              <div className="text-center">
+              <div 
+                className="text-center"
+                data-scroll
+                data-scroll-speed={0.1 + index * 0.05}
+                data-scroll-delay={index * 0.1}
+              >
               <motion.div 
                 className="w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6 relative"
                 animate={{ 
@@ -722,15 +781,34 @@ const Testimonials = () => {
   ];
 
   return (
-    <AnimatedSection className="py-24 overflow-hidden">
+    <AnimatedSection className="py-24 overflow-hidden" data-scroll-section>
       <div className="container-site">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">What Our Clients Say</h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+        <div 
+          className="text-center mb-16"
+          data-scroll
+          data-scroll-speed="0.1"
+        >
+          <h2 
+            className="text-3xl md:text-5xl font-bold mb-4"
+            data-scroll
+            data-scroll-speed="0.2"
+          >
+            What Our Clients Say
+          </h2>
+          <p 
+            className="text-lg text-gray-400 max-w-3xl mx-auto"
+            data-scroll
+            data-scroll-speed="0.15"
+          >
             Real stories from businesses that transformed their online presence with WebHaze.
           </p>
         </div>
-        <div className="relative">
+        <div 
+          className="relative"
+          data-scroll
+          data-scroll-speed="-0.1"
+          data-scroll-direction="horizontal"
+        >
           <motion.div
             className="flex gap-8"
             animate={{ x: ["-100%", "0%"] }}

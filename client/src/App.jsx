@@ -26,7 +26,9 @@ import './styles/main.css';
 import './styles/design-system.css';
 import './styles/black-white.css';
 import './styles/liquid-glass.css';
+
 import CookieConsent from './components/CookieConsent';
+import SmoothScroll from './components/SmoothScroll';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -50,7 +52,8 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <CurrencyProvider>
-            <div className="min-h-screen bg-black text-white overflow-x-hidden relative">
+            <SmoothScroll>
+              <div className="min-h-screen bg-black text-white overflow-x-hidden relative">
               <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900 -z-50" />
               <StructuredData />
               <ScrollToTop />
@@ -106,7 +109,8 @@ export default function App() {
                   },
                 }}
               />
-            </div>
+              </div>
+            </SmoothScroll>
           </CurrencyProvider>
         </AuthProvider>
       </BrowserRouter>

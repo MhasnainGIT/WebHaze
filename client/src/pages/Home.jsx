@@ -5,6 +5,8 @@ import { useAuth } from '../contexts/AuthContext';
 import SEO from '../components/SEO';
 import { useLenis } from 'lenis/react';
 import { ParallaxSection, ScrollReveal, StaggeredReveal, StaggeredItem } from '../components/ScrollAnimations';
+import { MagneticScroll, ElasticParallax } from '../components/InteractiveScrollAnimations';
+import { FloatingElements, MagneticCursor } from '../components/AdvancedScrollEffects';
 
 const MobileAnimatedCard = ({ children, index = 0 }) => {
   const ref = useRef(null);
@@ -175,49 +177,47 @@ const Hero = () => {
               </div>
             </motion.div> */}
 
-            <motion.h1
-              className="text-4xl md:text-6xl lg:text-8xl font-black leading-[0.9] mb-12 tracking-tight mt-8"
-              initial={{ opacity: 0, y: 100, rotateX: -45, scale: 0.8 }}
-              animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-              transition={{ duration: 1.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              style={{ perspective: '1000px' }}
-              whileInView={{ 
-                rotateY: [0, 5, -5, 0],
-                transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-              }}
-
-            >
-              <motion.span 
-                className="block"
-                initial={{ x: -100, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.6 }}
-              >
-                WE CREATE
-              </motion.span>
-              <motion.span 
-                className="block text-white"
-                initial={{ x: 100, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.8 }}
-              >
-                DIGITAL EXPERIENCES
-              </motion.span>
-              <motion.span 
-                className="block text-white/60 text-2xl md:text-4xl lg:text-5xl mt-4"
-                initial={{ y: 50, opacity: 0, scale: 0.5 }}
-                animate={{ y: 0, opacity: 1, scale: 1 }}
-                transition={{ duration: 1, delay: 1.2 }}
-              >
-                WebHaze Studios
-              </motion.span>
-            </motion.h1>
+            <FloatingElements count={3}>
+              <MagneticCursor strength={0.1}>
+                <motion.h1
+                  className="text-4xl md:text-6xl lg:text-8xl font-black leading-[0.9] mb-12 tracking-tight mt-8"
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <motion.span 
+                    className="block"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.6 }}
+                  >
+                    WE CREATE
+                  </motion.span>
+                  <motion.span 
+                    className="block text-white"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.8 }}
+                  >
+                    DIGITAL EXPERIENCES
+                  </motion.span>
+                  <motion.span 
+                    className="block text-white/60 text-2xl md:text-4xl lg:text-5xl mt-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1, delay: 1.2 }}
+                  >
+                    WebHaze Studios
+                  </motion.span>
+                </motion.h1>
+              </MagneticCursor>
+            </FloatingElements>
 
 
 
             <motion.p
               className="text-base md:text-lg lg:text-xl text-gray-400 mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed px-4 md:px-0"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1 }}
             >
@@ -235,12 +235,12 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.2 }}
             >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link to={user ? "/contact" : "/signup"} className="btn-primary">
                   Get Started
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link to="/pricing" className="btn-secondary">
                   Explore Services
                 </Link>
@@ -313,44 +313,14 @@ const Features = () => {
               <StaggeredItem key={index}>
                 <motion.div
                   className="text-center p-4 md:p-6 border border-white/10 rounded-lg hover:border-white/30 transition-all duration-300 glass-morphism"
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                <motion.div 
-                  className="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-full flex items-center justify-center text-white relative"
-                  animate={{ 
-                    boxShadow: [
-                      '0 0 0 0 rgba(255, 255, 255, 0)',
-                      '0 0 0 4px rgba(255, 255, 255, 0.1)',
-                      '0 0 0 0 rgba(255, 255, 255, 0)'
-                    ]
-                  }}
-                  transition={{ 
-                    duration: 2, 
-                    repeat: Infinity, 
-                    ease: 'easeInOut' 
-                  }}
-                >
-                  <motion.div
-                    animate={{ 
-                      scale: [1, 1.1, 1],
-                      filter: [
-                        'drop-shadow(0 0 0px rgba(255, 255, 255, 0))',
-                        'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))',
-                        'drop-shadow(0 0 0px rgba(255, 255, 255, 0))'
-                      ]
-                    }}
-                    transition={{ 
-                      duration: 2, 
-                      repeat: Infinity, 
-                      ease: 'easeInOut' 
-                    }}
-                  >
-                    {feature.icon}
-                  </motion.div>
-                </motion.div>
-                <h3 className="text-lg font-semibold mb-3">{feature.title}</h3>
-                <p className="text-gray-400 text-sm">{feature.description}</p>
+                <div className="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-full flex items-center justify-center text-white">
+                  {feature.icon}
+                </div>
+                  <h3 className="text-lg font-semibold mb-3">{feature.title}</h3>
+                  <p className="text-gray-400 text-sm">{feature.description}</p>
                 </motion.div>
               </StaggeredItem>
             ))}
@@ -425,43 +395,11 @@ const Services = () => {
                 data-scroll-speed={0.1 + index * 0.05}
                 data-scroll-delay={index * 0.1}
               >
-              <motion.div 
-                className="w-16 h-16 mb-6 bg-white/10 rounded-lg flex items-center justify-center text-white relative"
-                animate={{ 
-                  boxShadow: [
-                    '0 0 0 0 rgba(255, 255, 255, 0)',
-                    '0 0 0 3px rgba(255, 255, 255, 0.08)',
-                    '0 0 0 0 rgba(255, 255, 255, 0)'
-                  ]
-                }}
-                transition={{ 
-                  duration: 3, 
-                  repeat: Infinity, 
-                  ease: 'easeInOut',
-                  delay: Math.random() * 2
-                }}
-              >
-                <motion.div
-                  animate={{ 
-                    scale: [1, 1.05, 1],
-                    filter: [
-                      'drop-shadow(0 0 0px rgba(255, 255, 255, 0))',
-                      'drop-shadow(0 0 6px rgba(255, 255, 255, 0.2))',
-                      'drop-shadow(0 0 0px rgba(255, 255, 255, 0))'
-                    ]
-                  }}
-                  transition={{ 
-                    duration: 3, 
-                    repeat: Infinity, 
-                    ease: 'easeInOut',
-                    delay: Math.random() * 2
-                  }}
-                >
-                  {service.icon}
-                </motion.div>
-              </motion.div>
-              <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
-              <p className="text-gray-400 flex-grow">{service.description}</p>
+              <div className="w-16 h-16 mb-6 bg-white/10 rounded-lg flex items-center justify-center text-white">
+                {service.icon}
+              </div>
+                <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
+                <p className="text-gray-400 flex-grow">{service.description}</p>
               </div>
             </MobileAnimatedCard>
           ))}
@@ -531,43 +469,11 @@ const HowItWorks = () => {
                 data-scroll-speed={0.1 + index * 0.05}
                 data-scroll-delay={index * 0.1}
               >
-              <motion.div 
-                className="w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6 relative"
-                animate={{ 
-                  boxShadow: [
-                    '0 0 0 0 rgba(156, 163, 175, 0)',
-                    '0 0 0 4px rgba(156, 163, 175, 0.2)',
-                    '0 0 0 0 rgba(156, 163, 175, 0)'
-                  ]
-                }}
-                transition={{ 
-                  duration: 2.5, 
-                  repeat: Infinity, 
-                  ease: 'easeInOut',
-                  delay: index * 0.5
-                }}
-              >
-                <motion.span
-                  animate={{ 
-                    scale: [1, 1.1, 1],
-                    textShadow: [
-                      '0 0 0px rgba(255, 255, 255, 0)',
-                      '0 0 8px rgba(255, 255, 255, 0.5)',
-                      '0 0 0px rgba(255, 255, 255, 0)'
-                    ]
-                  }}
-                  transition={{ 
-                    duration: 2.5, 
-                    repeat: Infinity, 
-                    ease: 'easeInOut',
-                    delay: index * 0.5
-                  }}
-                >
-                  {step.number}
-                </motion.span>
-              </motion.div>
-              <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-              <p className="text-gray-400">{step.description}</p>
+              <div className="w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">
+                {step.number}
+              </div>
+                <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
+                <p className="text-gray-400">{step.description}</p>
               </div>
             </MobileAnimatedCard>
           ))}

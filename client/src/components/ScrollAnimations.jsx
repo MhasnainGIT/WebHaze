@@ -1,101 +1,146 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useScrollDirection } from '../hooks/useScrollDirection';
 
-export const ParallaxSection = ({ children, speed = 0.5, className = "" }) => {
+export const ReverseParallaxSection = ({ children, speed = -0.4, reverseSpeed = 0.6, className = "" }) => {
   const ref = useRef(null);
+  const { scrollDirection } = useScrollDirection();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
   
-  const y = useTransform(scrollYProgress, [0, 1], [`${speed * 100}%`, `${speed * -100}%`]);
+  const currentSpeed = scrollDirection === 'up' ? reverseSpeed : speed;
+  const y = useTransform(scrollYProgress, [0, 1], [0, currentSpeed * 100]);
   
   return (
-    <div ref={ref} className={className}>
-      <motion.div style={{ y }}>
-        {children}
-      </motion.div>
-    </div>
+    <motion.div ref={ref} style={{ y }} className={className}>
+      {children}
+    </motion.div>
   );
 };
 
-export const ScrollReveal = ({ children, delay = 0, direction = "up" }) => {
+export const ParallaxSection = ReverseParallaxSection;
+
+export const ReverseScrollReveal = ({ 
+  children, 
+  delay = 0, 
+  direction = "up", 
+  blur = false, 
+  scale = false, 
+  rotate = false 
+}) => {
   const ref = useRef(null);
+  const { scrollDirection, scrollVelocity } = useScrollDirection();
   
-  const variants = {
+  const getVariants = (isReverse) => ({
     hidden: {
       opacity: 0,
-      y: direction === "up" ? 50 : direction === "down" ? -50 : 0,
-      x: direction === "left" ? 50 : direction === "right" ? -50 : 0,
-      scale: direction === "scale" ? 0.9 : 1,
+      y: direction === "up" ? (isReverse ? -30 : 50) : direction === "down" ? (isReverse ? 30 : -50) : 0,
+      x: direction === "left" ? (isReverse ? -30 : 50) : direction === "right" ? (isReverse ? 30 : -50) : 0,
+      scale: scale ? (isReverse ? 1.05 : 0.9) : 1,
+      rotateY: rotate ? (isReverse ? -5 : 5) : 0,
+      filter: blur ? 'blur(4px)' : 'none'
     },
     visible: {
       opacity: 1,
       y: 0,
       x: 0,
       scale: 1,
-      transition: {
-        duration: 0.8,
-        delay,
-        ease: [0.16, 1, 0.3, 1]
-      }
+      rotateY: 0,
+      filter: 'blur(0px)',
+      transition: scrollVelocity > 2 ? 
+        { type: 'spring', stiffness: 300, damping: 20, delay: isReverse ? delay * 0.5 : delay } :
+        { duration: 0.8, delay: isReverse ? delay * 0.5 : delay, ease: [0.16, 1, 0.3, 1] }
     }
-  };
+  });
   
   return (
     <motion.div
       ref={ref}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
-      variants={variants}
+      viewport={{ once: false, margin: "-100px" }}
+      variants={getVariants(scrollDirection === 'up')}
+      key={scrollDirection}
     >
       {children}
     </motion.div>
   );
 };
 
-export const StaggeredReveal = ({ children, staggerDelay = 0.1 }) => {
+export const ScrollReveal = ReverseScrollReveal;
+
+export const ReverseStaggeredReveal = ({ children, staggerDelay = 0.1 }) => {
+  const { scrollDirection } = useScrollDirection();
+  const childrenArray = Array.isArray(children) ? children : [children];
+  
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
+      viewport={{ once: false, margin: "-50px" }}
       variants={{
         hidden: {},
         visible: {
           transition: {
-            staggerChildren: staggerDelay
+            staggerChildren: scrollDirection === 'up' ? staggerDelay * 0.3 : staggerDelay,
+            delayChildren: scrollDirection === 'up' ? 0.05 : 0
           }
         }
       }}
+      key={scrollDirection}
     >
-      {children}
+      {childrenArray.map((child, index) => {
+        const reverseIndex = scrollDirection === 'up' ? childrenArray.length - 1 - index : index;
+        return (
+          <ReverseStaggeredItem key={index} index={reverseIndex}>
+            {child}
+          </ReverseStaggeredItem>
+        );
+      })}
     </motion.div>
   );
 };
 
-export const StaggeredItem = ({ children, direction = "up" }) => {
-  const variants = {
+export const StaggeredReveal = ReverseStaggeredReveal;
+
+export const ReverseStaggeredItem = ({ children, direction = "up", index = 0 }) => {
+  const { scrollDirection } = useScrollDirection();
+  const isReverse = scrollDirection === 'up';
+  
+  const getVariants = () => ({
     hidden: {
       opacity: 0,
-      y: direction === "up" ? 30 : direction === "down" ? -30 : 0,
-      x: direction === "left" ? 30 : direction === "right" ? -30 : 0,
+      y: direction === "up" ? (isReverse ? -20 : 30) : direction === "down" ? (isReverse ? 20 : -30) : 0,
+      x: direction === "left" ? (isReverse ? -20 : 30) : direction === "right" ? (isReverse ? 20 : -30) : 0,
+      scale: isReverse ? 1.02 : 0.95,
+      rotateX: isReverse ? 3 : -8,
+      rotateY: isReverse ? -2 : 0
     },
     visible: {
       opacity: 1,
       y: 0,
       x: 0,
+      scale: 1,
+      rotateX: 0,
+      rotateY: 0,
       transition: {
-        duration: 0.6,
+        duration: isReverse ? 0.5 : 0.7,
         ease: [0.16, 1, 0.3, 1]
       }
     }
-  };
+  });
   
   return (
-    <motion.div variants={variants}>
+    <motion.div 
+      variants={getVariants()}
+      key={`${scrollDirection}-${index}`}
+      style={{ transformPerspective: 1000 }}
+    >
       {children}
     </motion.div>
   );
 };
+
+export const StaggeredItem = ReverseStaggeredItem;

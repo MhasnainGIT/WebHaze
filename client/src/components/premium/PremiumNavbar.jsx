@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { ScrollDirectionIndicator } from '../ScrollDirectionIndicator';
 
 const PremiumNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -53,9 +52,7 @@ const PremiumNavbar = () => {
   }, [isMobileMenuOpen]);
 
   return (
-    <>
-      <ScrollDirectionIndicator />
-      <motion.nav
+    <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
           ? 'py-4 bg-black/80 backdrop-blur-xl border-b border-white/10'
           : 'py-6 bg-transparent'
@@ -356,7 +353,6 @@ const PremiumNavbar = () => {
         )}
       </AnimatePresence>
     </motion.nav>
-    </>
   );
 };
 

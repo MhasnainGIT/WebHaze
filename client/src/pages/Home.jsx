@@ -216,16 +216,16 @@ const Hero = () => {
 
 
             <motion.p
-              className="text-base md:text-lg lg:text-xl text-gray-400 mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed px-4 md:px-0"
+              className="text-base md:text-lg lg:text-xl text-gray-800 mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed px-4 md:px-0"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1 }}
             >
               <span className="hidden md:inline">
-                WebHaze is a scalable, config-driven Website-as-a-Service platform that enables non-technical users to build, customize, and deploy professional websites rapidly. Lightning-fast hosting with 99.9% uptime guarantee, custom website development, mobile app development, and 24/7 expert support for businesses worldwide.
+                Build, customize, and deploy professional websites rapidly with our scalable Website-as-a-Service platform. Lightning-fast hosting, 99.9% uptime, and 24/7 expert support.
               </span>
               <span className="md:hidden">
-                Professional Website-as-a-Service platform. Lightning-fast hosting, custom development, and 24/7 support for businesses worldwide.
+                Professional Website-as-a-Service platform with lightning-fast hosting and 24/7 support.
               </span>
             </motion.p>
 

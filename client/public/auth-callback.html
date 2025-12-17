@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authentication...</title>
+    <style>
+        body { background: black; color: white; font-family: Arial; text-align: center; padding: 50px; }
+        .spinner { border: 2px solid #333; border-top: 2px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="spinner"></div>
+    <p>Completing authentication...</p>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        if (token) {
+            localStorage.setItem('token', token);
+            window.location.href = '/dashboard';
+        } else {
+            window.location.href = '/login?error=auth_failed';
+        }
+    </script>
+</body>
+</html>

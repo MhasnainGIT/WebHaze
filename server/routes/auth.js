@@ -329,14 +329,14 @@ router.get('/google/callback', async (req, res) => {
       { expiresIn: '7d' }
     );
     
-    // Redirect to frontend with token
+    // Redirect to frontend with token in URL hash (works without routing)
     const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
-    res.redirect(`${frontendURL}/auth/callback?token=${token}`);
+    res.redirect(`${frontendURL}/#token=${token}`);
     
   } catch (error) {
     console.error('Google OAuth error:', error);
     const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
-    res.redirect(`${frontendURL}/login?error=oauth_failed`);
+    res.redirect(`${frontendURL}/#error=oauth_failed`);
   }
 });
 

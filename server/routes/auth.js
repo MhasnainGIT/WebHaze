@@ -253,6 +253,84 @@ router.put('/password', async (req, res) => {
   }
 });
 
+// Google OAuth routes
+router.get('/google', (req, res) => {
+  const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?` +
+    `client_id=${process.env.GOOGLE_CLIENT_ID}&` +
+    `redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&` +
+    `response_type=code&` +
+    `scope=profile email`;
+  
+  res.redirect(googleAuthURL);
+});
+
+router.get('/google/callback', async (req, res) => {
+  try {
+    const { code } = req.query;
+    
+    // Exchange code for access token
+    const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET,
+        code,
+        grant_type: 'authorization_code',
+        redirect_uri: process.env.GOOGLE_REDIRECT_URI
+      })
+    });
+    
+    const tokenData = await tokenResponse.json();
+    
+    // Get user info from Google
+    const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` }
+    });
+    
+    const googleUser = await userResponse.json();
+    
+    // Find or create user
+    let user;
+    if (process.env.SKIP_DB === 'true') {
+      user = await memoryStore.findUserByEmail(googleUser.email);
+      if (!user) {
+        user = await memoryStore.createUser({
+          name: googleUser.name,
+          email: googleUser.email,
+          password: 'google-oauth-' + Date.now() // Random password for OAuth users
+        });
+      }
+    } else {
+      user = await User.findOne({ email: googleUser.email });
+      if (!user) {
+        user = new User({
+          name: googleUser.name,
+          email: googleUser.email,
+          password: 'google-oauth-' + Date.now() // Random password for OAuth users
+        });
+        await user.save();
+      }
+    }
+    
+    // Generate JWT
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET || 'fallback-secret-key',
+      { expiresIn: '7d' }
+    );
+    
+    // Redirect to frontend with token
+    const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
+    res.redirect(`${frontendURL}/auth/callback?token=${token}`);
+    
+  } catch (error) {
+    console.error('Google OAuth error:', error);
+    const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
+    res.redirect(`${frontendURL}/login?error=oauth_failed`);
+  }
+});
+
 // Logout endpoint (client-side token removal)
 router.post('/logout', (req, res) => {
   res.json({

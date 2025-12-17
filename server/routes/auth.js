@@ -255,6 +255,14 @@ router.put('/password', async (req, res) => {
 
 // Google OAuth routes
 router.get('/google', (req, res) => {
+  // Check if Google OAuth is configured
+  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+    return res.status(500).json({
+      error: 'Google OAuth not configured',
+      message: 'Missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET'
+    });
+  }
+  
   const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?` +
     `client_id=${process.env.GOOGLE_CLIENT_ID}&` +
     `redirect_uri=${encodeURIComponent(process.env.GOOGLE_REDIRECT_URI)}&` +

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import Snowfall from 'react-snowfall';
 
 const PremiumHero = () => {
   const { user } = useAuth();
@@ -30,6 +31,9 @@ const PremiumHero = () => {
         }} />
       </div>
 
+      {/* Snowfall effect */}
+      <Snowfall className="absolute inset-0 -z-20" />
+      
       {/* Content */}
       <div className="relative z-20 max-w-6xl mx-auto px-6 text-center">
         <motion.div

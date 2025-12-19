@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SEO from '../../components/SEO';
+import Snowfall from 'react-snowfall';
 
 const WebsiteDevelopment = () => {
   const services = [
@@ -28,7 +29,8 @@ const WebsiteDevelopment = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24">
+    <div className="min-h-screen bg-black text-white pt-24 relative">
+      <Snowfall />
       <SEO 
         title="Website Development - WebHaze"
         description="Professional website development services. Custom designs, e-commerce solutions, and modern web applications."

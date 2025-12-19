@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SEO from '../../components/SEO';
+import Snowfall from 'react-snowfall';
 
 const WebHosting = () => {
   const features = [
@@ -45,7 +46,8 @@ const WebHosting = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24">
+    <div className="min-h-screen bg-black text-white pt-24 relative">
+      <Snowfall />
       <SEO 
         title="Web Hosting - WebHaze"
         description="Professional web hosting services with 99.9% uptime guarantee and lightning-fast performance."

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
-import Snowfall from 'react-snowfall';
+// import Snowfall from 'react-snowfall';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -33,7 +33,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-black text-white pt-24 relative">
-      <Snowfall />
+      {/* <Snowfall /> */}
       <SEO 
         title="Contact Us - WebHaze"
         description="Get in touch with WebHaze team. We're here to help you build amazing digital experiences."

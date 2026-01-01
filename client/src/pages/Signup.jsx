@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import SEO from '../components/SEO';
-import Snowfall from 'react-snowfall';
+// import Snowfall from 'react-snowfall';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -43,7 +43,7 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pt-24 md:pt-32 relative">
-      <Snowfall />
+      {/* <Snowfall /> */}
       <SEO 
         title="Sign Up - WebHaze"
         description="Create your WebHaze account and start building professional websites today."

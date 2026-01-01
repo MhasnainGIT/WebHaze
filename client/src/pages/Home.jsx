@@ -7,7 +7,7 @@ import { useLenis } from 'lenis/react';
 import { ParallaxSection, ScrollReveal, StaggeredReveal, StaggeredItem } from '../components/ScrollAnimations';
 import { MagneticScroll, ElasticParallax } from '../components/InteractiveScrollAnimations';
 import { FloatingElements, MagneticCursor } from '../components/AdvancedScrollEffects';
-import Snowfall from 'react-snowfall';
+// import Snowfall from 'react-snowfall';
 
 const MobileAnimatedCard = ({ children, index = 0 }) => {
   const ref = useRef(null);
@@ -1063,7 +1063,7 @@ const Home = () => {
         keywords="WebHaze, website-as-a-service, professional web development, website hosting"
         canonical="/"
       />
-      <Snowfall />
+      {/* <Snowfall /> */}
       
       <Hero />
       <Features />

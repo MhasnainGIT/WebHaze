@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import Snowfall from 'react-snowfall';
+// import Snowfall from 'react-
 
 const PremiumHero = () => {
   const { user } = useAuth();
@@ -16,10 +16,10 @@ const PremiumHero = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black pt-20">
+    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background gradient */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900 -z-10"
+        className="absolute inset-0 bg-gradient-to-br from-gray-900/30 via-black/30 to-gray-900/30 -z-10"
         style={{ y, opacity }}
       />
       
@@ -32,7 +32,13 @@ const PremiumHero = () => {
       </div>
 
       {/* Snowfall effect */}
-      <Snowfall className="absolute inset-0 -z-20" />
+      {/* <Snowfall 
+        className="absolute inset-0" 
+        style={{ zIndex: -5 }}
+        snowflakeCount={100}
+        speed={[0.5, 2.0]}
+        wind={[-0.5, 0.5]}
+      /> */}
       
       {/* Content */}
       <div className="relative z-20 max-w-6xl mx-auto px-6 text-center">
@@ -56,14 +62,14 @@ const PremiumHero = () => {
 
           {/* Main headline */}
           <motion.h1 
-            className="text-6xl md:text-8xl lg:text-9xl font-bold text-white mb-8 leading-[0.9] tracking-tight font-heading"
+            className="text-6xl md:text-8xl lg:text-9xl font-bold text-white/90 mb-8 leading-[0.9] tracking-tight font-heading"
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
             WE CREATE
             <br />
-            <span className="text-white">
+            <span className="text-white/90">
               DIGITAL
             </span>
             <br />

@@ -194,7 +194,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold mb-1">Email</h3>
-                  <p className="text-gray-400">webhaze.in@gmail.com</p>
+                  <p className="text-gray-400">info.webhaze@gmail.com</p>
                 </div>
               </motion.div>
 

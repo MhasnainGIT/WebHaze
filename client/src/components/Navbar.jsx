@@ -94,6 +94,16 @@ const Navbar = () => {
 
                     {/* Auth Section */}
                     <div className="hidden md:flex items-center space-x-3">
+                        {/* Phone Number */}
+                        <a 
+                            href="tel:+919550564407" 
+                            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary transition-colors duration-200"
+                        >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            +91-9550564407
+                        </a>
                         {user ? (
                             <Menu as="div" className="relative inline-block text-left">
                                 <Menu.Button className="flex items-center gap-3 px-4 py-2 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-all duration-200 border border-gray-200/50">

@@ -28,9 +28,9 @@ const Footer = () => {
                                     <a href="tel:+919550564407" className="hover:text-white transition-colors block">
                                         +91-9550564407
                                     </a>
-                                    <a href="tel:+918919019679" className="hover:text-white transition-colors text-sm">
+                                    {/* <a href="tel:+918919019679" className="hover:text-white transition-colors text-sm">
                                         +91-8919019679
-                                    </a>
+                                    </a> */}
                                 </div>
                             </li>
                             <li className="flex items-center text-gray-400">

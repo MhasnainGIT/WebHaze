@@ -223,10 +223,7 @@ app.listen(PORT, () => {
 const MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/webhaze';
 
 if (process.env.SKIP_DB !== 'true') {
-  mongoose.connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+  mongoose.connect(MONGO_URI)
     .then(async () => {
       console.log('Connected to MongoDB');
       logger.info('Database connected successfully');

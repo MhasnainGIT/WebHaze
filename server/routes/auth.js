@@ -57,7 +57,7 @@ router.post('/register', authLimiter, async (req, res) => {
     // Generate JWT
     const token = jwt.sign(
       { userId: user._id, email: user.email },
-      process.env.JWT_SECRET || 'fallback-secret-key',
+      process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
@@ -130,7 +130,7 @@ router.post('/login', authLimiter, async (req, res) => {
     // Generate JWT
     const token = jwt.sign(
       { userId: user._id, email: user.email },
-      process.env.JWT_SECRET || 'fallback-secret-key',
+      process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
@@ -168,7 +168,7 @@ router.get('/me', async (req, res) => {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     let user;
     if (process.env.SKIP_DB === 'true') {
       user = await memoryStore.findUserById(decoded.userId);
@@ -211,7 +211,7 @@ router.put('/password', async (req, res) => {
       return res.status(401).json({ error: 'No token provided' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
@@ -325,7 +325,7 @@ router.get('/google/callback', async (req, res) => {
     // Generate JWT
     const token = jwt.sign(
       { userId: user._id, email: user.email },
-      process.env.JWT_SECRET || 'fallback-secret-key',
+      process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
     

@@ -217,7 +217,7 @@ const Hero = () => {
 
 
             <motion.p
-              className="text-base md:text-lg lg:text-xl text-gray-800 mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed px-4 md:px-0"
+              className="text-base md:text-lg lg:text-xl text-gray-300 mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed px-4 md:px-0"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1 }}

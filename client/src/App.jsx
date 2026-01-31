@@ -4,6 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/AuthContext';
 import { CurrencyProvider } from './contexts/CurrencyContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Home from './pages/Home';
 import PremiumNavbar from './components/premium/PremiumNavbar';
 import Footer from './components/Footer';
@@ -60,26 +61,28 @@ export default function App() {
               <ScrollToTop />
               <PremiumNavbar />
               <main className="relative z-10">
-                <Suspense fallback={<LoadingSpinner />}>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/services/:slug" element={<ServicePage />} />
-                    <Route path="/services/web-hosting" element={<WebHosting />} />
-                    <Route path="/services/website-development" element={<WebsiteDevelopment />} />
-                    <Route path="/services/app-development" element={<AppDevelopment />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/account" element={<Account />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/pricing" element={<Pricing />} />
-                    <Route path="/create-website" element={<CreateWebsite />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/auth/callback" element={<AuthCallback />} />
-                    <Route path="/privacy" element={<Privacy />} />
-                    <Route path="/terms" element={<Terms />} />
-                  </Routes>
-                </Suspense>
+                <ErrorBoundary>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/services/:slug" element={<ServicePage />} />
+                      <Route path="/services/web-hosting" element={<WebHosting />} />
+                      <Route path="/services/website-development" element={<WebsiteDevelopment />} />
+                      <Route path="/services/app-development" element={<AppDevelopment />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/account" element={<Account />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/pricing" element={<Pricing />} />
+                      <Route path="/create-website" element={<CreateWebsite />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/signup" element={<Signup />} />
+                      <Route path="/auth/callback" element={<AuthCallback />} />
+                      <Route path="/privacy" element={<Privacy />} />
+                      <Route path="/terms" element={<Terms />} />
+                    </Routes>
+                  </Suspense>
+                </ErrorBoundary>
               </main>
               <Footer />
               <CookieConsent />

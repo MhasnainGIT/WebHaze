@@ -12,7 +12,7 @@ const auth = async (req, res, next) => {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     // Verify user still exists and is active
     let user;

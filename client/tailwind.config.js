@@ -10,33 +10,39 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#0b61ff',
-          50: '#eff6ff',
-          100: '#dbeafe',
-          500: '#0b61ff',
-          600: '#0952d9',
-          700: '#0743b3',
-          900: '#1e3a8a'
+          DEFAULT: '#FFFFFF',
+          50: '#F9F9F9',
+          100: '#F3F3F3',
+          500: '#FFFFFF',
+          600: '#E5E5E5',
+          700: '#CCCCCC',
+          900: '#333333'
         },
         secondary: {
-          DEFAULT: '#0b9bff',
-          500: '#0b9bff'
+          DEFAULT: '#FFFFFF',
+          500: '#FFFFFF'
+        },
+        tertiary: {
+          DEFAULT: '#888888',
+          500: '#888888'
         },
         success: {
-          DEFAULT: '#00c48c',
-          dark: '#047857',
-          light: '#d1fae5',
+          DEFAULT: '#FFFFFF',
+          dark: '#E5E5E5',
+          light: '#F3F3F3',
         },
-        background: '#f7faff',
-        surface: '#ffffff',
+        background: '#000000',
+        surface: '#0A0A0A',
+        'surface-variant': '#141414',
         text: {
-          DEFAULT: '#0f172a',
-          light: '#475569',
+          DEFAULT: '#FFFFFF',
+          light: '#888888',
         },
       },
       fontFamily: {
         body: ['Inter', ...defaultTheme.fontFamily.sans],
-        heading: ['Inter', ...defaultTheme.fontFamily.sans],
+        heading: ['Outfit', ...defaultTheme.fontFamily.sans],
+        display: ['Outfit', ...defaultTheme.fontFamily.sans],
       },
       spacing: {
         'site-x': '1.5rem',

@@ -1,135 +1,137 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 const CreateWebsite = () => {
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    siteName: '',
-    domain: '',
-    category: ''
+    name: '',
+    template: '',
+    plan: ''
   });
+  const navigate = useNavigate();
 
-  const templates = [
-    { id: 1, name: 'Business', description: 'Professional business website' },
-    { id: 2, name: 'Portfolio', description: 'Showcase your work and skills' },
-    { id: 3, name: 'E-commerce', description: 'Online store and shopping cart' },
-    { id: 4, name: 'Blog', description: 'Content-focused website' }
-  ];
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Creating website:', { ...formData, template: selectedTemplate });
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleNext = () => {
+    if (step < 3) setStep(step + 1);
+    else {
+      // Simulate deployment
+      alert('Node deployment initialized. Redirecting to terminal.');
+      navigate('/dashboard');
+    }
   };
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24">
+    <div className="min-h-screen bg-black pt-32 pb-20">
       <SEO 
-        title="Create Website - WebHaze"
-        description="Create your professional website in minutes with WebHaze's easy-to-use website builder."
+        title="Provision New Node | WebHaze Deployment"
+        description="Initialize a new website node on the WebHaze infrastructure. Choose your template and deployment plan."
       />
       
-      <div className="container-site py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-black mb-6">
-            Create Your
-            <br />
-            <span className="text-white/60">Website</span>
-          </h1>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Build a professional website in minutes with our easy-to-use tools.
-          </p>
-        </div>
-
+      <div className="container-site">
         <div className="max-w-4xl mx-auto">
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Website Details */}
-            <div className="glass-morphism rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-6">Website Details</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="mb-20 text-center">
+            <motion.h1 
+              className="text-5xl md:text-7xl font-black mb-6 tracking-tighter"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              PROVISION <span className="text-white/20">NODE.</span>
+            </motion.h1>
+            <div className="flex justify-center gap-4">
+              {[1, 2, 3].map((i) => (
+                <div 
+                  key={i} 
+                  className={`h-1 w-12 rounded-full transition-all duration-500 ${i <= step ? 'bg-white' : 'bg-white/10'}`} 
+                />
+              ))}
+            </div>
+          </div>
+
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-card border-white/5"
+          >
+            {step === 1 && (
+              <div className="space-y-8">
+                <h2 className="text-3xl font-black tracking-tight uppercase">01. Initialization</h2>
                 <div>
-                  <label className="form-label">Website Name</label>
-                  <input
-                    type="text"
-                    name="siteName"
-                    value={formData.siteName}
-                    onChange={handleChange}
-                    className="glass-input w-full"
-                    placeholder="My Awesome Website"
-                    required
+                  <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4">Project Label</label>
+                  <input 
+                    type="text" 
+                    placeholder="Enter node identifier"
+                    className="form-input"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
                   />
                 </div>
-                <div>
-                  <label className="form-label">Domain Name</label>
-                  <input
-                    type="text"
-                    name="domain"
-                    value={formData.domain}
-                    onChange={handleChange}
-                    className="glass-input w-full"
-                    placeholder="mywebsite.com"
-                    required
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="form-label">Category</label>
-                  <select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    className="glass-input w-full"
-                    required
-                  >
-                    <option value="">Select a category</option>
-                    <option value="business">Business</option>
-                    <option value="portfolio">Portfolio</option>
-                    <option value="ecommerce">E-commerce</option>
-                    <option value="blog">Blog</option>
-                    <option value="other">Other</option>
-                  </select>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="space-y-8">
+                <h2 className="text-3xl font-black tracking-tight uppercase">02. Architecture</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {['Minimalist', 'Enterprise', 'Dynamic', 'Industrial'].map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => setFormData({...formData, template: t})}
+                      className={`p-10 rounded-2xl border text-left transition-all ${
+                        formData.template === t 
+                          ? 'border-white bg-white/5' 
+                          : 'border-white/5 hover:border-white/10'
+                      }`}
+                    >
+                      <p className="text-xl font-black tracking-tight uppercase">{t}</p>
+                    </button>
+                  ))}
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Template Selection */}
-            <div className="glass-morphism rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-6">Choose a Template</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {templates.map((template) => (
-                  <div
-                    key={template.id}
-                    onClick={() => setSelectedTemplate(template.id)}
-                    className={`p-6 rounded-lg border-2 cursor-pointer transition-colors ${
-                      selectedTemplate === template.id
-                        ? 'border-white bg-white/10'
-                        : 'border-white/20 hover:border-white/40'
-                    }`}
-                  >
-                    <h3 className="text-xl font-semibold mb-2">{template.name}</h3>
-                    <p className="text-gray-400">{template.description}</p>
-                  </div>
-                ))}
+            {step === 3 && (
+              <div className="space-y-8">
+                <h2 className="text-3xl font-black tracking-tight uppercase">03. Deployment</h2>
+                <div className="space-y-4">
+                  {['Shared', 'Litespeed', 'Dedicated'].map((p) => (
+                    <button
+                      key={p}
+                      onClick={() => setFormData({...formData, plan: p})}
+                      className={`w-full p-8 rounded-2xl border flex items-center justify-between transition-all ${
+                        formData.plan === p 
+                          ? 'border-white bg-white/5' 
+                          : 'border-white/5 hover:border-white/10'
+                      }`}
+                    >
+                      <span className="text-xl font-black tracking-tight uppercase">{p} Node</span>
+                      {formData.plan === p && (
+                        <div className="w-3 h-3 rounded-full bg-white animate-pulse" />
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Submit */}
-            <div className="text-center">
-              <button
-                type="submit"
-                disabled={!selectedTemplate}
-                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            <div className="mt-12 flex justify-between">
+              {step > 1 && (
+                <button 
+                  onClick={() => setStep(step - 1)}
+                  className="btn-secondary"
+                >
+                  Previous Phase
+                </button>
+              )}
+              <button 
+                onClick={handleNext}
+                className="btn-primary ml-auto px-12"
               >
-                Create Website
+                {step === 3 ? 'Initialize Deployment' : 'Proceed to Next Phase'}
               </button>
             </div>
-          </form>
+          </motion.div>
         </div>
       </div>
     </div>

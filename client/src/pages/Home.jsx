@@ -1,1083 +1,335 @@
-import React, { useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import SEO from '../components/SEO';
-import { useLenis } from 'lenis/react';
-import { ParallaxSection, ScrollReveal, StaggeredReveal, StaggeredItem } from '../components/ScrollAnimations';
-import { MagneticScroll, ElasticParallax } from '../components/InteractiveScrollAnimations';
-import { FloatingElements, MagneticCursor } from '../components/AdvancedScrollEffects';
-// import Snowfall from 'react-snowfall';
+import ScrollReveal from '../components/ScrollReveal';
 
-const MobileAnimatedCard = ({ children, index = 0 }) => {
-  const ref = useRef(null);
-  const [scrollDirection, setScrollDirection] = React.useState('down');
-  const lenis = useLenis();
-  
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-  const isMobile = window.innerWidth < 768;
-  
-  React.useEffect(() => {
-    if (!lenis) return;
-    
-    const handleScroll = ({ direction }) => {
-      setScrollDirection(direction === 1 ? 'down' : 'up');
-    };
-    
-    lenis.on('scroll', handleScroll);
-    return () => lenis.off('scroll', handleScroll);
-  }, [lenis]);
-  
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], 
-    scrollDirection === 'up' ? [-80, 0, 80] : [80, 0, -80]
-  );
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], 
-    scrollDirection === 'up' ? [0.95, 1, 0.85] : [0.85, 1, 0.95]
-  );
-  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], 
-    scrollDirection === 'up' ? [-10, 0, 10] : [10, 0, -10]
-  );
-  
-  if (!isMobile) {
-    return (
-      <motion.div
-        ref={ref}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: index * 0.1 }}
-        viewport={{ once: true }}
-      >
-        {children}
-      </motion.div>
-    );
-  }
-  
+const f = { h: "'Inter',sans-serif", b: "'Hanken Grotesk',sans-serif", l: "'Geist Mono','monospace'" };
+
+/* ─── 3D BACKGROUND ─── */
+const Bg3D = () => {
+  const sx = useSpring(0, { stiffness: 40, damping: 25 });
+  const sy = useSpring(0, { stiffness: 40, damping: 25 });
+  useEffect(() => {
+    const h = (e) => { sx.set((e.clientX / window.innerWidth - 0.5) * 80); sy.set((e.clientY / window.innerHeight - 0.5) * 80); };
+    window.addEventListener('mousemove', h); return () => window.removeEventListener('mousemove', h);
+  }, [sx, sy]);
   return (
-    <motion.div
-      ref={ref}
-      style={{ y, opacity, scale, rotateX, perspective: 1000 }}
-      className="transform-gpu will-change-transform"
-    >
-      {children}
-    </motion.div>
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      <motion.div style={{ x: sx, y: sy }} className="absolute top-[20%] left-[15%] w-[600px] h-[600px] bg-white/[0.015] blur-[120px] rounded-full" />
+      <motion.div style={{ x: useTransform(sx, v => -v * 1.3), y: useTransform(sy, v => -v * 1.3) }} className="absolute bottom-[20%] right-[15%] w-[500px] h-[500px] bg-white/[0.02] blur-[100px] rounded-full" />
+      <motion.div style={{ x: useTransform(sx, v => v * 0.15), y: useTransform(sy, v => v * 0.15), backgroundImage: 'radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px)', backgroundSize: '48px 48px' }} className="absolute inset-[-120px]" />
+    </div>
   );
 };
 
-const AnimatedSection = ({ children, className = "", animation = "slideUp" }) => {
-  const ref = useRef(null);
-  const [scrollDirection, setScrollDirection] = React.useState('down');
-  const lenis = useLenis();
-  
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-  const isInView = useInView(ref, { once: false, margin: "-50px" });
-  const isMobile = window.innerWidth < 768;
-  
-  React.useEffect(() => {
-    if (!lenis) return;
-    
-    const handleScroll = ({ direction }) => {
-      setScrollDirection(direction === 1 ? 'down' : 'up');
-    };
-    
-    lenis.on('scroll', handleScroll);
-    return () => lenis.off('scroll', handleScroll);
-  }, [lenis]);
-  
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], 
-    scrollDirection === 'up' ? [-30, 0, 30] : [30, 0, -30]
-  );
-  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
-  
-  const animations = {
-    slideUp: { initial: { opacity: 0, y: 100 }, animate: { opacity: 1, y: 0 } },
-    slideLeft: { initial: { opacity: 0, x: -100 }, animate: { opacity: 1, x: 0 } },
-    slideRight: { initial: { opacity: 0, x: 100 }, animate: { opacity: 1, x: 0 } },
-    scale: { initial: { opacity: 0, scale: 0.9 }, animate: { opacity: 1, scale: 1 } },
-    rotate: { initial: { opacity: 0, rotateY: -45 }, animate: { opacity: 1, rotateY: 0 } }
-  };
-  
-  if (!isMobile) {
-    const reverseAnimations = {
-      slideUp: { initial: { opacity: 0, y: -100 }, animate: { opacity: 1, y: 0 } },
-      slideLeft: { initial: { opacity: 0, x: 100 }, animate: { opacity: 1, x: 0 } },
-      slideRight: { initial: { opacity: 0, x: -100 }, animate: { opacity: 1, x: 0 } },
-      scale: { initial: { opacity: 0, scale: 1.1 }, animate: { opacity: 1, scale: 1 } },
-      rotate: { initial: { opacity: 0, rotateY: 45 }, animate: { opacity: 1, rotateY: 0 } }
-    };
-    
-    const currentAnimation = scrollDirection === 'up' ? reverseAnimations[animation] : animations[animation];
-    
-    return (
-      <motion.div
-        ref={ref}
-        initial={currentAnimation.initial}
-        animate={isInView ? currentAnimation.animate : currentAnimation.initial}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className={className}
-      >
-        {children}
-      </motion.div>
-    );
-  }
-  
-  return (
-    <motion.div
-      ref={ref}
-      style={{ y, opacity }}
-      className={`${className} transform-gpu will-change-transform relative z-10`}
-    >
-      {children}
-    </motion.div>
-  );
-};
+/* ─── GLASS CARD ─── */
+const Glass = ({ children, className = "" }) => (
+  <div className={`bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:border-white/20 transition-all duration-700 overflow-hidden relative group ${className}`} style={{ borderRadius: 0 }}>
+    {children}
+    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+  </div>
+);
 
+/* ─── HERO ─── */
 const Hero = () => {
   const { user } = useAuth();
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-  
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
-
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
   return (
-    <section 
-      ref={containerRef} 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-    >
-      <ParallaxSection speed={-0.3} className="absolute inset-0">
-        <div className="w-full h-full bg-gradient-to-br from-gray-900/20 via-black/40 to-gray-900/20" />
-      </ParallaxSection>
-      <motion.div 
-        style={{ y, opacity, scale }} 
-        className="w-full pt-32"
-      >
-        <div className="container-site">
-          <div className="max-w-6xl mx-auto text-center">
-            {/* <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="mb-8"
-            >
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-black text-sm font-bold">
-                  MH
-                </div>
-                <span className="text-gray-400 text-sm">Mohammed Hasnain</span>
-              </div>
-            </motion.div> */}
-
-            <FloatingElements count={3}>
-              <MagneticCursor strength={0.1}>
-                <motion.h1
-                  className="text-4xl md:text-6xl lg:text-8xl font-black leading-[0.9] mb-12 tracking-tight mt-8"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <motion.span 
-                    className="block"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 0.6 }}
-                  >
-                    WE CREATE
-                  </motion.span>
-                  <motion.span 
-                    className="block text-white"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 0.8 }}
-                  >
-                    DIGITAL EXPERIENCES
-                  </motion.span>
-                  <motion.span 
-                    className="block text-white/60 text-2xl md:text-4xl lg:text-5xl mt-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 1.2 }}
-                  >
-                    WebHaze Studios
-                  </motion.span>
-                </motion.h1>
-              </MagneticCursor>
-            </FloatingElements>
-
-
-
-            <motion.p
-              className="text-base md:text-lg lg:text-xl text-gray-300 mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed px-4 md:px-0"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1 }}
-            >
-              <span className="hidden md:inline">
-                Build, customize, and deploy professional websites rapidly with our scalable Website-as-a-Service platform. Lightning-fast hosting, 99.9% uptime, and 24/7 expert support.
-              </span>
-              <span className="md:hidden">
-                Professional Website-as-a-Service platform with lightning-fast hosting and 24/7 support.
-              </span>
-            </motion.p>
-
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.2 }}
-            >
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link to={user ? "/contact" : "/signup"} className="btn-primary">
-                  Get Started
-                </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link to="/pricing" className="btn-secondary">
-                  Explore Services
-                </Link>
-              </motion.div>
-            </motion.div>
-
-
-          </div>
+    <section ref={ref} className="relative min-h-screen flex items-center bg-black overflow-hidden">
+      <motion.div style={{ y, opacity }} className="w-full relative z-10 pt-32 pb-20 px-6 md:px-20">
+        <div className="max-w-[1440px] mx-auto">
+          <ScrollReveal>
+            <div className="inline-flex items-center gap-3 px-5 py-2.5 border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl mb-12" style={{ borderRadius: 0 }}>
+              <div className="w-2 h-2 bg-white animate-pulse" />
+              <span className="text-[11px] font-medium tracking-[0.15em] uppercase text-white/50" style={{ fontFamily: f.l }}>#1 Web Agency Hyderabad</span>
+            </div>
+          </ScrollReveal>
+          <motion.h1 className="text-[52px] md:text-[100px] lg:text-[140px] font-black leading-[0.9] mb-12 tracking-[-0.04em] uppercase" style={{ fontFamily: f.h }} initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}>
+            WE BUILD<br /><span className="text-white/20">WITHOUT LIMITS.</span>
+          </motion.h1>
+          <ScrollReveal delay={0.3}>
+            <p className="text-lg md:text-xl text-white/40 mb-16 max-w-xl leading-relaxed" style={{ fontFamily: f.b }}>Premium website development in Hyderabad. Immersive digital experiences for global visionaries.</p>
+          </ScrollReveal>
+          <ScrollReveal delay={0.5} className="flex flex-col sm:flex-row gap-4">
+            <Link to={user ? "/contact" : "/signup"} className="px-10 py-4 bg-white !text-black text-[12px] font-bold tracking-[0.15em] uppercase hover:bg-white/90 transition-all" style={{ borderRadius: 0, fontFamily: f.l, color: '#000000' }}>Launch Vision</Link>
+            <Link to="/pricing" className="px-10 py-4 bg-transparent text-white border border-white/[0.15] text-[12px] font-bold tracking-[0.15em] uppercase hover:border-white transition-all" style={{ borderRadius: 0, fontFamily: f.l }}>View Solutions</Link>
+          </ScrollReveal>
         </div>
       </motion.div>
     </section>
   );
 };
 
-
-
+/* ─── FEATURES ─── */
 const Features = () => {
-  const features = [
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
-      ),
-      title: "99.9% Uptime Guarantee",
-      description: "Your site stays online, all the time performance you can trust."
-    },
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-      ),
-      title: "Free SSL Certificate",
-      description: "Protect your visitors and boost trust with built-in SSL encryption."
-    },
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z" />
-        </svg>
-      ),
-      title: "24/7 Expert Support",
-      description: "Our friendly team is here for you anytime, day or night."
-    },
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
-      title: "Lightning-Fast SSD Storage",
-      description: "We deliver lightning-fast load times with SSD storage."
-    }
+  const items = [
+    { t: "99.9% UPTIME", d: "Enterprise-grade infrastructure with zero downtime guarantee.", span: "md:col-span-7" },
+    { t: "GLOBAL SSL", d: "End-to-end encryption across every endpoint.", span: "md:col-span-5" },
+    { t: "SSD STORAGE", d: "NVMe-powered edge delivery for sub-second loads.", span: "md:col-span-5" },
+    { t: "EXPERT SUPPORT", d: "Real engineers available 24/7 to help you scale.", span: "md:col-span-7" },
   ];
-
   return (
-    <AnimatedSection className="py-24">
-      <div className="container-site">
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Secure, scalable, and reliable hosting services
-            </h2>
-          </div>
+    <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
+      <div className="max-w-[1440px] mx-auto">
+        <ScrollReveal className="mb-16 md:mb-24">
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white/25 uppercase block mb-6" style={{ fontFamily: f.l }}>INFRASTRUCTURE</span>
+          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>SCALABLE &<br/><span className="text-white/20">RELIABLE.</span></h2>
         </ScrollReveal>
-        <StaggeredReveal staggerDelay={0.1}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {features.map((feature, index) => (
-              <StaggeredItem key={index}>
-                <motion.div
-                  className="text-center p-4 md:p-6 border border-white/10 rounded-lg hover:border-white/30 transition-all duration-300 glass-morphism"
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                <div className="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-full flex items-center justify-center text-white">
-                  {feature.icon}
-                </div>
-                  <h3 className="text-lg font-semibold mb-3">{feature.title}</h3>
-                  <p className="text-gray-400 text-sm">{feature.description}</p>
-                </motion.div>
-              </StaggeredItem>
-            ))}
-          </div>
-        </StaggeredReveal>
-      </div>
-    </AnimatedSection>
-  );
-};
-
-const Services = () => {
-  const services = [
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-      ),
-      title: "Free Website Builder with AI",
-      description: "Best free website builder in India with AI-powered tools. Create professional business websites with drag-and-drop editor."
-    },
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
-        </svg>
-      ),
-      title: "Web Hosting & Free Domain",
-      description: "Lightning-fast hosting with free domain registration. Perfect for businesses worldwide with 99.9% uptime guarantee."
-    },
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      ),
-      title: "Website Maintenance Services",
-      description: "Affordable website maintenance packages for global clients. Keep your website secure, updated, and optimized with 24/7 support."
-    }
-  ];
-
-  return (
-    <AnimatedSection id="services" className="py-24" data-scroll-section>
-      <div className="container-site">
-        <div 
-          className="text-center mb-16"
-          data-scroll
-          data-scroll-speed="0.1"
-        >
-          <h2 
-            className="text-3xl md:text-5xl font-bold mb-4"
-            data-scroll
-            data-scroll-speed="0.2"
-          >
-            WebHaze Services
-          </h2>
-          <p 
-            className="text-lg text-gray-400 max-w-3xl mx-auto"
-            data-scroll
-            data-scroll-speed="0.15"
-          >
-            WebHaze provides comprehensive Website-as-a-Service solutions to power your online success. From lightning-fast hosting to custom development, we've got you covered.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {services.map((service, index) => (
-            <MobileAnimatedCard key={index} index={index}>
-              <div 
-                className="p-8 border border-white/10 rounded-lg hover:border-white/30 transition-colors flex flex-col h-full"
-                data-scroll
-                data-scroll-speed={0.1 + index * 0.05}
-                data-scroll-delay={index * 0.1}
-              >
-              <div className="w-16 h-16 mb-6 bg-white/10 rounded-lg flex items-center justify-center text-white">
-                {service.icon}
-              </div>
-                <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
-                <p className="text-gray-400 flex-grow">{service.description}</p>
-              </div>
-            </MobileAnimatedCard>
-          ))}
-        </div>
-        <div 
-          className="text-center"
-          data-scroll
-          data-scroll-speed="0.1"
-        >
-          <Link to="/pricing" className="btn-primary">
-            Explore Hosting Plans
-          </Link>
-        </div>
-      </div>
-    </AnimatedSection>
-  );
-};
-
-const HowItWorks = () => {
-  const steps = [
-    {
-      number: "01",
-      title: "Choose a Plan",
-      description: "Pick the hosting plan that fits your website's needs and budget."
-    },
-    {
-      number: "02",
-      title: "Set Up Instantly",
-      description: "Get started right away with easy setup and 1-click app installs."
-    },
-    {
-      number: "03",
-      title: "We Launch Your Website",
-      description: "Go live with fast, secure, and reliable hosting—backed by expert support."
-    }
-  ];
-
-  return (
-    <AnimatedSection className="py-24" data-scroll-section>
-      <div className="container-site">
-        <div 
-          className="text-center mb-16"
-          data-scroll
-          data-scroll-speed="0.1"
-        >
-          <h2 
-            className="text-3xl md:text-5xl font-bold mb-4"
-            data-scroll
-            data-scroll-speed="0.2"
-          >
-            How it works
-          </h2>
-          <p 
-            className="text-lg text-gray-400 max-w-3xl mx-auto"
-            data-scroll
-            data-scroll-speed="0.15"
-          >
-            From choosing a package to ongoing support, our streamlined process makes launching your custom website simple, fast, and stress-free.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {steps.map((step, index) => (
-            <MobileAnimatedCard key={index} index={index}>
-              <div 
-                className="text-center"
-                data-scroll
-                data-scroll-speed={0.1 + index * 0.05}
-                data-scroll-delay={index * 0.1}
-              >
-              <div className="w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">
-                {step.number}
-              </div>
-                <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-                <p className="text-gray-400">{step.description}</p>
-              </div>
-            </MobileAnimatedCard>
-          ))}
-        </div>
-      </div>
-    </AnimatedSection>
-  );
-};
-
-const MaintenanceServices = () => {
-  const plans = [
-    {
-      title: "Basic Maintenance Package",
-      price: "₹999/month",
-      features: [
-        "Website security updates",
-        "Content updates (5 pages)",
-        "Performance monitoring",
-        "Monthly backup",
-        "Email support"
-      ]
-    },
-    {
-      title: "Professional Maintenance",
-      price: "₹2499/month",
-      features: [
-        "All basic features",
-        "SEO optimization",
-        "Analytics reporting",
-        "Weekly backups",
-        "Priority support",
-        "Plugin updates"
-      ]
-    },
-    {
-      title: "Enterprise Maintenance",
-      price: "₹4999/month",
-      features: [
-        "All professional features",
-        "24/7 monitoring",
-        "Daily backups",
-        "Security scanning",
-        "Performance optimization",
-        "Dedicated support manager"
-      ]
-    }
-  ];
-
-  return (
-    <AnimatedSection className="py-24">
-      <div className="container-site">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Website Maintenance Services Worldwide</h2>
-          <p className="text-lg text-gray-400 max-w-4xl mx-auto">
-            Affordable website maintenance packages with transparent pricing for clients worldwide. Serving USA, Canada, UK, Germany, Australia and globally. Keep your website secure, updated, and performing at its best.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={index}
-              className="p-8 border border-white/10 rounded-lg hover:border-white/30 transition-colors flex flex-col h-full"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-bold mb-2">{plan.title}</h3>
-                <div className="text-2xl font-bold">{plan.price}</div>
-              </div>
-              <ul className="space-y-3 mb-8 flex-grow">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-center text-gray-300">
-                    <svg className="w-5 h-5 text-white mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-auto">
-                <Link to="/contact" className="btn-primary w-full text-center">
-                  Get Started
-                </Link>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </AnimatedSection>
-  );
-};
-
-const Benefits = () => {
-  const benefits = [
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-        </svg>
-      ),
-      title: "Build professional trust",
-      description: "Establish credibility with professional templates, a custom domain, and GDPR compliance for legal peace of mind."
-    },
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
-        </svg>
-      ),
-      title: "Build your brand",
-      description: "Personalise your website, add your images, content, and make it remarkably yours."
-    },
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      ),
-      title: "Be found online",
-      description: "Boost visibility with SEO tools and automatic business listings, so people can find you or your service instantly."
-    },
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      ),
-      title: "Get your next customer",
-      description: "Add forms, contact options, and engaging calls-to-action to turn visitors into real leads."
-    },
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-        </svg>
-      ),
-      title: "Sell more, sell faster",
-      description: "Use booking tools or set up an online shop to get more sales."
-    },
-    {
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2l3 3" />
-        </svg>
-      ),
-      title: "Safe and secure",
-      description: "Built with security in mind, WebHaze ensures your website complies with the highest privacy standards."
-    }
-  ];
-
-  return (
-    <AnimatedSection className="py-24">
-      <div className="container-site">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Why choose WebHaze?</h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-            Everything you need to build, grow, and succeed online.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {benefits.map((benefit, index) => (
-            <motion.div
-              key={index}
-              className="p-6 border border-white/10 rounded-lg hover:border-white/30 transition-colors"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="w-14 h-14 bg-white/10 rounded-lg flex items-center justify-center mb-4 text-white">
-                {benefit.icon}
-              </div>
-              <h3 className="text-lg font-semibold mb-3">{benefit.title}</h3>
-              <p className="text-gray-400">{benefit.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </AnimatedSection>
-  );
-};
-
-const Testimonials = () => {
-  const testimonials = [
-    {
-      quote: "WebHaze transformed our online presence completely. Our website now loads faster, looks professional, and we've seen a 40% increase in customer inquiries since launch.",
-      author: "Sarah Mitchell",
-      role: "CEO, TechFlow Solutions",
-      stars: 5
-    },
-    {
-      quote: "The team at WebHaze delivered exactly what we needed - a modern, responsive website that showcases our restaurant perfectly. Online orders have doubled!",
-      author: "Marco Rodriguez",
-      role: "Owner, Bella Vista Restaurant",
-      stars: 5
-    },
-    {
-      quote: "Professional service from start to finish. WebHaze understood our vision and created a website that perfectly represents our brand. Highly recommended!",
-      author: "Jennifer Chen",
-      role: "Founder, GreenLeaf Consulting",
-      stars: 5
-    },
-    {
-      quote: "WebHaze made the entire process seamless. From design to deployment, everything was handled professionally. Our e-commerce site is performing beyond expectations.",
-      author: "David Thompson",
-      role: "Director, Urban Threads",
-      stars: 5
-    }
-  ];
-
-  return (
-    <AnimatedSection className="py-24 overflow-hidden" data-scroll-section>
-      <div className="container-site">
-        <div 
-          className="text-center mb-16"
-          data-scroll
-          data-scroll-speed="0.1"
-        >
-          <h2 
-            className="text-3xl md:text-5xl font-bold mb-4"
-            data-scroll
-            data-scroll-speed="0.2"
-          >
-            What Our Clients Say
-          </h2>
-          <p 
-            className="text-lg text-gray-400 max-w-3xl mx-auto"
-            data-scroll
-            data-scroll-speed="0.15"
-          >
-            Real stories from businesses that transformed their online presence with WebHaze.
-          </p>
-        </div>
-        <div 
-          className="relative"
-          data-scroll
-          data-scroll-speed="-0.1"
-          data-scroll-direction="horizontal"
-        >
-          <motion.div
-            className="flex gap-8"
-            animate={{ x: ["-100%", "0%"] }}
-            transition={{
-              duration: window.innerWidth < 768 ? 10 : 30,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-          >
-            {[...testimonials, ...testimonials].map((testimonial, index) => (
-              <motion.div
-                key={index}
-                className="flex-none w-[400px] p-8 glass-morphism rounded-lg"
-                whileHover={{ scale: 1.05, rotateY: 5 }}
-                transition={{ duration: 0.3 }}
-                style={{ perspective: '1000px' }}
-              >
-                <div className="flex gap-1 text-yellow-400 mb-4">
-                  {Array(testimonial.stars).fill("★").map((star, i) => (
-                    <span key={i}>{star}</span>
-                  ))}
-                </div>
-                <p className="text-gray-300 mb-6 leading-relaxed">{testimonial.quote}</p>
-                <div>
-                  <p className="font-semibold">{testimonial.author}</p>
-                  <p className="text-gray-400 text-sm">{testimonial.role}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
-    </AnimatedSection>
-  );
-};
-
-const HostingPlans = () => {
-  const plans = [
-    {
-      name: "Shared Hosting",
-      price: "$4.99",
-      description: "Launch your website without the hassle. Our shared hosting offers everything you need speed, security, and simplicity.",
-      features: [
-        "Host 1 Websites",
-        "5GB SSD Disk Space",
-        "Unmetered Bandwidth",
-        "2 Emails Accounts",
-        "2 Sub domains",
-        "24/7 Technical Support",
-        "99.9% Uptime Guarantee",
-        "Free SSL Certificate",
-        "24/7 Auto Backups"
-      ]
-    },
-    {
-      name: "E-commerce Hosting",
-      price: "$12.99",
-      description: "Start selling online with confidence. Our e-commerce hosting delivers the speed, security, and tools your store needs.",
-      features: [
-        "Host 1 Websites",
-        "25 GB SSD Disk Space",
-        "Unmetered Bandwidth",
-        "4 Emails Accounts",
-        "2 Sub domains",
-        "24/7 Technical Support",
-        "WooCommerce acceleration (LiteSpeed)",
-        "Free SSL Certificate",
-        "24/7 Auto Backups"
-      ],
-      popular: true
-    },
-    {
-      name: "WordPress Hosting",
-      price: "$7.99",
-      description: "Build faster with ease. Our WordPress hosting is optimized for speed, security, and effortless site management.",
-      features: [
-        "Host 1 Websites",
-        "7GB SSD Disk Space",
-        "Unmetered Bandwidth",
-        "2 Emails Accounts",
-        "2 Sub domains",
-        "24/7 Technical Support",
-        "WordPress acceleration (LiteSpeed)",
-        "Free SSL Certificate",
-        "24/7 Auto Backups"
-      ]
-    }
-  ];
-
-  return (
-    <AnimatedSection className="py-24">
-      <div className="container-site">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Choose Your Plan</h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-            Simple, transparent pricing that grows with you. Try any plan free for 30 days.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={index}
-              className={`p-8 border rounded-lg transition-all duration-300 relative flex flex-col h-full ${
-                plan.popular 
-                  ? 'border-white bg-white/5 scale-105' 
-                  : 'border-white/10 hover:border-white/30'
-              }`}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -100 : 100, rotateY: -30 }}
-              whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
-              whileHover={{ scale: 1.05, rotateY: 5 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              viewport={{ once: true }}
-              style={{ perspective: '1000px' }}
-            >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-gray-800 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                    Most Popular
-                  </span>
-                </div>
-              )}
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
-                <p className="text-lg font-bold mb-2">Starting from {plan.price}</p>
-                <p className="text-gray-400 text-sm">{plan.description}</p>
-              </div>
-              <ul className="space-y-3 mb-8 flex-grow">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-center text-gray-300">
-                    <svg className="w-5 h-5 text-white mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-auto">
-                <Link to="/contact" className="btn-primary w-full text-center">
-                  Contact Us
-                </Link>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        <div className="text-center">
-          <p className="text-gray-400 text-sm">
-            Custom pricing available • Contact us for detailed quotes • Flexible payment options
-          </p>
-        </div>
-      </div>
-    </AnimatedSection>
-  );
-};
-
-const FAQ = () => {
-  const [openIndex, setOpenIndex] = React.useState(null);
-  
-  const faqs = [
-    {
-      question: "Do you offer domain registration services?",
-      answer: "Yes, we offer comprehensive domain registration services. You can register new domains, transfer existing ones, and manage all your domains through our user-friendly control panel."
-    },
-    {
-      question: "Can I launch my site with your hosting?",
-      answer: "Absolutely! Our hosting plans are designed to get your website online quickly. We offer one-click installations for popular platforms like WordPress."
-    },
-    {
-      question: "How do I get started with WebHaze?",
-      answer: "Getting started is easy! Simply choose your hosting plan, register or transfer your domain, and our WebHaze platform will guide you through the setup process."
-    },
-    {
-      question: "Do you offer website design with hosting?",
-      answer: "Yes, we provide complete website design services alongside our hosting packages. Our professional design team can create custom websites tailored to your brand."
-    },
-    {
-      question: "Is domain management included?",
-      answer: "Domain management is included with all our hosting plans. You can manage DNS settings, set up subdomains, configure email forwarding, and handle domain renewals."
-    },
-    {
-      question: "Can I contact support through WhatsApp?",
-      answer: "Yes, we offer multiple support channels including WhatsApp for quick assistance. You can also reach our 24/7 support team via live chat, email, or phone."
-    }
-  ];
-
-  return (
-    <AnimatedSection className="py-24">
-      <div className="container-site">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Your hosting queries answered</h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-            We understand that choosing the right hosting provider is a crucial decision for your online presence. To help you make an informed choice, we have compiled a list of common questions asked.
-          </p>
-        </div>
-        <div className="max-w-4xl mx-auto">
-          {faqs.map((faq, index) => (
-            <motion.div
-              key={index}
-              className="border border-white/10 rounded-lg mb-4 overflow-hidden hover:border-white/30 transition-colors"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <button
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-white/5 transition-colors"
-              >
-                <span className="font-semibold pr-4">{faq.question}</span>
-                <svg
-                  className={`w-5 h-5 transition-transform ${
-                    openIndex === index ? 'rotate-180' : ''
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {openIndex === index && (
-                <div className="px-6 pb-5">
-                  <div className="border-t border-white/10 pt-4">
-                    <p className="text-gray-400">{faq.answer}</p>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+          {items.map((item, i) => (
+            <ScrollReveal key={i} delay={i * 0.1} className={item.span}>
+              <Glass className="h-full">
+                <div className="p-8 md:p-10 flex flex-col justify-between min-h-[200px] md:min-h-[240px]">
+                  <span className="text-[11px] font-medium tracking-[0.15em] text-white/20 uppercase mb-6" style={{ fontFamily: f.l }}>0{i + 1}</span>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-bold mb-3 tracking-[-0.02em] uppercase" style={{ fontFamily: f.h }}>{item.t}</h3>
+                    <p className="text-white/35 text-sm md:text-base leading-relaxed" style={{ fontFamily: f.b }}>{item.d}</p>
                   </div>
                 </div>
-              )}
-            </motion.div>
+              </Glass>
+            </ScrollReveal>
           ))}
         </div>
       </div>
-    </AnimatedSection>
+    </section>
   );
 };
 
-const WhyChoose = () => {
+/* ─── THE PROCESS ─── */
+const Process = () => {
+  const steps = [
+    { n: "01", t: "STRATEGY", d: "Precision global infrastructure.", detail: "We analyze your goals and architect the perfect digital foundation." },
+    { n: "02", t: "INTEGRATION", d: "Elite security & AI deployment.", detail: "One-click deployment with enterprise-grade security protocols." },
+    { n: "03", t: "LAUNCH", d: "Rapid scale with 24/7 support.", detail: "Go live instantly with edge hosting and round-the-clock monitoring." },
+  ];
   return (
-    <AnimatedSection className="py-24">
-      <div className="container-site">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Why Choose WebHaze?</h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-            We're not just another hosting provider. We're your digital growth partner.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              <h3 className="text-xl font-semibold">Lightning Fast Performance</h3>
-            </div>
-            <p className="text-gray-400 mb-6">
-              Our optimized servers and CDN ensure your website loads in under 2 seconds, keeping your visitors engaged and improving your search rankings.
-            </p>
-            
-            <div className="flex items-center gap-3 mb-4">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-              <h3 className="text-xl font-semibold">Enterprise-Grade Security</h3>
-            </div>
-            <p className="text-gray-400">
-              Advanced security measures including SSL certificates, DDoS protection, and regular security updates keep your website and data safe.
-            </p>
-          </div>
-          
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-              </svg>
-              <h3 className="text-xl font-semibold">Scalable Solutions</h3>
-            </div>
-            <p className="text-gray-400 mb-6">
-              Start small and grow big. Our infrastructure scales with your business, handling traffic spikes without breaking a sweat.
-            </p>
-            
-            <div className="flex items-center gap-3 mb-4">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z" />
-              </svg>
-              <h3 className="text-xl font-semibold">Expert Support</h3>
-            </div>
-            <p className="text-gray-400">
-              Our team of experts is available 24/7 to help you succeed. From technical issues to growth strategies, we've got you covered.
-            </p>
-          </div>
+    <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
+      <div className="max-w-[1440px] mx-auto">
+        <ScrollReveal className="mb-16 md:mb-24">
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white/25 uppercase block mb-6" style={{ fontFamily: f.l }}>METHODOLOGY</span>
+          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>THE<br/><span className="text-white/20">PROCESS.</span></h2>
+        </ScrollReveal>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {steps.map((s, i) => (
+            <ScrollReveal key={i} delay={i * 0.15}>
+              <Glass className="h-full">
+                <div className="absolute -top-4 -right-2 text-[140px] md:text-[160px] font-black text-white/[0.03] select-none leading-none pointer-events-none transition-all duration-700 group-hover:text-white/[0.06]" style={{ fontFamily: f.h }}>{s.n}</div>
+                <div className="relative z-10 p-8 md:p-10 flex flex-col h-full min-h-[280px] md:min-h-[360px]">
+                  <span className="text-[11px] font-medium tracking-[0.15em] text-white/20 uppercase mb-6" style={{ fontFamily: f.l }}>PHASE {s.n}</span>
+                  <div className="w-8 h-px bg-white/25 mb-8 group-hover:w-16 group-hover:bg-white/60 transition-all duration-700" />
+                  <h3 className="text-2xl md:text-[36px] font-bold mb-4 tracking-[-0.02em] uppercase leading-none" style={{ fontFamily: f.h }}>{s.t}</h3>
+                  <p className="text-white/40 text-sm md:text-base leading-relaxed" style={{ fontFamily: f.b }}>{s.d}</p>
+                  <p className="text-white/20 text-sm leading-relaxed mt-auto pt-6 border-t border-white/[0.05]" style={{ fontFamily: f.b }}>{s.detail}</p>
+                </div>
+              </Glass>
+            </ScrollReveal>
+          ))}
         </div>
       </div>
-    </AnimatedSection>
+    </section>
   );
 };
 
-const GetStarted = () => {
+/* ─── SERVICES ─── */
+const Services = () => {
+  const items = [
+    { t: "AI BUILDER", d: "Generate stunning professional sites in seconds with intelligent automation." },
+    { t: "ELITE HOSTING", d: "Lightning-fast edge nodes with custom domain and global CDN." },
+    { t: "NEXUS SUPPORT", d: "24/7 expert management for enterprise-scale operations." },
+  ];
+  return (
+    <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
+      <div className="max-w-[1440px] mx-auto">
+        <ScrollReveal className="mb-16 md:mb-24">
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white/25 uppercase block mb-6" style={{ fontFamily: f.l }}>CAPABILITIES</span>
+          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>THE<br/><span className="text-white/20">STUDIO.</span></h2>
+        </ScrollReveal>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16 md:mb-24">
+          {items.map((s, i) => (
+            <ScrollReveal key={i} delay={i * 0.1}>
+              <Glass className="h-full">
+                <div className="p-8 md:p-10 flex flex-col min-h-[220px] md:min-h-[280px]">
+                  <span className="text-[11px] font-medium tracking-[0.15em] text-white/20 uppercase mb-6" style={{ fontFamily: f.l }}>0{i + 1}</span>
+                  <h3 className="text-xl md:text-2xl font-bold mb-4 tracking-[-0.02em] uppercase" style={{ fontFamily: f.h }}>{s.t}</h3>
+                  <p className="text-white/35 text-sm md:text-base leading-relaxed mt-auto" style={{ fontFamily: f.b }}>{s.d}</p>
+                </div>
+              </Glass>
+            </ScrollReveal>
+          ))}
+        </div>
+        <ScrollReveal className="flex justify-center">
+          <Link to="/pricing" className="px-14 py-5 bg-white !text-black text-[12px] font-bold tracking-[0.15em] uppercase hover:bg-white/90 transition-all" style={{ borderRadius: 0, fontFamily: f.l, color: '#000000' }}>Explore Plans</Link>
+        </ScrollReveal>
+      </div>
+    </section>
+  );
+};
+
+/* ─── PRICING ─── */
+const Pricing = () => {
+  const plans = [
+    { t: "BASIC", p: "₹999", feats: ["Security patching", "Cloud backups", "Standard support"] },
+    { t: "PROFESSIONAL", p: "₹2,499", feats: ["SEO Optimization", "Elite Support", "Performance tuning"], pop: true },
+    { t: "ENTERPRISE", p: "₹4,999", feats: ["24/7 Response", "Shadow backups", "Custom integration"] },
+  ];
+  return (
+    <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
+      <div className="max-w-[1440px] mx-auto">
+        <ScrollReveal className="mb-16 md:mb-24">
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white/25 uppercase block mb-6" style={{ fontFamily: f.l }}>INVESTMENT</span>
+          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>CARE<br/><span className="text-white/20">STUDIO.</span></h2>
+        </ScrollReveal>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {plans.map((p, i) => (
+            <ScrollReveal key={i} delay={i * 0.1}>
+              <div className={`relative flex flex-col h-full p-8 md:p-10 border transition-all duration-700 ${p.pop ? 'border-white/20 bg-white/[0.05]' : 'border-white/[0.08] bg-white/[0.02]'}`} style={{ borderRadius: 0 }}>
+                {p.pop && <div className="absolute -top-3.5 left-8 bg-white text-black text-[10px] font-bold uppercase tracking-[0.15em] px-4 py-1.5" style={{ borderRadius: 0, fontFamily: f.l }}>Elite Choice</div>}
+                <span className="text-[11px] font-medium tracking-[0.15em] text-white/25 uppercase block mb-8" style={{ fontFamily: f.l }}>{p.t}</span>
+                <div className="flex items-baseline gap-2 mb-10">
+                  <span className="text-4xl md:text-[56px] font-black text-white tracking-[-0.03em]" style={{ fontFamily: f.h }}>{p.p}</span>
+                  <span className="text-white/20 text-[11px] tracking-[0.1em]" style={{ fontFamily: f.l }}>/MO</span>
+                </div>
+                <ul className="space-y-4 mb-10 flex-grow">
+                  {p.feats.map((feat, j) => (
+                    <li key={j} className="flex items-center text-white/35 gap-3 text-sm md:text-base" style={{ fontFamily: f.b }}>
+                      <div className="w-1 h-1 bg-white/30 flex-shrink-0" />{feat}
+                    </li>
+                  ))}
+                </ul>
+                <Link to="/contact" className={`block text-center px-6 py-4 text-[11px] font-bold tracking-[0.15em] uppercase transition-all ${p.pop ? 'bg-white !text-black hover:bg-white/90' : 'bg-transparent text-white border border-white/[0.08] hover:border-white'}`} style={{ borderRadius: 0, fontFamily: f.l, color: p.pop ? '#000000' : undefined }}>
+                  {p.pop ? "Get Started" : "Initialize"}
+                </Link>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─── TESTIMONIALS ─── */
+const Testimonials = () => {
+  const items = [
+    { q: "WebHaze transformed our online presence. 40% growth in organic traffic within weeks.", a: "Sarah M.", r: "CEO, TechFlow", v: "https://i.pravatar.cc/150?u=sarah" },
+    { q: "Modern, responsive, and it doubled our online orders. Outstanding support.", a: "Marco R.", r: "Owner, Bella Vista", v: "https://i.pravatar.cc/150?u=marco" },
+    { q: "A site that perfectly represents our brand. Worth every rupee invested.", a: "Jennifer C.", r: "Founder, GreenLeaf", v: "https://i.pravatar.cc/150?u=jennifer" },
+  ];
+  return (
+    <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
+      <div className="max-w-[1440px] mx-auto">
+        <ScrollReveal className="mb-16 md:mb-24">
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white/25 uppercase block mb-6" style={{ fontFamily: f.l }}>TESTIMONIALS</span>
+          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>THE<br/><span className="text-white/20">VOICE.</span></h2>
+        </ScrollReveal>
+        <div className="flex flex-col gap-6 md:gap-12">
+          {items.map((t, i) => (
+            <ScrollReveal key={i} delay={i * 0.1} className={`w-full md:w-8/12 ${i % 2 === 0 ? 'self-start' : 'self-end'}`}>
+              <Glass className="h-full">
+                <div className="p-8 md:p-12 flex flex-col justify-between h-full min-h-[280px]">
+                  <div>
+                    <div className="flex gap-1 text-white/40 mb-6">{[1,2,3,4,5].map(s => <svg key={s} className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)}</div>
+                    <p className="text-white/50 text-base md:text-xl leading-relaxed italic" style={{ fontFamily: f.b }}>"{t.q}"</p>
+                  </div>
+                  <div className="flex items-center gap-4 border-t border-white/[0.05] pt-6 mt-8">
+                    <img src={t.v} alt={t.a} className="w-12 h-12 grayscale border border-white/[0.08]" style={{ borderRadius: 0 }} />
+                    <div>
+                      <p className="font-bold text-base text-white" style={{ fontFamily: f.h }}>{t.a}</p>
+                      <p className="text-white/20 text-[10px] uppercase tracking-[0.1em]" style={{ fontFamily: f.l }}>{t.r}</p>
+                    </div>
+                  </div>
+                </div>
+              </Glass>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─── FAQ ─── */
+const FAQ = () => {
+  const [open, setOpen] = useState(null);
+  const faqs = [
+    { q: "Do you offer domain registration?", a: "Yes. Elite global domain management with full DNS control, WHOIS privacy, and auto-renewal included." },
+    { q: "How fast can I launch?", a: "Instantly. Our automated pipeline goes live the moment you approve. Zero waiting." },
+    { q: "Can I contact support via WhatsApp?", a: "Absolutely. 24/7 direct access to our engineering team via WhatsApp, Phone, and Email." },
+  ];
+  return (
+    <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
+      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row gap-12 lg:gap-24">
+        <div className="lg:w-5/12">
+          <ScrollReveal className="lg:sticky lg:top-32">
+            <span className="text-[11px] font-medium tracking-[0.15em] text-white/25 uppercase block mb-6" style={{ fontFamily: f.l }}>FAQ</span>
+            <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95] mb-6" style={{ fontFamily: f.h }}>THE<br/><span className="text-white/20">INSIGHTS.</span></h2>
+            <p className="text-white/25 text-sm leading-relaxed" style={{ fontFamily: f.b }}>Everything you need before launch.</p>
+          </ScrollReveal>
+        </div>
+        <div className="lg:w-7/12 space-y-2">
+          {faqs.map((faq, i) => (
+            <ScrollReveal key={i} delay={i * 0.1} direction="left">
+              <div>
+                <button onClick={() => setOpen(open === i ? null : i)} className={`w-full text-left p-6 md:p-8 flex items-center justify-between transition-all duration-500 border border-white/[0.08] ${open === i ? 'bg-white/[0.05]' : 'bg-white/[0.02] hover:bg-white/[0.04]'}`} style={{ borderRadius: 0 }}>
+                  <span className="text-base md:text-lg font-bold tracking-[-0.01em] uppercase pr-4" style={{ fontFamily: f.h }}>{faq.q}</span>
+                  <div className={`w-8 h-8 border border-white/[0.08] flex-shrink-0 flex items-center justify-center transition-all duration-500 ${open === i ? 'bg-white text-black rotate-180' : 'text-white'}`} style={{ borderRadius: 0 }}>
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="square" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  </div>
+                </button>
+                <AnimatePresence>
+                  {open === i && (
+                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }} className="overflow-hidden">
+                      <div className="p-6 md:p-8 text-white/35 text-sm md:text-base leading-relaxed bg-white/[0.02] border-x border-b border-white/[0.08]" style={{ fontFamily: f.b, borderRadius: 0 }}>{faq.a}</div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─── CTA ─── */
+const CTA = () => {
   const { user } = useAuth();
-  
   return (
-    <AnimatedSection className="py-24 bg-black text-white">
-      <div className="container-site text-center">
-        <motion.h2 
-          className="text-3xl md:text-5xl font-bold mb-6"
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          Ready to Build with WebHaze?
-        </motion.h2>
-        <motion.p 
-          className="text-lg text-gray-400 mb-8 max-w-3xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          Join thousands of businesses worldwide that trust WebHaze's Website-as-a-Service platform for their professional online presence.
-        </motion.p>
-        
-        <motion.div 
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-        >
-          <Link to={user ? "/contact" : "/signup"} className="btn-primary">
-            Start Building Your Website
-          </Link>
-          <Link to="/contact" className="btn-secondary">
-            Contact WebHaze Team
-          </Link>
-        </motion.div>
+    <section className="py-32 md:py-48 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
+      <div className="max-w-[1440px] mx-auto text-center">
+        <ScrollReveal>
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white/25 uppercase block mb-8" style={{ fontFamily: f.l }}>LET'S WORK TOGETHER</span>
+          <h2 className="text-[48px] md:text-[96px] lg:text-[140px] font-black tracking-[-0.04em] leading-[0.85] uppercase mb-16" style={{ fontFamily: f.h }}>READY TO<br/><span className="text-white/20">SCALE?</span></h2>
+        </ScrollReveal>
+        <ScrollReveal delay={0.2} className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link to={user ? "/contact" : "/signup"} className="px-14 py-5 bg-white !text-black text-[12px] font-bold tracking-[0.15em] uppercase hover:bg-white/90 transition-all" style={{ borderRadius: 0, fontFamily: f.l, color: '#000000' }}>Launch Vision</Link>
+          <Link to="/contact" className="px-14 py-5 bg-transparent text-white border border-white/[0.15] text-[12px] font-bold tracking-[0.15em] uppercase hover:border-white transition-all" style={{ borderRadius: 0, fontFamily: f.l }}>Contact Us</Link>
+        </ScrollReveal>
       </div>
-    </AnimatedSection>
+    </section>
   );
 };
 
-const Home = () => {
-  return (
-    <div className="relative">
-      <SEO 
-        title="WebHaze - Website-as-a-Service Platform | Professional Web Development & Hosting"
-        description="WebHaze is a scalable Website-as-a-Service platform that enables businesses to build, customize, and deploy professional websites rapidly."
-        keywords="WebHaze, website-as-a-service, professional web development, website hosting"
-        canonical="/"
-      />
-      {/* <Snowfall /> */}
-      
-      <Hero />
-      <Features />
-      <Services />
-      <HowItWorks />
-      <MaintenanceServices />
-      <Benefits />
-      <Testimonials />
-      <HostingPlans />
-      <FAQ />
-      <WhyChoose />
-      <GetStarted />
-    </div>
-  );
-};
+/* ─── HOME ─── */
+const Home = () => (
+  <div className="relative">
+    <SEO title="#1 Web Designing Agency in Hyderabad | WebHaze Studios" description="WebHaze Studios is the best website designing company in Hyderabad. Professional web development, premium hosting, and SEO services." keywords="Web Designing Hyderabad, Website Designers Hyderabad, WebHaze Hyderabad" canonical="/" />
+    <Bg3D />
+    <Hero />
+    <Features />
+    <Process />
+    <Services />
+    <Pricing />
+    <Testimonials />
+    <FAQ />
+    <CTA />
+  </div>
+);
 
 export default Home;

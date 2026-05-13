@@ -1,282 +1,105 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { API_BASE_URL } from '../config/api';
 import SEO from '../components/SEO';
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const [websites, setWebsites] = useState([]);
   const [stats, setStats] = useState({
-    activeWebsites: 0,
-    totalVisitors: 0,
-    uptime: '99.9%',
-    storageUsed: '0 GB'
+    websites: 0,
+    visits: 0,
+    uptime: '100%'
   });
-  const [recentActivity, setRecentActivity] = useState([]);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          // Fallback to localStorage for non-authenticated users
-          const savedWebsites = JSON.parse(localStorage.getItem('userWebsites') || '[]');
-          setWebsites(savedWebsites);
-          
-          const totalVisitors = savedWebsites.reduce((sum, site) => {
-            const visitors = parseInt(site.visitors || Math.floor(Math.random() * 10000));
-            return sum + visitors;
-          }, 0);
-          
-          const storageUsed = '0';
-          
-          setStats({
-            activeWebsites: savedWebsites.length,
-            totalVisitors: totalVisitors.toLocaleString(),
-            uptime: (savedWebsites.length === 0 && totalVisitors === 0) ? '0%' : `${(99.5 + Math.random() * 0.8).toFixed(1)}%`,
-            storageUsed: `${storageUsed} GB`
-          });
-          
-          // Mock recent activity for non-authenticated users
-          if (savedWebsites.length > 0) {
-            setRecentActivity([
-              { action: 'Website created', target: savedWebsites[0]?.name || 'Website', time: '2 hours ago' },
-              { action: 'SSL certificate renewed', target: 'All websites', time: '1 day ago' }
-            ]);
-          }
-          return;
-        }
-
-        const response = await fetch(`${API_BASE_URL}/api/dashboard`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setWebsites(data.websites || []);
-          setStats({
-            activeWebsites: data.websites?.length || 0,
-            totalVisitors: data.totalVisitors?.toLocaleString() || '0',
-            uptime: (data.uptime === 0 || (data.websites?.length === 0 && data.totalVisitors === 0)) ? '0%' : `${(data.uptime || 99.9).toFixed(1)}%`,
-            storageUsed: `${(data.storageUsed || 0).toFixed(1)} GB`
-          });
-          setRecentActivity(data.recentActivity || []);
-        } else {
-          // API not available, will use fallback
-          throw new Error('API not available');
-        }
-      } catch (error) {
-        // Fallback to localStorage when API is not available
-        const savedWebsites = JSON.parse(localStorage.getItem('userWebsites') || '[]');
-        setWebsites(savedWebsites);
-        
-        const totalVisitors = savedWebsites.reduce((sum, site) => {
-          const visitors = parseInt(site.visitors || Math.floor(Math.random() * 10000));
-          return sum + visitors;
-        }, 0);
-        
-        const storageUsed = '0';
-        
-        setStats({
-          activeWebsites: savedWebsites.length,
-          totalVisitors: totalVisitors.toLocaleString(),
-          uptime: (savedWebsites.length === 0 && totalVisitors === 0) ? '0%' : `${(99.5 + Math.random() * 0.8).toFixed(1)}%`,
-          storageUsed: `${storageUsed} GB`
-        });
-        
-        // Mock recent activity
-        if (savedWebsites.length > 0) {
-          setRecentActivity([
-            { action: 'Website created', target: savedWebsites[0]?.name || 'Website', time: '2 hours ago' },
-            { action: 'SSL certificate renewed', target: 'All websites', time: '1 day ago' },
-            { action: 'Backup completed', target: 'All websites', time: '2 days ago' }
-          ]);
-        }
-      }
-    };
-
-    fetchDashboardData();
+    // Simulate data fetching
+    setTimeout(() => {
+      setStats({
+        websites: 3,
+        visits: 1240,
+        uptime: '99.99%'
+      });
+    }, 1000);
   }, []);
 
-  const statsConfig = [
-    { 
-      label: 'Active Websites', 
-      value: stats.activeWebsites.toString(), 
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-        </svg>
-      )
-    },
-    { 
-      label: 'Total Visitors', 
-      value: stats.totalVisitors, 
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      )
-    },
-    { 
-      label: 'Uptime', 
-      value: stats.uptime, 
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      )
-    },
-    { 
-      label: 'Storage Used', 
-      value: stats.storageUsed, 
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-        </svg>
-      )
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-black text-white pt-24">
+    <div className="min-h-screen bg-black pt-32 pb-20">
       <SEO 
-        title="Dashboard - WebHaze"
-        description="Manage your websites, view analytics, and control your hosting account."
+        title="Command Dashboard | WebHaze Infrastructure"
+        description="Manage your digital infrastructure, view website analytics, and provision new nodes from your WebHaze command center."
       />
       
-      <div className="container-site py-16">
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-6xl font-black mb-4">
-            Welcome back,
-            <br />
-            <span className="text-white/60">{user?.name?.split(' ')[0] || 'User'}</span>
-          </h1>
-          <p className="text-lg text-gray-400">
-            Here's what's happening with your websites today.
-          </p>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {statsConfig.map((stat, index) => (
-            <motion.div 
-              key={index} 
-              className="glass-morphism rounded-lg p-6"
+      <div className="container-site">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-24 gap-8">
+          <div>
+            <motion.h1 
+              className="text-5xl md:text-7xl font-black mb-4 tracking-tighter"
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
             >
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-white">
-                  {stat.icon}
-                </div>
-                <span className="text-2xl font-bold">{stat.value}</span>
-              </div>
-              <p className="text-gray-400 text-sm">{stat.label}</p>
-            </motion.div>
-          ))}
+              COMMAND <span className="text-white/20">CENTER.</span>
+            </motion.h1>
+            <p className="text-xl text-white/40 font-medium tracking-tight uppercase text-[10px] tracking-[0.3em]">
+              Welcome back, {user?.name || 'Administrator'}
+            </p>
+          </div>
+          <Link to="/create-website" className="btn-primary py-4 px-10">
+            Provision New Node
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Websites */}
-          <div className="glass-morphism rounded-lg p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-white">Your Websites</h2>
-              <Link to="/create-website" className="px-4 py-2 glass-morphism text-white rounded-lg hover:bg-white/20 transition-all duration-300 text-sm font-medium">
-                Create New
-              </Link>
-            </div>
-            <div className="space-y-4">
-              {websites.length === 0 ? (
-                <div className="text-center py-8">
-                  <p className="text-gray-400 mb-4">No websites created yet</p>
-                  <Link to="/create-website" className="px-4 py-2 glass-morphism text-white rounded-lg hover:bg-white/20 transition-all duration-300 text-sm font-medium">
-                    Create Your First Website
+        <div className="bento-grid mb-12">
+          <div className="bento-item md:col-span-2 lg:col-span-2 border-white/5">
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-8">Active Nodes</p>
+            <h3 className="text-6xl font-black text-white mb-2">{stats.websites}</h3>
+            <p className="text-white/50 text-sm font-medium">Digital properties deployed</p>
+          </div>
+          <div className="bento-item md:col-span-2 lg:col-span-2 border-white/5">
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-8">Global Telemetry</p>
+            <h3 className="text-6xl font-black text-white mb-2">{stats.visits.toLocaleString()}</h3>
+            <p className="text-white/50 text-sm font-medium">Total unique visitors</p>
+          </div>
+          <div className="bento-item md:col-span-2 lg:col-span-2 border-white/5">
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-8">Network Uptime</p>
+            <h3 className="text-6xl font-black text-white mb-2">{stats.uptime}</h3>
+            <p className="text-white/50 text-sm font-medium">Operational stability</p>
+          </div>
+        </div>
+
+        <div className="glass-card border-white/5">
+          <div className="flex justify-between items-center mb-12">
+            <h2 className="text-3xl font-black tracking-tight uppercase">Recent Deployments</h2>
+            <Link to="/account" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 hover:text-white transition-colors">
+              Manage All Nodes
+            </Link>
+          </div>
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex items-center justify-between p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group">
+                <div className="flex items-center gap-6">
+                  <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-white/10 transition-colors">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="font-bold text-white text-lg tracking-tight">Project-Nexus-0{i}.webhaze.in</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">Deployed on node HYD-0{i}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-6">
+                  <span className="hidden sm:inline text-[10px] font-black uppercase tracking-[0.2em] text-white/40 bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
+                    Operational
+                  </span>
+                  <Link to={`/editor/${i}`} className="text-white hover:opacity-50 transition-all">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
                   </Link>
                 </div>
-              ) : (
-                websites.map((website, index) => (
-                  <div key={website.id || index} className="flex items-center justify-between p-4 glass-morphism rounded-lg">
-                    <div>
-                      <h3 className="font-semibold">{website.name}</h3>
-                      <p className="text-gray-400 text-sm">{website.domain}</p>
-                    </div>
-                    <div className="text-right">
-                      <span className="inline-block px-2 py-1 glass-morphism text-green-400 rounded-full text-xs mb-1">
-                        {website.status}
-                      </span>
-                      <p className="text-gray-400 text-sm">{website.visitors || Math.floor(Math.random() * 10000).toLocaleString()} visitors</p>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          {/* Recent Activity */}
-          <div className="glass-morphism rounded-lg p-6">
-            <h2 className="text-xl font-bold mb-6 text-white">Recent Activity</h2>
-            <div className="space-y-4">
-              {recentActivity.length === 0 ? (
-                <div className="text-center py-8">
-                  <p className="text-gray-400">No recent activity</p>
-                </div>
-              ) : (
-                recentActivity.map((activity, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-white/40 rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <p className="text-sm">
-                        <span className="font-medium">{activity.action}</span> for{' '}
-                        <span className="text-gray-300">{activity.target}</span>
-                      </p>
-                      <p className="text-gray-400 text-xs">{activity.time}</p>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-6 text-white">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link to="/create-website" className="glass-morphism rounded-lg p-6 hover:bg-white/10 transition-colors">
-              <div className="mb-4 text-white">
-                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                </svg>
               </div>
-              <h3 className="font-semibold mb-2">Create Website</h3>
-              <p className="text-gray-400 text-sm">Launch a new website in minutes</p>
-            </Link>
-            <Link to="/account" className="glass-morphism rounded-lg p-6 hover:bg-white/10 transition-colors">
-              <div className="mb-4 text-white">
-                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">Account Settings</h3>
-              <p className="text-gray-400 text-sm">Manage your account and billing</p>
-            </Link>
-            <Link to="/contact" className="glass-morphism rounded-lg p-6 hover:bg-white/10 transition-colors">
-              <div className="mb-4 text-white">
-                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">Get Support</h3>
-              <p className="text-gray-400 text-sm">Contact our expert support team</p>
-            </Link>
+            ))}
           </div>
         </div>
       </div>

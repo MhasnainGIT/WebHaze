@@ -1,25 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-
-
   html {
     @apply scroll-smooth antialiased;
+    background-color: #000000;
   }
 
   body {
-    @apply bg-black text-white;
+    @apply bg-background text-white selection:bg-white selection:text-black;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     overflow-x: hidden;
   }
 
-  ::selection {
-    @apply bg-white/10 text-white;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tighter;
   }
 }
 
@@ -28,152 +24,67 @@
     @apply mx-auto px-6 max-w-7xl;
   }
 
-  .text-body-lg {
-    @apply text-lg leading-relaxed;
+  /* Monochrome Premium Glassmorphism */
+  .glass-morphism {
+    @apply bg-white/[0.02] backdrop-blur-3xl border border-white/5;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
   }
 
-  .text-body {
-    @apply text-base leading-relaxed;
+  .glass-card {
+    @apply glass-morphism rounded-2xl p-8 transition-all duration-500 hover:border-white/10 hover:bg-white/[0.04];
   }
 
-  /* Enhanced Liquid Glass Buttons */
+  /* Bento Grid Layout */
+  .bento-grid {
+    @apply grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6;
+  }
+
+  .bento-item {
+    @apply glass-card overflow-hidden relative;
+  }
+
+  /* Premium Monochrome Buttons */
   .btn {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-medium transition-all duration-300;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transform-style: preserve-3d;
-  }
-
-  .btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 1;
-  }
-
-  .btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s;
-    z-index: 0;
-  }
-
-  .btn:hover::before {
-    left: 100%;
-  }
-
-  .btn:hover::after {
-    opacity: 1;
-  }
-
-  .btn:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+    @apply inline-flex items-center justify-center rounded-full px-8 py-4 text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-500 relative overflow-hidden;
   }
 
   .btn-primary {
-    @apply btn bg-white/10 text-white hover:bg-white/20 border border-white/20;
+    @apply btn bg-white text-black hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98];
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
   }
 
   .btn-secondary {
-    @apply btn bg-white/5 text-white border border-white/10 hover:bg-white/10;
+    @apply btn border border-white/10 bg-transparent text-white hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98];
   }
 
-  /* Cards */
-  .card {
-    @apply rounded-2xl bg-white p-8 shadow-lg shadow-gray-200/50 
-           transition duration-200 hover:shadow-xl hover:shadow-gray-200/75;
+  /* Monochrome Gradient Text */
+  .text-liquid {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white/80 to-white/50;
   }
 
   /* Forms */
   .form-input {
-    @apply block w-full rounded-lg border-2 border-black px-4 py-3
-           text-black bg-white transition duration-200
-           hover:border-black focus:border-black focus:outline-none;
-  }
-
-  .form-label {
-    @apply mb-2 block text-sm font-medium text-white;
+    @apply block w-full rounded-xl border border-white/5 px-4 py-3
+           text-white bg-white/[0.03] transition-all duration-300
+           hover:border-white/10 focus:border-white/20 focus:outline-none focus:ring-0;
   }
 }
 
-/* Advanced 3D Animations */
-@keyframes float {
-  0% { transform: translateY(0px) rotateX(0deg); }
-  50% { transform: translateY(-10px) rotateX(5deg); }
-  100% { transform: translateY(0px) rotateX(0deg); }
+/* Custom Animations */
+@keyframes ambient-glow {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.1; }
+  33% { transform: translate(30px, -50px) scale(1.1); opacity: 0.15; }
+  66% { transform: translate(-20px, 20px) scale(0.9); opacity: 0.12; }
 }
 
-@keyframes rotate3d {
-  0% { transform: rotateY(0deg) rotateX(0deg); }
-  100% { transform: rotateY(360deg) rotateX(360deg); }
+.animate-ambient {
+  animation: ambient-glow 15s ease-in-out infinite;
 }
-
-@keyframes morphing {
-  0%, 100% { border-radius: 20px; transform: scale(1) rotate(0deg); }
-  25% { border-radius: 30px 10px; transform: scale(1.05) rotate(1deg); }
-  50% { border-radius: 10px 30px; transform: scale(0.95) rotate(-1deg); }
-  75% { border-radius: 25px 15px; transform: scale(1.02) rotate(0.5deg); }
-}
-
-@keyframes parallaxFloat {
-  0%, 100% { transform: translateY(0px) translateX(0px) rotateZ(0deg); }
-  25% { transform: translateY(-5px) translateX(2px) rotateZ(1deg); }
-  50% { transform: translateY(-10px) translateX(0px) rotateZ(0deg); }
-  75% { transform: translateY(-5px) translateX(-2px) rotateZ(-1deg); }
-}
-
-@keyframes liquidShimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-
 
 .perspective-1000 {
   perspective: 1000px;
 }
 
-.transform-3d {
+.preserve-3d {
   transform-style: preserve-3d;
-}
-
-.liquid-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  background-size: 200% 100%;
-  animation: liquidShimmer 2s infinite;
-}
-
-.scroll-reveal {
-  opacity: 0;
-  transform: translateY(100px) rotateX(-15deg);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.scroll-reveal.revealed {
-  opacity: 1;
-  transform: translateY(0) rotateX(0deg);
-}
-
-.magnetic-hover {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.magnetic-hover:hover {
-  transform: scale(1.05) rotateY(5deg) rotateX(5deg);
 }

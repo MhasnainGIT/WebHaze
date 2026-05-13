@@ -130,14 +130,14 @@ const PremiumNavbar = () => {
 
                 <div className="flex flex-col items-center gap-8 w-full">
                   {user ? (
-                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-6">
+                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-10 items-center w-full">
                       <Link to="/dashboard" className="text-xl font-black tracking-[0.2em] text-white/50 uppercase">Dashboard</Link>
-                      <button onClick={logout} className="text-xl font-black tracking-[0.2em] text-white uppercase">Logout</button>
+                      <button onClick={logout} className="px-12 py-5 bg-white !text-black text-xs font-black tracking-[0.3em] uppercase hover:bg-white/90 transition-all block w-full" style={{ borderRadius: 0, color: '#000000' }}>Logout</button>
                     </motion.div>
                   ) : (
-                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-10 items-center">
+                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-10 items-center w-full">
                       <Link to="/login" className="text-xl font-black tracking-[0.2em] text-white/50 uppercase">Login</Link>
-                      <Link to="/signup" className="px-12 py-5 bg-white text-black text-xs font-black tracking-[0.3em] rounded-full uppercase hover:bg-white/80 transition-all">
+                      <Link to="/signup" className="px-12 py-5 bg-white !text-black text-xs font-black tracking-[0.3em] uppercase hover:bg-white/90 transition-all block w-full" style={{ borderRadius: 0, color: '#000000' }}>
                         Join Nexus
                       </Link>
                     </motion.div>

@@ -6,8 +6,13 @@ import { useAuth } from '../../contexts/AuthContext';
 const PremiumNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
   const { user, logout } = useAuth();
   const location = useLocation();
+
+  const toggleDropdown = (name) => {
+    setOpenDropdown(openDropdown === name ? null : name);
+  };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -134,33 +139,60 @@ const PremiumNavbar = () => {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div 
-              className="fixed inset-0 bg-[#000000] z-[1000] flex flex-col items-center justify-center min-h-screen w-screen"
+              className="fixed inset-0 bg-[#000000] z-[1000] flex flex-col items-center overflow-y-auto min-h-screen w-screen px-6 pt-32 pb-12"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="flex flex-col items-center gap-12 text-center w-full max-w-xs mx-auto">
+              <div className="flex flex-col items-center gap-10 text-center w-full max-w-sm mx-auto">
                 {navLinks.map((link, i) => (
                   <motion.div 
                     key={link.name}
                     initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.1 + i * 0.05, duration: 0.5 }}
+                    className="w-full"
                   >
                     {link.dropdown ? (
-                      <div className="flex flex-col items-center gap-6">
-                        <span className="text-2xl font-black tracking-tighter text-white/40 uppercase block">{link.name}</span>
-                        <div className="flex flex-col gap-4">
-                          {link.dropdown.map(sub => (
-                             <Link key={sub.name} to={sub.path} className="text-xl font-bold tracking-tight text-white hover:text-white/50 transition-all uppercase block">{sub.name}</Link>
-                          ))}
-                        </div>
+                      <div className="flex flex-col items-center w-full">
+                        <button 
+                          onClick={() => toggleDropdown(link.name)}
+                          className="flex items-center justify-center gap-3 text-4xl font-black tracking-tighter text-white hover:text-white/50 transition-all uppercase w-full py-2 focus:outline-none"
+                        >
+                          {link.name}
+                          <motion.svg 
+                            animate={{ rotate: openDropdown === link.name ? 180 : 0 }} 
+                            className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                          >
+                            <path strokeLinecap="square" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                          </motion.svg>
+                        </button>
+                        <AnimatePresence>
+                          {openDropdown === link.name && (
+                            <motion.div 
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              className="overflow-hidden w-full flex flex-col gap-4 mt-4"
+                            >
+                              {link.dropdown.map(sub => (
+                                <Link 
+                                  key={sub.name} 
+                                  to={sub.path} 
+                                  className="text-xl font-bold tracking-tight text-white/50 hover:text-white transition-all uppercase block py-2"
+                                >
+                                  {sub.name}
+                                </Link>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     ) : (
                       <Link 
                         to={link.path} 
-                        className="text-4xl font-black tracking-tighter text-white hover:text-white/50 transition-all uppercase block"
+                        className="text-4xl font-black tracking-tighter text-white hover:text-white/50 transition-all uppercase block w-full py-2"
                       >
                         {link.name}
                       </Link>
@@ -168,18 +200,18 @@ const PremiumNavbar = () => {
                   </motion.div>
                 ))}
                 
-                <motion.div className="h-px w-20 bg-white/10 my-4" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.4 }} />
+                <motion.div className="h-px w-16 bg-white/10 my-2" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.4 }} />
 
-                <div className="flex flex-col items-center gap-8 w-full">
+                <div className="flex flex-col items-center gap-8 w-full mt-4">
                   {user ? (
-                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-10 items-center w-full">
-                      <Link to="/dashboard" className="text-xl font-black tracking-[0.2em] text-white/50 uppercase">Dashboard</Link>
-                      <button onClick={logout} className="px-12 py-5 bg-white !text-black text-xs font-black tracking-[0.3em] uppercase hover:bg-white/90 transition-all block w-full" style={{ borderRadius: 0, color: '#000000' }}>Logout</button>
+                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-8 items-center w-full">
+                      <Link to="/dashboard" className="text-xl font-black tracking-[0.2em] text-white/50 hover:text-white uppercase">Dashboard</Link>
+                      <button onClick={logout} className="px-12 py-5 bg-white !text-black text-xs font-black tracking-[0.3em] uppercase hover:bg-white/90 transition-all block w-full" style={{ borderRadius: 0 }}>Logout</button>
                     </motion.div>
                   ) : (
-                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-10 items-center w-full">
-                      <Link to="/login" className="text-xl font-black tracking-[0.2em] text-white/50 uppercase">Login</Link>
-                      <Link to="/signup" className="px-12 py-5 bg-white !text-black text-xs font-black tracking-[0.3em] uppercase hover:bg-white/90 transition-all block w-full" style={{ borderRadius: 0, color: '#000000' }}>
+                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-8 items-center w-full">
+                      <Link to="/login" className="text-xl font-black tracking-[0.2em] text-white/50 hover:text-white uppercase">Login</Link>
+                      <Link to="/signup" className="px-12 py-5 bg-white !text-black text-xs font-black tracking-[0.3em] uppercase hover:bg-white/90 transition-all block w-full" style={{ borderRadius: 0 }}>
                         Join Nexus
                       </Link>
                     </motion.div>

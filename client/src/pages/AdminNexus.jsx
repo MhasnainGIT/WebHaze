@@ -24,10 +24,20 @@ const AdminNexus = () => {
   ];
 
   useEffect(() => {
-    const isOwner = user?.email === 'mohdhasnain1544@gmail.com' || user?.email === 'webhaze.in@gmail.com';
-    if (!authLoading && (!user || (user.role !== 'admin' && !isOwner))) {
-      toast.error('Access restricted to administrative personnel.');
-      navigate('/');
+    if (authLoading) return;
+    
+    const userEmail = user?.email?.toLowerCase();
+    const isOwner = userEmail === 'mohdhasnain1544@gmail.com' || userEmail === 'webhaze.in@gmail.com';
+    const isAdmin = user?.role === 'admin';
+
+    console.log('Nexus Access Check:', { email: userEmail, isAdmin, isOwner });
+
+    if (!user || (!isAdmin && !isOwner)) {
+      const timer = setTimeout(() => {
+        toast.error('Access restricted to administrative personnel.');
+        navigate('/');
+      }, 500);
+      return () => clearTimeout(timer);
     }
   }, [user, authLoading, navigate]);
 

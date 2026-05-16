@@ -51,7 +51,8 @@ const authenticate = async (req, res, next) => {
 };
 
 const admin = (req, res, next) => {
-  const isOwner = req.user && (req.user.email === 'mohdhasnain1544@gmail.com' || req.user.email === 'webhaze.in@gmail.com');
+  const userEmail = req.user?.email?.toLowerCase();
+  const isOwner = userEmail === 'mohdhasnain1544@gmail.com' || userEmail === 'webhaze.in@gmail.com';
   if ((req.user && req.user.role === 'admin') || isOwner) {
     next();
   } else {

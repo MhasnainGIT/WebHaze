@@ -6,6 +6,8 @@ import SEO from '../components/SEO';
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [dashboardData, setDashboardData] = useState(null);
   const [stats, setStats] = useState({
     websites: 0,
     visits: 0,
@@ -13,14 +15,23 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    // Simulate data fetching
-    setTimeout(() => {
-      setStats({
-        websites: 3,
-        visits: 1240,
-        uptime: '99.99%'
-      });
-    }, 1000);
+    const fetchDashboard = async () => {
+      try {
+        const response = await axios.get('/api/dashboard');
+        setDashboardData(response.data);
+        setStats({
+          websites: response.data.websites?.length || 0,
+          visits: response.data.totalVisitors || 0,
+          uptime: `${(response.data.uptime || 99.9).toFixed(2)}%`
+        });
+      } catch (error) {
+        console.error('Failed to fetch dashboard:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboard();
   }, []);
 
   return (
@@ -75,31 +86,37 @@ const Dashboard = () => {
             </Link>
           </div>
           <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center justify-between p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group">
-                <div className="flex items-center gap-6">
-                  <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-white/10 transition-colors">
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                    </svg>
+            {dashboardData?.websites?.length > 0 ? (
+              dashboardData.websites.map((site) => (
+                <div key={site._id} className="flex items-center justify-between p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group">
+                  <div className="flex items-center gap-6">
+                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-white/10 transition-colors">
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-bold text-white text-lg tracking-tight">{site.domain}</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">{site.name}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-bold text-white text-lg tracking-tight">Project-Nexus-0{i}.webhaze.in</p>
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">Deployed on node HYD-0{i}</p>
+                  <div className="flex items-center gap-6">
+                    <span className="hidden sm:inline text-[10px] font-black uppercase tracking-[0.2em] text-white/40 bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
+                      {site.status || 'Operational'}
+                    </span>
+                    <Link to={`/editor/${site._id}`} className="text-white hover:opacity-50 transition-all">
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </Link>
                   </div>
                 </div>
-                <div className="flex items-center gap-6">
-                  <span className="hidden sm:inline text-[10px] font-black uppercase tracking-[0.2em] text-white/40 bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
-                    Operational
-                  </span>
-                  <Link to={`/editor/${i}`} className="text-white hover:opacity-50 transition-all">
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                  </Link>
-                </div>
+              ))
+            ) : (
+              <div className="text-center py-20 border-2 border-dashed border-white/5 rounded-2xl">
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 italic">No active nodes detected in this sector.</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>

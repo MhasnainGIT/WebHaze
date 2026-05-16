@@ -3,9 +3,68 @@ const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
 const User = require('../models/User');
 const memoryStore = require('../utils/memoryStore');
-const { sendWelcomeEmail } = require('../utils/emailService');
+const { sendWelcomeEmail, sendPasswordResetEmail } = require('../utils/emailService');
 const { authenticate, admin } = require('../middleware/auth');
+const crypto = require('crypto');
 const router = express.Router();
+
+// ... existing code ...
+
+// Forgot password endpoint
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email: email.toLowerCase() });
+
+    if (!user) {
+      // For security, don't reveal if user exists
+      return res.json({ message: 'If an account exists with this email, a reset link has been sent.' });
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    user.resetPasswordExpire = Date.now() + 3600000; // 1 hour
+
+    await user.save();
+
+    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password/${resetToken}`;
+    
+    await sendPasswordResetEmail(user.email, user.name, resetUrl);
+
+    res.json({ message: 'Reset link sent to your digital mail.' });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    res.status(500).json({ error: 'Failed to initiate reset protocol.' });
+  }
+});
+
+// Reset password endpoint
+router.post('/reset-password/:token', async (req, res) => {
+  try {
+    const resetPasswordToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({ error: 'Invalid or expired reset token.' });
+    }
+
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    res.json({ message: 'Password access restored successfully.' });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    res.status(500).json({ error: 'Failed to complete reset protocol.' });
+  }
+});
 
 // Rate limiting for auth routes
 const authLimiter = rateLimit({
@@ -74,6 +133,7 @@ router.post('/register', authLimiter, async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         plan: user.plan,
         websites: user.websites,
         storageLimit: user.storageLimit,
@@ -142,6 +202,7 @@ router.post('/login', authLimiter, async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         plan: user.plan,
         websites: user.websites,
         storageLimit: user.storageLimit,
@@ -188,6 +249,7 @@ router.get('/me', async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         plan: user.plan,
         websites: user.websites,
         storageLimit: user.storageLimit,

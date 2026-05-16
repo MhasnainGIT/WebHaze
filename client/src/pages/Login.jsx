@@ -79,7 +79,7 @@ const Login = () => {
 
             <div>
               <label htmlFor="password" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4 block px-1">
-                Access Token
+                Access Password
               </label>
               <input
                 id="password"
@@ -143,7 +143,8 @@ const Login = () => {
             type="button"
             className="btn-secondary w-full py-5 text-[10px] flex items-center justify-center gap-4"
             onClick={() => {
-              window.location.href = `${process.env.REACT_APP_API_URL || 'https://webhaze.onrender.com'}/api/auth/google`;
+              const apiBase = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'production' ? 'https://webhaze.onrender.com' : 'http://localhost:4000');
+              window.location.href = `${apiBase}/api/auth/google`;
             }}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">

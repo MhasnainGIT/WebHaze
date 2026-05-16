@@ -1,8 +1,9 @@
 const nodemailer = require('nodemailer');
 
 // Create transporter (using Gmail as example - configure based on your email provider)
+// Create transporter (using Gmail as example - configure based on your email provider)
 const createTransporter = () => {
-  return nodemailer.createTransporter({
+  return nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: process.env.EMAIL_USER,
@@ -62,41 +63,89 @@ const getWelcomeEmailTemplate = (name) => {
   };
 };
 
+// Password reset email template
+const getPasswordResetTemplate = (name, resetUrl) => {
+  return {
+    subject: 'WebHaze - Reset Your Access Password',
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
+        <div style="background: #000000; padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 30px;">
+          <h1 style="color: white; margin: 0; font-size: 24px; letter-spacing: 2px;">WEBHAZE PROTOCOL</h1>
+        </div>
+        
+        <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <h2 style="color: #1f2937; margin-top: 0;">Password Reset Request</h2>
+          
+          <p style="color: #4b5563; line-height: 1.6; margin-bottom: 20px;">
+            Hi ${name}, we received a request to reset the password for your WebHaze account. If you didn't make this request, you can safely ignore this email.
+          </p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetUrl}" 
+               style="background: #000000; color: white; padding: 15px 35px; text-decoration: none; border-radius: 0; font-weight: 900; display: inline-block; text-transform: uppercase; letter-spacing: 1px;">
+              Reset Password
+            </a>
+          </div>
+
+          <p style="color: #4b5563; line-height: 1.6; margin-bottom: 20px;">
+            This link will expire in 1 hour.
+          </p>
+          
+          <p style="color: #6b7280; font-size: 14px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            If the button above doesn't work, copy and paste this URL into your browser:<br/>
+            <span style="color: #0b61ff;">${resetUrl}</span>
+          </p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px; color: #9ca3af; font-size: 12px;">
+          <p>© 2024 WebHaze Central. All rights reserved.</p>
+        </div>
+      </div>
+    `
+  };
+};
+
 // Send welcome email
 const sendWelcomeEmail = async (email, name) => {
   try {
-    console.log('Attempting to send email to:', email);
-    console.log('Using email user:', process.env.EMAIL_USER);
-    console.log('Email pass configured:', !!process.env.EMAIL_PASS);
-    
     const transporter = createTransporter();
-    
-    // Test connection
-    await transporter.verify();
-    console.log('SMTP connection verified successfully');
-    
     const emailTemplate = getWelcomeEmailTemplate(name);
     
-    const result = await transporter.sendMail({
+    await transporter.sendMail({
       from: `"WebHaze Team" <${process.env.EMAIL_USER || 'noreply@webhaze.com'}>`,
       to: email,
       subject: emailTemplate.subject,
       html: emailTemplate.html
     });
     
-    console.log(`Welcome email sent successfully to ${email}:`, result.messageId);
     return true;
   } catch (error) {
-    console.error('Detailed error sending welcome email:', {
-      message: error.message,
-      code: error.code,
-      command: error.command,
-      response: error.response
+    console.error('Error sending welcome email:', error);
+    return false;
+  }
+};
+
+// Send password reset email
+const sendPasswordResetEmail = async (email, name, resetUrl) => {
+  try {
+    const transporter = createTransporter();
+    const emailTemplate = getPasswordResetTemplate(name, resetUrl);
+    
+    await transporter.sendMail({
+      from: `"WebHaze Security" <${process.env.EMAIL_USER || 'security@webhaze.com'}>`,
+      to: email,
+      subject: emailTemplate.subject,
+      html: emailTemplate.html
     });
+    
+    return true;
+  } catch (error) {
+    console.error('Error sending reset email:', error);
     return false;
   }
 };
 
 module.exports = {
-  sendWelcomeEmail
+  sendWelcomeEmail,
+  sendPasswordResetEmail
 };

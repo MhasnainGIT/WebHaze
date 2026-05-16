@@ -1,55 +1,47 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const AuthCallback = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const { setUser } = useAuth();
+  const { user, login } = useAuth(); // We'll add a way to set token manually or just refresh user
 
   useEffect(() => {
-    const token = searchParams.get('token');
-    const error = searchParams.get('error');
+    // Google redirect uses hash: /auth/callback#token=...
+    const hash = window.location.hash;
+    const params = new URLSearchParams(hash.replace('#', '?'));
+    const token = params.get('token');
+    const error = params.get('error');
 
     if (error) {
       console.error('OAuth error:', error);
-      navigate('/login?error=oauth_failed');
+      toast.error('Authentication failed.');
+      navigate('/login');
       return;
     }
 
     if (token) {
-      // Store token and get user info
       localStorage.setItem('token', token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
-      // Fetch user data
-      fetch(`${process.env.REACT_APP_API_URL || 'https://webhaze.onrender.com'}/api/auth/me`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.user) {
-          setUser(data.user);
-          navigate('/dashboard');
-        } else {
-          navigate('/login?error=auth_failed');
-        }
-      })
-      .catch(err => {
-        console.error('Auth callback error:', err);
-        navigate('/login?error=auth_failed');
-      });
+      // The simplest way to update the global state is to reload or 
+      // call a method in AuthContext that re-fetches the user.
+      // Since AuthContext already has fetchUser in useEffect, 
+      // we can just redirect to dashboard and let it handle it,
+      // but to be safe, we'll force a state update if possible.
+      window.location.href = '/dashboard';
     } else {
       navigate('/login');
     }
-  }, [searchParams, navigate, setUser]);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-        <p>Completing authentication...</p>
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Synchronizing Nexus...</p>
       </div>
     </div>
   );

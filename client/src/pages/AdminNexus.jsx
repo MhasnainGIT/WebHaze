@@ -15,19 +15,22 @@ const AdminNexus = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!authLoading && (!user || user.role !== 'admin')) {
+    const isOwner = user?.email === 'mohdhasnain1544@gmail.com' || user?.email === 'webhaze.in@gmail.com';
+    if (!authLoading && (!user || (user.role !== 'admin' && !isOwner))) {
       toast.error('Access restricted to administrative personnel.');
       navigate('/');
     }
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    if (user && user.role === 'admin') {
+    const isOwner = user?.email === 'mohdhasnain1544@gmail.com' || user?.email === 'webhaze.in@gmail.com';
+    if (user && (user.role === 'admin' || isOwner)) {
       fetchData();
     }
   }, [activeTab, user]);
 
-  if (authLoading || (user && user.role !== 'admin')) {
+  const isOwner = user?.email === 'mohdhasnain1544@gmail.com' || user?.email === 'webhaze.in@gmail.com';
+  if (authLoading || (user && user.role !== 'admin' && !isOwner)) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>

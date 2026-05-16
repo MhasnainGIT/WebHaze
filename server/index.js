@@ -165,6 +165,7 @@ app.use('/api/contact', contactRouter);
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/plans', require('./routes/plans'));
+app.use('/api/admin', require('./routes/admin'));
 
 // Demo site route
 app.use('/site', demoSiteRouter);

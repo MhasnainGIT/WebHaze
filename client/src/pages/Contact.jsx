@@ -1,9 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SEO from '../components/SEO';
 import { motion } from 'framer-motion';
 import ScrollReveal from '../components/ScrollReveal';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const Contact = () => {
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.name || !formData.email || !formData.phone || !formData.subject || !formData.message) {
+      toast.error('All protocols must be initialized (All fields required).');
+      return;
+    }
+
+    setLoading(true);
+    const loadingToast = toast.loading('Transmitting signal...');
+
+    try {
+      const response = await axios.post('/api/contact/submit', formData);
+      toast.success(response.data.message || 'Signal received. We will uplink shortly.', { id: loadingToast });
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Submission error:', error);
+      const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Signal interference. Please try again.';
+      toast.error(errorMsg, { id: loadingToast });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black pt-32 pb-20">
       <SEO 
@@ -53,30 +98,70 @@ const Contact = () => {
           <ScrollReveal direction="left" delay={0.3}>
             <div className="glass-card border-white/5 p-8 md:p-12">
               <h3 className="text-[10px] font-black mb-10 uppercase tracking-[0.3em] text-white/50">Initialize Project</h3>
-              <form className="space-y-8">
+              <form className="space-y-8" onSubmit={handleSubmit}>
                 <div>
                   <input 
                     type="text" 
+                    name="name"
                     placeholder="NAME" 
+                    value={formData.name}
+                    onChange={handleChange}
                     className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                    disabled={loading}
                   />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <input 
+                      type="email" 
+                      name="email"
+                      placeholder="EMAIL" 
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                      disabled={loading}
+                    />
+                  </div>
+                  <div>
+                    <input 
+                      type="tel" 
+                      name="phone"
+                      placeholder="PHONE" 
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                      disabled={loading}
+                    />
+                  </div>
                 </div>
                 <div>
                   <input 
-                    type="email" 
-                    placeholder="EMAIL" 
+                    type="text" 
+                    name="subject"
+                    placeholder="SUBJECT" 
+                    value={formData.subject}
+                    onChange={handleChange}
                     className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                    disabled={loading}
                   />
                 </div>
                 <div>
                   <textarea 
+                    name="message"
                     rows="4" 
                     placeholder="MESSAGE" 
+                    value={formData.message}
+                    onChange={handleChange}
                     className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-black tracking-widest text-xs resize-none"
+                    disabled={loading}
                   ></textarea>
                 </div>
-                <button className="w-full py-6 bg-white !text-black font-black tracking-[0.3em] uppercase text-xs hover:bg-white/90 border border-white transition-all duration-500 rounded-full mt-10">
-                  Transmit Signal
+                <button 
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full py-6 bg-white !text-black font-black tracking-[0.3em] uppercase text-xs border border-white transition-all duration-500 rounded-full mt-10 ${loading ? 'opacity-50 cursor-wait' : 'hover:bg-white/90'}`}
+                >
+                  {loading ? 'Transmitting...' : 'Transmit Signal'}
                 </button>
               </form>
             </div>

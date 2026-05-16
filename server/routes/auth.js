@@ -340,11 +340,33 @@ router.get('/google/callback', async (req, res) => {
   }
 });
 
-// Logout endpoint (client-side token removal)
-router.post('/logout', (req, res) => {
-  res.json({
-    message: 'Logout successful'
-  });
+// Admin: Get all users
+router.get('/users', async (req, res) => {
+  try {
+    let users;
+    if (process.env.SKIP_DB === 'true') {
+      users = memoryStore.getAllUsers();
+    } else {
+      users = await User.find().select('-password');
+    }
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
+// Admin: Delete a user
+router.delete('/users/:id', async (req, res) => {
+  try {
+    if (process.env.SKIP_DB === 'true') {
+      await memoryStore.deleteUser(req.params.id);
+    } else {
+      await User.findByIdAndDelete(req.params.id);
+    }
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
 });
 
 module.exports = router;

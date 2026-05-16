@@ -115,6 +115,18 @@ class MemoryStore {
   async getAllPages() {
     return Array.from(this.pages.values());
   }
+
+  // Admin methods
+  getAllUsers() {
+    return Array.from(this.users.values()).map(user => {
+      const { password, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    });
+  }
+
+  async deleteUser(id) {
+    return this.users.delete(id.toString());
+  }
 }
 
 module.exports = new MemoryStore();

@@ -20,6 +20,7 @@ import About from './pages/About';
 import Pricing from './pages/Pricing';
 import CreateWebsite from './pages/CreateWebsite';
 import Dashboard from './pages/Dashboard';
+import AdminNexus from './pages/AdminNexus';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AuthCallback from './pages/AuthCallback';
@@ -73,6 +74,7 @@ export default function App() {
                       <Route path="/services/cloud-servers" element={<CloudServers />} />
                       <Route path="/contact" element={<Contact />} />
                       <Route path="/account" element={<Account />} />
+                      <Route path="/admin-nexus" element={<AdminNexus />} />
                       <Route path="/about" element={<About />} />
                       <Route path="/pricing" element={<Pricing />} />
                       <Route path="/create-website" element={<CreateWebsite />} />

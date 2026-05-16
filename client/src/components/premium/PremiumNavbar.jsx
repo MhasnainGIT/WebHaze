@@ -119,7 +119,7 @@ const PremiumNavbar = () => {
           ) : (
             <div className="flex items-center gap-6">
               <Link to="/login" className="text-[10px] font-black tracking-[0.2em] text-white/50 hover:text-white uppercase">Login</Link>
-              <Link to="/signup" className="px-6 py-2.5 bg-black text-white border border-white/20 rounded-full text-[10px] font-black tracking-[0.2em] hover:bg-white hover:text-black hover:border-white transition-all duration-500 uppercase">Join Nexus</Link>
+              <Link to="/signup" className="px-6 py-2.5 bg-black text-white border border-white/20 rounded-full text-[10px] font-black tracking-[0.2em] hover:bg-white hover:!text-black hover:border-white transition-all duration-500 uppercase">Join Nexus</Link>
             </div>
           )}
         </div>

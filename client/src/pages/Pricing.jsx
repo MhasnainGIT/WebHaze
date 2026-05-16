@@ -76,7 +76,7 @@ const Pricing = () => {
                 </ul>
                 <Link 
                   to="/contact" 
-                  className="px-8 py-5 bg-black text-white border border-white/20 rounded-full text-center text-[10px] font-black tracking-widest uppercase hover:bg-white hover:text-black transition-all duration-500"
+                  className="px-8 py-5 bg-black text-white border border-white/20 rounded-full text-center text-[10px] font-black tracking-widest uppercase hover:bg-white hover:!text-black transition-all duration-500"
                 >
                   {tier.popular ? "Uplink Now" : "Initialize"}
                 </Link>

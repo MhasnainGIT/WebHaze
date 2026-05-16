@@ -20,10 +20,10 @@ const Footer = () => {
                             Empowering visionaries to build and scale the next generation of digital ecosystems.
                         </p>
                         <div className="flex gap-6">
-                            <a href="#" className="w-12 h-12 rounded-2xl glass-morphism flex items-center justify-center hover:bg-white hover:text-black transition-all group">
+                            <a href="#" className="w-12 h-12 rounded-2xl glass-morphism flex items-center justify-center hover:bg-white hover:!text-black transition-all group">
                                 <span className="font-black text-xl">𝕏</span>
                             </a>
-                            <a href="#" className="w-12 h-12 rounded-2xl glass-morphism flex items-center justify-center hover:bg-white hover:text-black transition-all group">
+                            <a href="#" className="w-12 h-12 rounded-2xl glass-morphism flex items-center justify-center hover:bg-white hover:!text-black transition-all group">
                                 <span className="font-black text-xl text-[14px]">LI</span>
                             </a>
                         </div>

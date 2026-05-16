@@ -237,7 +237,7 @@ const CloudServers = () => {
                         <div className="text-right">
                           <Link 
                             to="/contact" 
-                            className="inline-block px-6 py-3 bg-white/5 border border-white/10 rounded-full text-[10px] font-black tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all duration-300"
+                            className="inline-block px-6 py-3 bg-white/5 border border-white/10 rounded-full text-[10px] font-black tracking-[0.2em] uppercase hover:bg-white hover:!text-black transition-all duration-300"
                           >
                             Deploy
                           </Link>
@@ -282,7 +282,7 @@ const CloudServers = () => {
             </p>
             <Link 
               to="/contact" 
-              className="inline-block px-10 py-5 bg-white text-black font-black text-[10px] tracking-[0.3em] uppercase hover:bg-white/90 transition-all relative z-10"
+              className="inline-block px-10 py-5 bg-white !text-black font-black text-[10px] tracking-[0.3em] uppercase hover:bg-white/90 transition-all relative z-10"
               style={{ borderRadius: 0 }}
             >
               Contact Sales

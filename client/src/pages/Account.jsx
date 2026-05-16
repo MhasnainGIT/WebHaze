@@ -50,7 +50,7 @@ const Account = () => {
                 onClick={() => setActiveTab(tab)}
                 className={`w-full text-left px-8 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all border ${
                   activeTab === tab 
-                    ? 'bg-white text-black border-white' 
+                    ? 'bg-white !text-black border-white' 
                     : 'text-white/40 border-white/5 hover:border-white/20'
                 }`}
               >

@@ -75,7 +75,7 @@ const Contact = () => {
                     className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-black tracking-widest text-xs resize-none"
                   ></textarea>
                 </div>
-                <button className="w-full py-6 bg-white text-black font-black tracking-[0.3em] uppercase text-xs hover:bg-black hover:text-white border border-white transition-all duration-500 rounded-full mt-10">
+                <button className="w-full py-6 bg-white !text-black font-black tracking-[0.3em] uppercase text-xs hover:bg-white/90 border border-white transition-all duration-500 rounded-full mt-10">
                   Transmit Signal
                 </button>
               </form>

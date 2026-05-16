@@ -97,7 +97,7 @@ const PremiumHero = () => {
           >
             <Link 
               to={user ? "/dashboard" : "/signup"}
-              className="group relative px-8 py-4 bg-white text-black font-semibold rounded-full overflow-hidden transition-all duration-300 hover:scale-105"
+              className="group relative px-8 py-4 bg-white !text-black font-semibold rounded-full overflow-hidden transition-all duration-300 hover:scale-105"
             >
               <span className="relative z-10">Start Your Journey</span>
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

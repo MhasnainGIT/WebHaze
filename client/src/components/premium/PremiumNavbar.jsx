@@ -35,7 +35,15 @@ const PremiumNavbar = () => {
 
   const navLinks = [
     { name: 'HOME', path: '/' },
-    { name: 'SERVICES', path: '/services/web-hosting' },
+    { 
+      name: 'SERVICES', 
+      dropdown: [
+        { name: 'Web Hosting', path: '/services/web-hosting' },
+        { name: 'Web Development', path: '/services/web-development' },
+        { name: 'App Development', path: '/services/app-development' },
+        { name: 'Cloud Servers', path: '/services/cloud-servers' }
+      ]
+    },
     { name: 'PRICING', path: '/pricing' },
     { name: 'ABOUT', path: '/about' },
     { name: 'CONTACT', path: '/contact' },
@@ -61,15 +69,38 @@ const PremiumNavbar = () => {
         {/* Desktop Nav */}
         <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center gap-10">
           {navLinks.map((link) => (
-            <Link 
-              key={link.name}
-              to={link.path} 
-              className={`text-[10px] font-black tracking-[0.2em] transition-colors ${
-                location.pathname === link.path ? 'text-white' : 'text-white/50 hover:text-white'
-              }`}
-            >
-              {link.name}
-            </Link>
+            link.dropdown ? (
+              <div key={link.name} className="relative group">
+                <button className={`text-[10px] font-black tracking-[0.2em] transition-colors ${
+                  location.pathname.startsWith('/services') ? 'text-white' : 'text-white/50 group-hover:text-white'
+                }`}>
+                  {link.name}
+                </button>
+                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                  <div className="bg-black/90 backdrop-blur-xl border border-white/10 p-2 flex flex-col gap-2 min-w-[220px]">
+                    {link.dropdown.map(sub => (
+                      <Link 
+                        key={sub.name}
+                        to={sub.path}
+                        className={`text-[10px] font-black tracking-[0.15em] uppercase px-4 py-3 hover:bg-white/5 transition-colors whitespace-nowrap text-left ${location.pathname === sub.path ? 'text-white bg-white/5' : 'text-white/50 hover:text-white'}`}
+                      >
+                        {sub.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Link 
+                key={link.name}
+                to={link.path} 
+                className={`text-[10px] font-black tracking-[0.2em] transition-colors ${
+                  location.pathname === link.path ? 'text-white' : 'text-white/50 hover:text-white'
+                }`}
+              >
+                {link.name}
+              </Link>
+            )
           ))}
         </div>
 
@@ -117,12 +148,23 @@ const PremiumNavbar = () => {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.1 + i * 0.05, duration: 0.5 }}
                   >
-                    <Link 
-                      to={link.path} 
-                      className="text-4xl font-black tracking-tighter text-white hover:text-white/50 transition-all uppercase block"
-                    >
-                      {link.name}
-                    </Link>
+                    {link.dropdown ? (
+                      <div className="flex flex-col items-center gap-6">
+                        <span className="text-2xl font-black tracking-tighter text-white/40 uppercase block">{link.name}</span>
+                        <div className="flex flex-col gap-4">
+                          {link.dropdown.map(sub => (
+                             <Link key={sub.name} to={sub.path} className="text-xl font-bold tracking-tight text-white hover:text-white/50 transition-all uppercase block">{sub.name}</Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <Link 
+                        to={link.path} 
+                        className="text-4xl font-black tracking-tighter text-white hover:text-white/50 transition-all uppercase block"
+                      >
+                        {link.name}
+                      </Link>
+                    )}
                   </motion.div>
                 ))}
                 

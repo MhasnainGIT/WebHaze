@@ -13,6 +13,7 @@ import ServicePage from './pages/services/ServicePage';
 import WebHosting from './pages/services/WebHosting';
 import WebsiteDevelopment from './pages/services/WebsiteDevelopment';
 import AppDevelopment from './pages/services/AppDevelopment';
+import CloudServers from './pages/services/CloudServers';
 import Contact from './pages/Contact';
 import Account from './pages/Account';
 import About from './pages/About';
@@ -69,6 +70,7 @@ export default function App() {
                       <Route path="/services/web-hosting" element={<WebHosting />} />
                       <Route path="/services/website-development" element={<WebsiteDevelopment />} />
                       <Route path="/services/app-development" element={<AppDevelopment />} />
+                      <Route path="/services/cloud-servers" element={<CloudServers />} />
                       <Route path="/contact" element={<Contact />} />
                       <Route path="/account" element={<Account />} />
                       <Route path="/about" element={<About />} />

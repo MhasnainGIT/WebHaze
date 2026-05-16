@@ -53,7 +53,9 @@ const Hero = () => {
             WE BUILD<br /><span className="text-white/20">WITHOUT LIMITS.</span>
           </motion.h1>
           <ScrollReveal delay={0.3}>
-            <p className="text-lg md:text-xl text-white/40 mb-16 max-w-xl leading-relaxed" style={{ fontFamily: f.b }}>Premium website development in Hyderabad. Immersive digital experiences for global visionaries.</p>
+            <p className="text-lg md:text-xl text-white/40 mb-16 max-w-xl leading-relaxed" style={{ fontFamily: f.b }}>
+              WebHaze is a premier digital agency providing comprehensive web design, high-performance app development, and enterprise-grade cloud server infrastructure. Scalable digital solutions for global visionaries.
+            </p>
           </ScrollReveal>
           <ScrollReveal delay={0.5} className="flex flex-col sm:flex-row gap-4">
             <Link to={user ? "/contact" : "/signup"} className="px-10 py-4 bg-white !text-black text-[12px] font-bold tracking-[0.15em] uppercase hover:bg-white/90 transition-all" style={{ borderRadius: 0, fontFamily: f.l, color: '#000000' }}>Launch Vision</Link>
@@ -319,7 +321,7 @@ const CTA = () => {
 /* ─── HOME ─── */
 const Home = () => (
   <div className="relative">
-    <SEO title="#1 Web Designing Agency in Hyderabad | WebHaze Studios" description="WebHaze Studios is the best website designing company in Hyderabad. Professional web development, premium hosting, and SEO services." keywords="Web Designing Hyderabad, Website Designers Hyderabad, WebHaze Hyderabad" canonical="/" />
+    <SEO title="WebHaze | Premium Web Agency & Enterprise Cloud Solutions" description="WebHaze is a premier web design, development, and cloud hosting agency. We offer enterprise-grade Linux/Windows VPS, Dedicated Servers, and scalable digital solutions." keywords="Web Designing Hyderabad, Enterprise Cloud Servers, Managed VPS Hosting, Dedicated Servers, App Development, WebHaze" canonical="/" />
     <Bg3D />
     <Hero />
     <Features />

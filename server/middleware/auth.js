@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const memoryStore = require('../utils/memoryStore');
 
-const auth = async (req, res, next) => {
+const authenticate = async (req, res, next) => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
 
@@ -28,7 +28,7 @@ const auth = async (req, res, next) => {
       });
     }
 
-    req.user = decoded;
+    req.user = user;
     next();
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
@@ -50,4 +50,14 @@ const auth = async (req, res, next) => {
   }
 };
 
-module.exports = auth;
+const admin = (req, res, next) => {
+  if (req.user && req.user.role === 'admin') {
+    next();
+  } else {
+    res.status(403).json({
+      error: 'Access denied. Administrator privileges required.'
+    });
+  }
+};
+
+module.exports = { authenticate, admin };

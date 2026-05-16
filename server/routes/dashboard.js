@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Dashboard = require('../models/Dashboard');
-const auth = require('../middleware/auth');
+const { authenticate: auth } = require('../middleware/auth');
 
 // Get dashboard data
 router.get('/', auth, async (req, res) => {

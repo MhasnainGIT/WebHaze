@@ -4,6 +4,7 @@ const rateLimit = require('express-rate-limit');
 const User = require('../models/User');
 const memoryStore = require('../utils/memoryStore');
 const { sendWelcomeEmail } = require('../utils/emailService');
+const { authenticate, admin } = require('../middleware/auth');
 const router = express.Router();
 
 // Rate limiting for auth routes
@@ -341,7 +342,7 @@ router.get('/google/callback', async (req, res) => {
 });
 
 // Admin: Get all users
-router.get('/users', async (req, res) => {
+router.get('/users', authenticate, admin, async (req, res) => {
   try {
     let users;
     if (process.env.SKIP_DB === 'true') {
@@ -356,7 +357,7 @@ router.get('/users', async (req, res) => {
 });
 
 // Admin: Delete a user
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id', authenticate, admin, async (req, res) => {
   try {
     if (process.env.SKIP_DB === 'true') {
       await memoryStore.deleteUser(req.params.id);

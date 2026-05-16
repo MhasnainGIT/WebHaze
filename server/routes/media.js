@@ -4,7 +4,7 @@ const multer = require('multer');
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs').promises;
-const auth = require('../middleware/auth');
+const { authenticate: auth } = require('../middleware/auth');
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({

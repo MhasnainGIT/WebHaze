@@ -1,6 +1,6 @@
 const express = require('express');
 const Website = require('../models/Website');
-const auth = require('../middleware/auth');
+const { authenticate: auth } = require('../middleware/auth');
 const router = express.Router();
 
 // Get all websites for authenticated user

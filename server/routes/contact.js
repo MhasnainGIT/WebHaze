@@ -1,6 +1,7 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const Contact = require('../models/Contact');
+const { authenticate, admin } = require('../middleware/auth');
 const router = express.Router();
 
 // Rate limiting for contact form
@@ -72,7 +73,7 @@ router.post('/submit', contactLimiter, async (req, res) => {
 });
 
 // Admin: Get all contact messages
-router.get('/', async (req, res) => {
+router.get('/', authenticate, admin, async (req, res) => {
   try {
     const messages = await Contact.find().sort({ createdAt: -1 });
     res.json(messages);
@@ -82,7 +83,7 @@ router.get('/', async (req, res) => {
 });
 
 // Admin: Delete a contact message
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticate, admin, async (req, res) => {
   try {
     await Contact.findByIdAndDelete(req.params.id);
     res.json({ message: 'Message deleted successfully' });

@@ -3,16 +3,37 @@ import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import SEO from '../components/SEO';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const AdminNexus = () => {
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchData();
-  }, [activeTab]);
+    if (!authLoading && (!user || user.role !== 'admin')) {
+      toast.error('Access restricted to administrative personnel.');
+      navigate('/');
+    }
+  }, [user, authLoading, navigate]);
+
+  useEffect(() => {
+    if (user && user.role === 'admin') {
+      fetchData();
+    }
+  }, [activeTab, user]);
+
+  if (authLoading || (user && user.role !== 'admin')) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+      </div>
+    );
+  }
 
   const fetchData = async () => {
     setLoading(true);

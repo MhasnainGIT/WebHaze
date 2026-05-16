@@ -190,7 +190,7 @@ const Pricing = () => {
           {plans.map((p, i) => (
             <ScrollReveal key={i} delay={i * 0.1}>
               <div className={`relative flex flex-col h-full p-8 md:p-10 border transition-all duration-700 ${p.pop ? 'border-white/20 bg-white/[0.05]' : 'border-white/[0.08] bg-white/[0.02]'}`} style={{ borderRadius: 0 }}>
-                {p.pop && <div className="absolute -top-3.5 left-8 bg-white text-black text-[10px] font-bold uppercase tracking-[0.15em] px-4 py-1.5" style={{ borderRadius: 0, fontFamily: f.l }}>Elite Choice</div>}
+                {p.pop && <div className="absolute -top-3.5 left-8 bg-white !text-black text-[10px] font-bold uppercase tracking-[0.15em] px-4 py-1.5" style={{ borderRadius: 0, fontFamily: f.l }}>Elite Choice</div>}
                 <span className="text-[11px] font-medium tracking-[0.15em] text-white/25 uppercase block mb-8" style={{ fontFamily: f.l }}>{p.t}</span>
                 <div className="flex items-baseline gap-2 mb-10">
                   <span className="text-4xl md:text-[56px] font-black text-white tracking-[-0.03em]" style={{ fontFamily: f.h }}>{p.p}</span>

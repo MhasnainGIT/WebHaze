@@ -392,9 +392,15 @@ router.get('/google/callback', async (req, res) => {
       { expiresIn: '7d' }
     );
     
-    // Redirect to frontend with token in URL hash
+    // Redirect to frontend with token in Query Parameter
+    // We also set a cookie for mobile persistence fallback
     const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
-    res.redirect(`${frontendURL}/auth/callback#token=${token}`);
+    res.cookie('token', token, { 
+      httpOnly: false, // Accessible by frontend JS
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+    res.redirect(`${frontendURL}/auth/callback?token=${token}`);
     
   } catch (error) {
     console.error('Google OAuth error:', error);

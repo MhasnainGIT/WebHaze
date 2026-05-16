@@ -22,8 +22,17 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const getCookie = (name) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    };
+
+    const token = localStorage.getItem('token') || getCookie('token');
     if (token) {
+      if (!localStorage.getItem('token')) {
+        localStorage.setItem('token', token);
+      }
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       fetchUser();
     } else {

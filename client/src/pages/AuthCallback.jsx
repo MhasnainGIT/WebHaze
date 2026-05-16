@@ -9,11 +9,12 @@ const AuthCallback = () => {
   const { user, login } = useAuth(); // We'll add a way to set token manually or just refresh user
 
   useEffect(() => {
-    // Google redirect uses hash: /auth/callback#token=...
-    const hash = window.location.hash;
-    const params = new URLSearchParams(hash.replace('#', '?'));
-    const token = params.get('token');
-    const error = params.get('error');
+    // Check both hash (#token=) and query (?token=) for mobile compatibility
+    const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+    const queryParams = new URLSearchParams(window.location.search);
+    
+    const token = hashParams.get('token') || queryParams.get('token');
+    const error = hashParams.get('error') || queryParams.get('error');
 
     if (error) {
       console.error('OAuth error:', error);
@@ -23,16 +24,14 @@ const AuthCallback = () => {
     }
 
     if (token) {
+      console.log('Token synchronized successfully.');
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
-      // The simplest way to update the global state is to reload or 
-      // call a method in AuthContext that re-fetches the user.
-      // Since AuthContext already has fetchUser in useEffect, 
-      // we can just redirect to dashboard and let it handle it,
-      // but to be safe, we'll force a state update if possible.
+      // Force a full reload to /dashboard to ensure AuthContext re-initializes
       window.location.href = '/dashboard';
     } else {
+      console.warn('No token found in callback URL.');
       navigate('/login');
     }
   }, [navigate]);

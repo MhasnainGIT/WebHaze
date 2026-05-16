@@ -139,6 +139,7 @@ const PremiumNavbar = () => {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div 
+              key={user ? 'logged-in' : 'logged-out'}
               className="fixed inset-0 bg-[#000000] z-[1000] flex flex-col items-center overflow-y-auto min-h-screen w-screen px-6 pt-32 pb-12"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -206,6 +207,9 @@ const PremiumNavbar = () => {
                   {user ? (
                     <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-8 items-center w-full">
                       <Link to="/dashboard" className="text-xl font-black tracking-[0.2em] text-white/50 hover:text-white uppercase">Dashboard</Link>
+                      {(user.role === 'admin' || user.email?.toLowerCase() === 'mohdhasnain1544@gmail.com' || user.email?.toLowerCase() === 'webhaze.in@gmail.com') && (
+                        <Link to="/admin-nexus" className="text-xl font-black tracking-[0.2em] text-white/50 hover:text-white uppercase text-red-500">Admin Nexus</Link>
+                      )}
                       <button onClick={logout} className="px-12 py-5 bg-white !text-black text-xs font-black tracking-[0.3em] uppercase hover:bg-white/90 transition-all block w-full" style={{ borderRadius: 0 }}>Logout</button>
                     </motion.div>
                   ) : (

@@ -337,14 +337,20 @@ router.get('/google', (req, res) => {
 });
 
 router.get('/google/callback', async (req, res) => {
+  const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
   try {
-    const { code } = req.query;
+    const { code, error } = req.query;
+
+    if (error || !code) {
+      console.error('Google OAuth denied or missing code:', error);
+      return res.redirect(`${frontendURL}/login?error=oauth_denied`);
+    }
     
     // Exchange code for access token
     const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
         code,
@@ -354,6 +360,11 @@ router.get('/google/callback', async (req, res) => {
     });
     
     const tokenData = await tokenResponse.json();
+
+    if (tokenData.error || !tokenData.access_token) {
+      console.error('Google token exchange failed:', tokenData);
+      return res.redirect(`${frontendURL}/login?error=token_failed`);
+    }
     
     // Get user info from Google
     const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
@@ -361,28 +372,21 @@ router.get('/google/callback', async (req, res) => {
     });
     
     const googleUser = await userResponse.json();
+
+    if (!googleUser.email) {
+      console.error('Google user info missing email:', googleUser);
+      return res.redirect(`${frontendURL}/login?error=no_email`);
+    }
     
     // Find or create user
-    let user;
-    if (process.env.SKIP_DB === 'true') {
-      user = await memoryStore.findUserByEmail(googleUser.email);
-      if (!user) {
-        user = await memoryStore.createUser({
-          name: googleUser.name,
-          email: googleUser.email,
-          password: 'google-oauth-' + Date.now() // Random password for OAuth users
-        });
-      }
-    } else {
-      user = await User.findOne({ email: googleUser.email });
-      if (!user) {
-        user = new User({
-          name: googleUser.name,
-          email: googleUser.email,
-          password: 'google-oauth-' + Date.now() // Random password for OAuth users
-        });
-        await user.save();
-      }
+    let user = await User.findOne({ email: googleUser.email });
+    if (!user) {
+      user = new User({
+        name: googleUser.name,
+        email: googleUser.email,
+        password: 'google-oauth-' + Date.now()
+      });
+      await user.save();
     }
     
     // Generate JWT
@@ -392,20 +396,11 @@ router.get('/google/callback', async (req, res) => {
       { expiresIn: '7d' }
     );
     
-    // Redirect to frontend with token in Query Parameter
-    // We also set a cookie for mobile persistence fallback
-    const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
-    res.cookie('token', token, { 
-      httpOnly: false, // Accessible by frontend JS
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    });
     res.redirect(`${frontendURL}/auth/callback?token=${token}`);
     
   } catch (error) {
-    console.error('Google OAuth error:', error);
-    const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
-    res.redirect(`${frontendURL}/#error=oauth_failed`);
+    console.error('Google OAuth callback error:', error);
+    res.redirect(`${frontendURL}/login?error=oauth_failed`);
   }
 });
 

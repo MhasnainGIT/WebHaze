@@ -15,7 +15,7 @@ class MemoryStore {
   async seedData() {
     // Create sample user
     const seedPassword = process.env.SEED_USER_PASSWORD;
-    if (!seedPassword) throw new Error('SEED_USER_PASSWORD env var is not set');
+    if (!seedPassword) return; // skip seeding if not configured (production uses MongoDB)
     const hashedPassword = await bcrypt.hash(seedPassword, 12);
     this.users.set('1', {
       _id: '1',

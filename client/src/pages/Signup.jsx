@@ -12,7 +12,7 @@ const Signup = () => {
     confirmPassword: ''
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { signup } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -23,7 +23,7 @@ const Signup = () => {
     }
     setIsLoading(true);
     try {
-      await signup(formData.email, formData.password, formData.name);
+      await register(formData.email, formData.password, formData.name);
       navigate('/dashboard');
     } catch (error) {
       console.error('Signup failed:', error);
@@ -160,7 +160,8 @@ const Signup = () => {
             type="button"
             className="btn-secondary w-full py-5 text-[10px] flex items-center justify-center gap-4"
             onClick={() => {
-              window.location.href = `${process.env.REACT_APP_API_URL || 'https://webhaze.onrender.com'}/api/auth/google`;
+              const apiBase = import.meta.env.VITE_API_URL || 'https://webhaze.onrender.com';
+              window.location.href = `${apiBase}/api/auth/google`;
             }}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">

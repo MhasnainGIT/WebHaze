@@ -23,43 +23,24 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      fetchUser();
-    } else {
-      setLoading(false);
-    }
+    fetchUser();
   }, []);
 
   const fetchUser = async () => {
     try {
       const response = await axios.get('/api/auth/me');
       setUser(response.data.user);
-    } catch (error) {
-      // token invalid or expired — clear it
-      setToken(null);
+    } catch {
       setUser(null);
     } finally {
       setLoading(false);
     }
   };
 
-  const setToken = (token) => {
-    if (token) {
-      localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    } else {
-      localStorage.removeItem('token');
-      delete axios.defaults.headers.common['Authorization'];
-    }
-  };
-
   const login = async (email, password) => {
     try {
       const response = await axios.post('/api/auth/login', { email, password });
-      const { user, token } = response.data;
-      setToken(token);
+      const { user } = response.data;
       setUser(user);
       clarityAnalytics?.identify(user.id, null, null, user.name);
       clarityAnalytics?.trackEvent('user_login');
@@ -76,8 +57,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (email, password, name) => {
     try {
       const response = await axios.post('/api/auth/register', { email, password, name });
-      const { user, token } = response.data;
-      setToken(token);
+      const { user } = response.data;
       setUser(user);
       clarityAnalytics?.identify(user.id, null, null, user.name);
       clarityAnalytics?.trackEvent('user_registration');
@@ -99,7 +79,6 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      setToken(null);
       setUser(null);
       toast.success('Logged out successfully!');
     }

@@ -7,7 +7,7 @@ const PremiumNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
-  const { user, logout } = useAuth();
+  const { user, logout, loading } = useAuth();
   const location = useLocation();
 
   const toggleDropdown = (name) => {
@@ -111,7 +111,7 @@ const PremiumNavbar = () => {
 
         {/* Desktop Auth */}
         <div className="hidden lg:flex items-center gap-6 flex-shrink-0">
-          {user ? (
+          {!loading && (user ? (
             <div className="flex items-center gap-6">
               <Link to="/dashboard" className="text-[10px] font-black tracking-[0.2em] text-white/50 hover:text-white uppercase">Dashboard</Link>
               <button onClick={logout} className="px-6 py-2.5 bg-white/5 border border-white/10 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase">Logout</button>
@@ -121,7 +121,7 @@ const PremiumNavbar = () => {
               <Link to="/login" className="text-[10px] font-black tracking-[0.2em] text-white/50 hover:text-white uppercase">Login</Link>
               <Link to="/signup" className="px-6 py-2.5 bg-black text-white border border-white/20 rounded-full text-[10px] font-black tracking-[0.2em] hover:bg-white hover:!text-black hover:border-white transition-all duration-500 uppercase">Join Nexus</Link>
             </div>
-          )}
+          ))}
         </div>
 
         {/* Mobile Toggle - High Z-Index */}
@@ -204,7 +204,7 @@ const PremiumNavbar = () => {
                 <motion.div className="h-px w-16 bg-white/10 my-2" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.4 }} />
 
                 <div className="flex flex-col items-center gap-8 w-full mt-4">
-                  {user ? (
+                  {!loading && (user ? (
                     <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-8 items-center w-full">
                       <Link to="/dashboard" className="text-xl font-black tracking-[0.2em] text-white/50 hover:text-white uppercase">Dashboard</Link>
                       {(user.role === 'admin' || user.email?.toLowerCase() === 'mohdhasnain1544@gmail.com' || user.email?.toLowerCase() === 'webhaze.in@gmail.com') && (
@@ -219,7 +219,7 @@ const PremiumNavbar = () => {
                         Join Nexus
                       </Link>
                     </motion.div>
-                  )}
+                  ))}
                 </div>
               </div>
             </motion.div>

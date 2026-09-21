@@ -7,9 +7,8 @@ import axios from 'axios';
 const f = { h: "'Inter',sans-serif", b: "'Hanken Grotesk',sans-serif", l: "'Geist Mono','monospace'" };
 
 const Glass = ({ children, className = "" }) => (
-  <div className={`bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:border-white/20 transition-all duration-700 overflow-hidden relative group ${className}`}>
+  <div className={`bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:border-white/20 transition-all duration-700 relative ${className}`}>
     {children}
-    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
   </div>
 );
 
@@ -136,8 +135,8 @@ const Careers = () => {
                   </div>
                   <button
                     onClick={() => applyFor(role)}
-                    className="mt-auto px-6 py-3 bg-white text-black text-[11px] font-black tracking-[0.15em] uppercase hover:bg-white/90 transition-all w-fit"
-                    style={{ fontFamily: f.l }}
+                    className="mt-auto px-6 py-3 bg-white !text-black text-[11px] font-black tracking-[0.15em] uppercase hover:bg-white/90 transition-all w-fit"
+                    style={{ fontFamily: f.l, color: '#000000' }}
                   >
                     Apply Now
                   </button>
@@ -206,8 +205,8 @@ const Careers = () => {
                 </div>
                 <button
                   type="submit" disabled={loading}
-                  className={`w-full py-5 bg-white text-black font-black tracking-[0.2em] uppercase text-xs transition-all ${loading ? 'opacity-50 cursor-wait' : 'hover:bg-white/90'}`}
-                  style={{ fontFamily: f.l }}
+                  className={`w-full py-5 bg-white !text-black font-black tracking-[0.2em] uppercase text-xs transition-all ${loading ? 'opacity-50 cursor-wait' : 'hover:bg-white/90'}`}
+                  style={{ fontFamily: f.l, color: '#000000' }}
                 >
                   {loading ? 'Submitting...' : 'Submit Application'}
                 </button>

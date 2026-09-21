@@ -230,6 +230,12 @@ if (process.env.SKIP_DB !== 'true') {
       console.log('Connected to MongoDB');
       logger.info('Database connected successfully');
 
+      // Keep MongoDB alive every 5 minutes to prevent Atlas free tier pause
+      setInterval(async () => {
+        try { await mongoose.connection.db.admin().ping(); }
+        catch (e) { logger.warn('MongoDB keep-alive ping failed:', e.message); }
+      }, 5 * 60 * 1000);
+
       // Seed sample pages if not present
       const count = await Page.countDocuments();
       if (count === 0) {

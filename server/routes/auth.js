@@ -360,6 +360,7 @@ router.get('/google/callback', async (req, res) => {
     });
     
     const tokenData = await tokenResponse.json();
+    console.log('Google token response:', JSON.stringify(tokenData));
 
     if (tokenData.error || !tokenData.access_token) {
       console.error('Google token exchange failed:', tokenData);
@@ -372,6 +373,7 @@ router.get('/google/callback', async (req, res) => {
     });
     
     const googleUser = await userResponse.json();
+    console.log('Google user info:', JSON.stringify(googleUser));
 
     if (!googleUser.email) {
       console.error('Google user info missing email:', googleUser);
@@ -399,7 +401,7 @@ router.get('/google/callback', async (req, res) => {
     res.redirect(`${frontendURL}/auth/callback?token=${token}`);
     
   } catch (error) {
-    console.error('Google OAuth callback error:', error);
+    console.error('Google OAuth callback error:', error.message);
     res.redirect(`${frontendURL}/login?error=oauth_failed`);
   }
 });

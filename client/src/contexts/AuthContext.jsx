@@ -62,7 +62,8 @@ export const AuthProvider = ({ children }) => {
       toast.success(`Welcome back, ${user.name}!`);
       return user;
     } catch (error) {
-      toast.error('Login failed. Please check your credentials.');
+      const msg = error.response?.data?.error || 'Login failed. Please check your credentials.';
+      toast.error(msg);
       throw error;
     }
   };
@@ -80,7 +81,8 @@ export const AuthProvider = ({ children }) => {
       toast.success(`Account created successfully! Welcome to WebHaze, ${user.name}!`);
       return user;
     } catch (error) {
-      toast.error('Registration failed. Please try again.');
+      const msg = error.response?.data?.error || 'Registration failed. Please try again.';
+      toast.error(msg);
       throw error;
     }
   };

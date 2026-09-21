@@ -4,7 +4,7 @@ const memoryStore = require('../utils/memoryStore');
 
 const authenticate = async (req, res, next) => {
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    const token = req.cookies?.token;
 
     if (!token) {
       return res.status(401).json({
@@ -52,7 +52,8 @@ const authenticate = async (req, res, next) => {
 
 const admin = (req, res, next) => {
   const userEmail = req.user?.email?.toLowerCase();
-  const isOwner = userEmail === 'mohdhasnain1544@gmail.com' || userEmail === 'webhaze.in@gmail.com';
+  const adminEmails = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean);
+  const isOwner = adminEmails.includes(userEmail);
   if ((req.user && req.user.role === 'admin') || isOwner) {
     next();
   } else {

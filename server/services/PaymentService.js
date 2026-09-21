@@ -194,7 +194,7 @@ class PaymentService {
 
             // Process webhook based on event type
             // This would be expanded based on specific webhook events
-            console.log('Webhook processed:', payload);
+            console.log('Webhook processed for provider:', provider);
             
             return { success: true };
         } catch (error) {

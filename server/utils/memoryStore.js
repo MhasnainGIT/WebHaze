@@ -14,7 +14,9 @@ class MemoryStore {
 
   async seedData() {
     // Create sample user
-    const hashedPassword = await bcrypt.hash('password123', 12);
+    const seedPassword = process.env.SEED_USER_PASSWORD;
+    if (!seedPassword) throw new Error('SEED_USER_PASSWORD env var is not set');
+    const hashedPassword = await bcrypt.hash(seedPassword, 12);
     this.users.set('1', {
       _id: '1',
       id: '1',
@@ -86,7 +88,7 @@ class MemoryStore {
       name: userData.name,
       email: userData.email,
       password: hashedPassword,
-      role: userData.email === 'webhaze.in@gmail.com' ? 'admin' : 'user',
+      role: (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).includes(userData.email.toLowerCase()) ? 'admin' : 'user',
       plan: 'Free',
       websites: 0,
       storageLimit: 5,

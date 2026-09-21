@@ -121,6 +121,13 @@ router.post('/register', authLimiter, async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
     // Send welcome email (don't wait for it to complete)
     sendWelcomeEmail(user.email, user.name).catch(err => {
       console.error('Failed to send welcome email:', err);
@@ -128,7 +135,6 @@ router.post('/register', authLimiter, async (req, res) => {
 
     res.status(201).json({
       message: 'User registered successfully',
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -195,9 +201,15 @@ router.post('/login', authLimiter, async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
     res.json({
       message: 'Login successful',
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -222,7 +234,7 @@ router.post('/login', authLimiter, async (req, res) => {
 // Get current user
 router.get('/me', async (req, res) => {
   try {
-    const token = req.headers.authorization?.replace('Bearer ', '');
+    const token = req.cookies?.token;
     
     if (!token) {
       return res.status(401).json({
@@ -268,7 +280,7 @@ router.get('/me', async (req, res) => {
 // Update password endpoint
 router.put('/password', async (req, res) => {
   try {
-    const token = req.headers.authorization?.replace('Bearer ', '');
+    const token = req.cookies?.token;
     
     if (!token) {
       return res.status(401).json({ error: 'No token provided' });
@@ -360,10 +372,8 @@ router.get('/google/callback', async (req, res) => {
     });
     
     const tokenData = await tokenResponse.json();
-    console.log('Google token response:', JSON.stringify(tokenData));
 
     if (tokenData.error || !tokenData.access_token) {
-      console.error('Google token exchange failed:', tokenData);
       return res.redirect(`${frontendURL}/login?error=token_failed`);
     }
     
@@ -373,10 +383,8 @@ router.get('/google/callback', async (req, res) => {
     });
     
     const googleUser = await userResponse.json();
-    console.log('Google user info:', JSON.stringify(googleUser));
 
     if (!googleUser.email) {
-      console.error('Google user info missing email:', googleUser);
       return res.redirect(`${frontendURL}/login?error=no_email`);
     }
     
@@ -386,7 +394,7 @@ router.get('/google/callback', async (req, res) => {
       user = new User({
         name: googleUser.name,
         email: googleUser.email,
-        password: 'google-oauth-' + Date.now()
+        password: crypto.randomBytes(32).toString('hex')
       });
       await user.save();
     }
@@ -398,7 +406,14 @@ router.get('/google/callback', async (req, res) => {
       { expiresIn: '7d' }
     );
     
-    res.redirect(`${frontendURL}/auth/callback?token=${token}`);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+    
+    res.redirect(`${frontendURL}/auth/callback`);
     
   } catch (error) {
     console.error('Google OAuth callback error:', error.message);
@@ -433,6 +448,12 @@ router.delete('/users/:id', authenticate, admin, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete user' });
   }
+});
+
+// Logout endpoint
+router.post('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.json({ message: 'Logged out successfully' });
 });
 
 module.exports = router;

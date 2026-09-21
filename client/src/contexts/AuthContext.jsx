@@ -3,8 +3,9 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { API_BASE_URL } from '../config/api';
 
-// Configure axios base URL
+// Configure axios base URL and credentials
 axios.defaults.baseURL = API_BASE_URL;
+axios.defaults.withCredentials = true;
 
 // Optional clarity analytics
 let clarityAnalytics = null;
@@ -22,22 +23,9 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getCookie = (name) => {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-    };
-
-    const token = localStorage.getItem('token') || getCookie('token');
-    if (token) {
-      if (!localStorage.getItem('token')) {
-        localStorage.setItem('token', token);
-      }
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      fetchUser();
-    } else {
-      setLoading(false);
-    }
+    const token = localStorage.getItem('token');
+    if (token) axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    fetchUser();
   }, []);
 
   const fetchUser = async () => {
@@ -46,26 +34,31 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.user);
     } catch (error) {
       console.error('Error fetching user:', error);
-      localStorage.removeItem('token');
-      delete axios.defaults.headers.common['Authorization'];
+      setUser(null);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const setToken = (token) => {
+    if (token) {
+      localStorage.setItem('token', token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+      localStorage.removeItem('token');
+      delete axios.defaults.headers.common['Authorization'];
     }
   };
 
   const login = async (email, password) => {
     try {
       const response = await axios.post('/api/auth/login', { email, password });
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const { user, token } = response.data;
+      setToken(token);
       setUser(user);
-      
-      // Track user login with Clarity
       clarityAnalytics?.identify(user.id, null, null, user.name);
       clarityAnalytics?.trackEvent('user_login');
       clarityAnalytics?.setTag('user_plan', user.plan);
-      
       toast.success(`Welcome back, ${user.name}!`);
       return user;
     } catch (error) {
@@ -77,17 +70,13 @@ export const AuthProvider = ({ children }) => {
   const register = async (email, password, name) => {
     try {
       const response = await axios.post('/api/auth/register', { email, password, name });
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const { user, token } = response.data;
+      setToken(token);
       setUser(user);
-      
-      // Track user registration with Clarity
       clarityAnalytics?.identify(user.id, null, null, user.name);
       clarityAnalytics?.trackEvent('user_registration');
       clarityAnalytics?.setTag('user_plan', user.plan);
       clarityAnalytics?.upgradeSession('new_user_registration');
-      
       toast.success(`Account created successfully! Welcome to WebHaze, ${user.name}!`);
       return user;
     } catch (error) {
@@ -96,14 +85,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    // Track user logout
+  const logout = async () => {
     clarityAnalytics?.trackEvent('user_logout');
-    
-    localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
-    setUser(null);
-    toast.success('Logged out successfully!');
+    try {
+      await axios.post('/api/auth/logout');
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setToken(null);
+      setUser(null);
+      toast.success('Logged out successfully!');
+    }
   };
 
   const value = {

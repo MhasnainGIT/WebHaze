@@ -16,7 +16,7 @@
     }
   },
   "auth": {
-    "jwtSecret": "development-secret-key-change-in-production",
+    "jwtSecret": "",
     "jwtExpiry": "24h",
     "bcryptRounds": 12
   },

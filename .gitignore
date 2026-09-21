@@ -10,6 +10,15 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env.*.local
+
+# Secrets and credentials
+*.pem
+*.p12
+*.key
+*.p8
+service-account*.json
+credentials*.json
 
 # Build outputs
 dist/

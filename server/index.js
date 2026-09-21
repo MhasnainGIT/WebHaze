@@ -5,6 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const winston = require('winston');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const clarityInjector = require('./middleware/clarityInjector');
@@ -83,7 +84,6 @@ const defaultProdOrigins = ['https://webhaze.in', 'https://www.webhaze.in'];
 
 const envOrigins = parseOrigins(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN);
 
-// Build final allowed list
 let allowedOrigins = [];
 
 if (NODE_ENV === 'production' && envOrigins.length > 0) {
@@ -94,34 +94,32 @@ if (NODE_ENV === 'production' && envOrigins.length > 0) {
   allowedOrigins = defaultLocalOrigins;
 }
 
-// Allow Vercel preview URLs in development
 const isVercelOrigin = (origin) => origin && origin.endsWith('.vercel.app');
-if (NODE_ENV !== 'production') {
-  allowedOrigins.push(isVercelOrigin);
-}
-// Optional: allow Vercel in prod only if explicitly listed in env
-else if (envOrigins.some(o => o.includes('.vercel.app'))) {
-  allowedOrigins.push(isVercelOrigin);
-}
 
 const corsOptions = {
   origin: function (origin, cb) {
-    // Allow requests with no origin (mobile apps, curl, etc.)
     if (!origin) return cb(null, true);
     
-    // Allow webhaze.in domains and vercel.app domains
-    if (origin.includes('webhaze.in') || origin.includes('localhost') || origin.includes('vercel.app')) {
+    if (isVercelOrigin(origin)) {
       return cb(null, true);
     }
     
-    // Check against allowed origins
+    const isAllowed = (o) => {
+      if (typeof o !== 'string') return false;
+      if (!origin) return false;
+      if (o === origin) return true;
+      if (o === 'https://webhaze.in' && origin === 'https://www.webhaze.in') return true;
+      if (o === 'https://www.webhaze.in' && origin === 'https://webhaze.in') return true;
+      return false;
+    };
+    
+    if (isAllowed('https://webhaze.in') || isAllowed('https://www.webhaze.in') || isAllowed('http://localhost:3000') || isAllowed('http://localhost:5173')) {
+      return cb(null, true);
+    }
+    
     let allowed = false;
     for (const item of allowedOrigins) {
-      if (typeof item === 'string' && item === origin) {
-        allowed = true;
-        break;
-      }
-      if (typeof item === 'function' && item(origin)) {
+      if (isAllowed(item)) {
         allowed = true;
         break;
       }
@@ -138,6 +136,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser());
 
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -202,27 +201,22 @@ app.use('*', (req, res) => {
 app.use((err, req, res, next) => {
   logger.error('Unhandled error:', err);
 
-  if (NODE_ENV === 'production') {
-    res.status(500).json({
-      error: 'Internal server error',
-      message: 'Something went wrong'
-    });
-  } else {
-    res.status(500).json({
-      error: err.message,
-      stack: err.stack
-    });
-  }
+  const isProd = NODE_ENV === 'production';
+  res.status(err.status || 500).json({
+    error: isProd ? 'Internal server error' : err.message,
+    ...(isProd ? {} : { stack: err.stack })
+  });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`WebHaze server listening on http://localhost:${PORT}`);
-  logger.info('Server started successfully');
-});
-
-// Connect to MongoDB (optional for development)
+// Connect to MongoDB then start server
 const MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/webhaze';
+
+const startServer = () => {
+  app.listen(PORT, () => {
+    console.log(`WebHaze server listening on http://localhost:${PORT}`);
+    logger.info('Server started successfully');
+  });
+};
 
 if (process.env.SKIP_DB !== 'true') {
   mongoose.connect(MONGO_URI)
@@ -262,11 +256,15 @@ if (process.env.SKIP_DB !== 'true') {
         ]);
         logger.info('Sample pages seeded successfully');
       }
+
+      startServer();
     })
     .catch(err => {
-      console.log('MongoDB not available - running without database');
-      logger.warn('Database connection failed, continuing without DB:', err.message);
+      console.error('MongoDB connection failed, server not started:', err.message);
+      logger.error('Database connection failed:', err.message);
+      process.exit(1);
     });
 } else {
   console.log('Skipping database connection (SKIP_DB=true)');
+  startServer();
 }

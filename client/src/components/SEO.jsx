@@ -9,8 +9,9 @@ const SEO = ({
   image = "/og-image.jpg",
   type = "website"
 }) => {
-  const siteUrl = "https://webhaze.com";
+  const siteUrl = "https://www.webhaze.in";
   const fullUrl = canonical ? `${siteUrl}${canonical}` : siteUrl;
+  const fullImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
 
   return (
     <Helmet>
@@ -24,12 +25,12 @@ const SEO = ({
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={fullUrl} />
-      <meta property="og:image" content={`${siteUrl}${image}`} />
+      <meta property="og:image" content={fullImage} />
       
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={`${siteUrl}${image}`} />
+      <meta name="twitter:image" content={fullImage} />
       
       <script type="application/ld+json">
         {JSON.stringify({

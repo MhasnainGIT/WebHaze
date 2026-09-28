@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const path = require('path');
 const { Resend } = require('resend');
 const rateLimit = require('express-rate-limit');
 const JobApplication = require('../models/JobApplication');
@@ -9,8 +10,18 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const CAREERS_FROM = 'WebHaze Careers <noreply@webhaze.in>';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || process.env.RESEND_FROM_EMAIL || 'noreply@webhaze.in';
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '..', 'uploads', 'resumes'));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + '-' + file.originalname);
+  }
+});
+
 const upload = multer({
-  storage: multer.memoryStorage(),
+  storage,
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
@@ -28,18 +39,16 @@ router.post('/apply', limiter, upload.single('resume'), async (req, res) => {
       return res.status(400).json({ error: 'All required fields must be filled.' });
     }
 
-    // Save to MongoDB
     const application = new JobApplication({
       name: name.trim(),
       email: email.trim().toLowerCase(),
       phone: phone.trim(),
       role: role.trim(),
       about: about.trim(),
-      resumeFilename: req.file ? req.file.originalname : null
+      resumeFilename: req.file ? req.file.filename : null
     });
     await application.save();
 
-    // Send email notification
     try {
       await resend.emails.send({
         from: CAREERS_FROM,
@@ -74,13 +83,25 @@ router.post('/apply', limiter, upload.single('resume'), async (req, res) => {
   }
 });
 
-// Get all applications (admin)
 router.get('/', async (req, res) => {
   try {
     const applications = await JobApplication.find().sort({ createdAt: -1 });
     res.json(applications);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch applications.' });
+  }
+});
+
+router.get('/resume/:id', async (req, res) => {
+  try {
+    const application = await JobApplication.findById(req.params.id);
+    if (!application || !application.resumeFilename) {
+      return res.status(404).json({ error: 'Resume not found' });
+    }
+    const filePath = path.join(__dirname, '..', 'uploads', 'resumes', application.resumeFilename);
+    res.download(filePath, application.resumeFilename);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to download resume' });
   }
 });
 

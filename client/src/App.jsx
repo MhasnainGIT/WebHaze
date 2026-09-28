@@ -30,6 +30,7 @@ const ForgotPassword = React.lazy(() => import('./pages/ForgotPassword'));
 const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
 const AuthCallback = React.lazy(() => import('./pages/AuthCallback'));
 const Careers = React.lazy(() => import('./pages/Careers'));
+const JobDetail = React.lazy(() => import('./pages/JobDetail'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
 const Terms = React.lazy(() => import('./pages/Terms'));
 
@@ -84,6 +85,7 @@ export default function App() {
                         <Route path="/reset-password/:token" element={<ResetPassword />} />
                         <Route path="/auth/callback" element={<AuthCallback />} />
                         <Route path="/careers" element={<Careers />} />
+                        <Route path="/careers/:slug" element={<JobDetail />} />
                         <Route path="/privacy" element={<Privacy />} />
                         <Route path="/terms" element={<Terms />} />
                       </Routes>

@@ -1,23 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { useCurrency } from '../../contexts/CurrencyContext';
 
 const PremiumNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const { user, logout, loading } = useAuth();
-  const { currency, currencies, selectCurrency } = useCurrency();
-  const [currencyOpen, setCurrencyOpen] = useState(false);
-  const currencyRef = useRef(null);
-
-  useEffect(() => {
-    const handler = (e) => { if (currencyRef.current && !currencyRef.current.contains(e.target)) setCurrencyOpen(false); };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
   const location = useLocation();
 
   const toggleDropdown = (name) => {
@@ -117,41 +107,6 @@ const PremiumNavbar = () => {
               </Link>
             )
           ))}
-        </div>
-
-        {/* Currency Switcher */}
-        <div ref={currencyRef} className="hidden lg:block relative">
-          <button
-            onClick={() => setCurrencyOpen(o => !o)}
-            className="flex items-center gap-2 text-[10px] font-black tracking-[0.2em] text-white/50 hover:text-white uppercase transition-colors"
-          >
-            <span>{currencies[currency].flag}</span>
-            <span>{currency}</span>
-            <svg className={`w-3 h-3 transition-transform ${currencyOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="square" strokeWidth={3} d="M19 9l-7 7-7-7" /></svg>
-          </button>
-          <AnimatePresence>
-            {currencyOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.15 }}
-                className="absolute right-0 top-full mt-4 bg-black/95 backdrop-blur-xl border border-white/10 py-2 min-w-[160px] z-50"
-              >
-                {Object.entries(currencies).map(([code, { flag, name }]) => (
-                  <button
-                    key={code}
-                    onClick={() => { selectCurrency(code); setCurrencyOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-2.5 text-[10px] font-black tracking-[0.15em] uppercase transition-colors ${
-                      currency === code ? 'text-white bg-white/5' : 'text-white/40 hover:text-white hover:bg-white/5'
-                    }`}
-                  >
-                    <span>{flag}</span><span>{code}</span><span className="text-white/20 normal-case font-medium tracking-normal">{name}</span>
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
 
         {/* Desktop Auth */}

@@ -12,6 +12,7 @@ const Bg3D = () => {
   const sx = useSpring(0, { stiffness: 40, damping: 25 });
   const sy = useSpring(0, { stiffness: 40, damping: 25 });
   useEffect(() => {
+    if (window.innerWidth < 768) return;
     const h = (e) => { sx.set((e.clientX / window.innerWidth - 0.5) * 80); sy.set((e.clientY / window.innerHeight - 0.5) * 80); };
     window.addEventListener('mousemove', h); return () => window.removeEventListener('mousemove', h);
   }, [sx, sy]);
@@ -36,9 +37,26 @@ const Glass = ({ children, className = "" }) => (
 const Hero = () => {
   const { user } = useAuth();
   const ref = useRef(null);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["0%", "25%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.4], isMobile ? [1, 1] : [1, 0]);
+
+  const mx = useSpring(0, { stiffness: 60, damping: 20 });
+  const my = useSpring(0, { stiffness: 60, damping: 20 });
+  const tx = useTransform(mx, [-0.5, 0.5], ["-12px", "12px"]);
+  const ty = useTransform(my, [-0.5, 0.5], ["-8px", "8px"]);
+
+  useEffect(() => {
+    if (isMobile) return;
+    const h = (e) => {
+      mx.set(e.clientX / window.innerWidth - 0.5);
+      my.set(e.clientY / window.innerHeight - 0.5);
+    };
+    window.addEventListener('mousemove', h);
+    return () => window.removeEventListener('mousemove', h);
+  }, [mx, my, isMobile]);
+
   return (
     <section ref={ref} className="relative min-h-screen flex items-center bg-black overflow-hidden">
       <motion.div style={{ y, opacity }} className="w-full relative z-10 pt-32 pb-20 px-6 md:px-20">
@@ -49,7 +67,13 @@ const Hero = () => {
               <span className="text-[11px] font-medium tracking-[0.15em] uppercase text-white/50" style={{ fontFamily: f.l }}>#1 Web Agency Hyderabad</span>
             </div>
           </ScrollReveal>
-          <motion.h1 className="text-[52px] md:text-[100px] lg:text-[140px] font-black leading-[0.9] mb-12 tracking-[-0.04em] uppercase" style={{ fontFamily: f.h }} initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}>
+          <motion.h1
+            className="text-[52px] md:text-[100px] lg:text-[140px] font-black leading-[0.9] mb-12 tracking-[-0.04em] uppercase"
+            style={{ fontFamily: f.h, x: tx, y: ty }}
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+          >
             WE BUILD<br /><span className="text-white/20">WITHOUT LIMITS.</span>
           </motion.h1>
           <ScrollReveal delay={0.3}>

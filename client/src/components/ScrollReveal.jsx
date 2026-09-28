@@ -1,28 +1,24 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
-const ScrollReveal = ({ children, direction = "up", delay = 0, className = "", amount = 0.2 }) => {
+const ScrollReveal = ({ children, direction = "up", delay = 0, className = "", amount = 0.15 }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount });
+  const isInView = useInView(ref, { once: true, amount });
 
   const variants = {
-    hidden: { 
-      opacity: 0, 
-      y: direction === "up" ? 40 : direction === "down" ? -40 : 0,
-      x: direction === "left" ? 40 : direction === "right" ? -40 : 0,
-      scale: 0.98,
-      filter: "blur(10px)"
+    hidden: {
+      opacity: 0,
+      y: direction === "up" ? 30 : direction === "down" ? -30 : 0,
+      x: direction === "left" ? 30 : direction === "right" ? -30 : 0,
     },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      x: 0, 
-      scale: 1,
-      filter: "blur(0px)",
-      transition: { 
-        duration: 0.8, 
-        delay, 
-        ease: [0.16, 1, 0.3, 1] 
+    visible: {
+      opacity: 1,
+      y: 0,
+      x: 0,
+      transition: {
+        duration: 0.7,
+        delay,
+        ease: [0.16, 1, 0.3, 1]
       }
     }
   };

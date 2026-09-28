@@ -1,13 +1,16 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
-import { useMotionValue } from 'framer-motion';
+
+const isMobile = () => /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
 
 const SmoothScroll = ({ children }) => {
   useEffect(() => {
+    // Disable Lenis on mobile — native scroll is better on touch devices
+    if (isMobile()) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
       gestureDirection: 'vertical',
       smooth: true,
       mouseMultiplier: 1,
@@ -16,9 +19,8 @@ const SmoothScroll = ({ children }) => {
       infinite: false,
     });
 
-    // Sync Lenis scroll position to window scroll so Framer Motion useScroll works
+    // Sync to window so Framer Motion useScroll works
     lenis.on('scroll', ({ scroll }) => {
-      window.scrollY = scroll;
       document.documentElement.scrollTop = scroll;
     });
 
@@ -27,10 +29,11 @@ const SmoothScroll = ({ children }) => {
       requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    const rafId = requestAnimationFrame(raf);
 
     return () => {
       lenis.destroy();
+      cancelAnimationFrame(rafId);
     };
   }, []);
 

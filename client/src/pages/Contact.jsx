@@ -93,7 +93,7 @@ const Contact = () => {
               <div className="glass-card border-white/5 p-8 md:p-12">
                 <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-white/50">Direct Lines</h3>
                 <p className="text-2xl md:text-3xl font-black text-white mb-4 tracking-tight uppercase">+91 8919019679</p>
-                <p className="text-white/40 font-medium text-lg">webhaze.in@gmail.com</p>
+                <p className="text-white/40 font-medium text-lg">info.webhaze@gmail.com</p>
               </div>
             </ScrollReveal>
           </div>

@@ -40,6 +40,7 @@ const Dashboard = () => {
         title="Command Dashboard | WebHaze Infrastructure"
         description="Manage your digital infrastructure, view website analytics, and provision new nodes from your WebHaze command center."
         noindex
+        canonical="/dashboard"
       />
       
       <div className="container-site">

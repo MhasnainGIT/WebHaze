@@ -34,7 +34,7 @@ const ResetPassword = () => {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-6 pt-32 pb-20">
-      <SEO title="Reset Access | WebHaze Nexus" description="Establish new access credentials for the WebHaze infrastructure." noindex />
+      <SEO title="Reset Access | WebHaze Nexus" description="Establish new access credentials for the WebHaze infrastructure." noindex canonical="/reset-password/:token" />
       
       <motion.div 
         className="w-full max-w-md glass-card border-white/5 p-10 md:p-16"

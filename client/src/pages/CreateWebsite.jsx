@@ -26,6 +26,7 @@ const CreateWebsite = () => {
       <SEO 
         title="Provision New Node | WebHaze Deployment"
         description="Initialize a new website node on the WebHaze infrastructure. Choose your template and deployment plan."
+        canonical="/create-website"
       />
       
       <div className="container-site">

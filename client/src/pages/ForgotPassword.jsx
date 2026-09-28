@@ -32,7 +32,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-6 pt-32 pb-20">
-      <SEO title="Password Recovery | WebHaze Nexus" description="Recover your access credentials for the WebHaze infrastructure." noindex />
+      <SEO title="Password Recovery | WebHaze Nexus" description="Recover your access credentials for the WebHaze infrastructure." noindex canonical="/forgot-password" />
       
       <motion.div 
         className="w-full max-w-md glass-card border-white/5 p-10 md:p-16"

@@ -27,6 +27,7 @@ const Account = () => {
         title="Identity Management | WebHaze Account"
         description="Manage your personal identity, security protocols, and billing preferences for your WebHaze account."
         noindex
+        canonical="/account"
       />
       
       <div className="container-site">

@@ -82,7 +82,7 @@ const AdminNexus = () => {
 
   return (
     <div className="min-h-screen bg-black pt-32 pb-20 text-white">
-      <SEO title="Nexus Oversight | WebHaze Admin" description="Complete administrative oversight of WebHaze infrastructure." noindex />
+      <SEO title="Nexus Oversight | WebHaze Admin" description="Complete administrative oversight of WebHaze infrastructure." noindex canonical="/admin-nexus" />
       
       <div className="container-site px-6">
         <div className="max-w-7xl mx-auto">

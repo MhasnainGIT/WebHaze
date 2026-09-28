@@ -43,6 +43,7 @@ const Login = () => {
         description="Login to your WebHaze account to manage your websites, view analytics, and uplink with support. Secure, encrypted, and fast access."
         keywords="WebHaze Login, manage website, hosting dashboard login, secure web portal"
         noindex
+        canonical="/login"
       />
       
       <motion.div 

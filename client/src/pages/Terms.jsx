@@ -26,6 +26,11 @@ const Terms = () => {
           <p className="text-xl text-white/40 font-medium tracking-tight uppercase text-[10px] tracking-[0.3em]">
             Operational Agreement Version 2.4
           </p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <a href="https://www.webhaze.in/about" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors">About WebHaze</a>
+            <a href="https://www.webhaze.in/contact" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors">Contact Us</a>
+            <a href="https://www.webhaze.in/privacy" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors">Privacy Protocol</a>
+          </div>
         </div>
 
         <div className="space-y-12 max-w-4xl">

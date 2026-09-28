@@ -8,6 +8,10 @@ const Terms = () => {
       <SEO 
         title="Terms of Service | WebHaze Infrastructure"
         description="Review the terms and conditions for using the WebHaze Website-as-a-Service platform. Professional service agreements for global digital deployment."
+        breadcrumb={[
+          { name: "Home", url: "https://www.webhaze.in/" },
+          { name: "Terms", url: "https://www.webhaze.in/terms" }
+        ]}
       />
       
       <div className="container-site">

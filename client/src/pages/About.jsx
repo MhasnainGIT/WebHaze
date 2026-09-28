@@ -10,6 +10,10 @@ const About = () => {
         title="About Us | Leading Web Development Agency in Hyderabad | WebHaze"
         description="Learn how WebHaze Studios became the #1 website designing company in Hyderabad. Our mission is to empower local businesses with global digital infrastructure."
         keywords="WebHaze Hyderabad, best web agency Hyderabad, website designers near me, Hyderabad IT solutions, professional web development"
+        breadcrumb={[
+          { name: "Home", url: "https://www.webhaze.in/" },
+          { name: "About", url: "https://www.webhaze.in/about" }
+        ]}
       />
       
       <div className="container-site py-20 relative z-10">

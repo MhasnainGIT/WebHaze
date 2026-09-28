@@ -180,7 +180,7 @@ const Section = ({ section, businessData }) => {
                             {content.items.map((item, index) => (
                                 <div key={index} className="text-center">
                                     <div className="w-16 h-16 mx-auto mb-4">
-                                        <img src={`/icons/${item.icon}.svg`} alt={item.title} className="w-full h-full" />
+                                        <img src={`/icons/${item.icon}.svg`} alt={item.title} loading="lazy" width="64" height="64" className="w-full h-full" />
                                     </div>
                                     <h3 className="text-xl font-bold mb-2">{item.title}</h3>
                                     <p className="text-textLight">{item.description}</p>
@@ -216,10 +216,13 @@ const Section = ({ section, businessData }) => {
                                             <div key={itemIndex} className="flex gap-4 bg-white p-4 rounded-lg">
                                                 {item.image && (
                                                     <img 
-                                                        src={item.image} 
-                                                        alt={item.name}
-                                                        className="w-24 h-24 object-cover rounded"
-                                                    />
+                                                         src={item.image} 
+                                                         alt={item.name}
+                                                         loading="lazy"
+                                                         width="96"
+                                                         height="96"
+                                                         className="w-24 h-24 object-cover rounded"
+                                                     />
                                                 )}
                                                 <div>
                                                     <div className="flex justify-between mb-2">
@@ -270,11 +273,14 @@ const Section = ({ section, businessData }) => {
                                 <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
                                     <div className="flex items-center gap-4 mb-4">
                                         {item.image && (
-                                            <img 
-                                                src={item.image} 
-                                                alt={item.author} 
-                                                className="w-12 h-12 rounded-full object-cover"
-                                            />
+                                             <img 
+                                                 src={item.image} 
+                                                 alt={item.author} 
+                                                 loading="lazy"
+                                                 width="48"
+                                                 height="48"
+                                                 className="w-12 h-12 rounded-full object-cover"
+                                             />
                                         )}
                                         <div>
                                             <p className="font-bold">{item.author}</p>

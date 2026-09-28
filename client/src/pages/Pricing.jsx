@@ -14,6 +14,10 @@ const Pricing = () => {
       <SEO
         title="Solutions & Pricing | WebHaze"
         description="Transparent pricing for professional web development. Choose the plan that matches your vision."
+        breadcrumb={[
+          { name: "Home", url: "https://www.webhaze.in/" },
+          { name: "Pricing", url: "https://www.webhaze.in/pricing" }
+        ]}
       />
 
       <div className="container-site">

@@ -269,7 +269,7 @@ const Testimonials = () => {
                     <p className="text-white/50 text-base md:text-xl leading-relaxed italic" style={{ fontFamily: f.b }}>"{t.q}"</p>
                   </div>
                   <div className="flex items-center gap-4 border-t border-white/[0.05] pt-6 mt-8">
-                    <img src={t.v} alt={t.a} className="w-12 h-12 grayscale border border-white/[0.08]" style={{ borderRadius: 0 }} />
+                     <img src={t.v} alt={t.a} loading="lazy" width="48" height="48" className="w-12 h-12 grayscale border border-white/[0.08]" style={{ borderRadius: 0 }} />
                     <div>
                       <p className="font-bold text-base text-white" style={{ fontFamily: f.h }}>{t.a}</p>
                       <p className="text-white/20 text-[10px] uppercase tracking-[0.1em]" style={{ fontFamily: f.l }}>{t.r}</p>
@@ -351,7 +351,17 @@ const CTA = () => {
 /* ─── HOME ─── */
 const Home = () => (
   <div className="relative">
-    <SEO title="WebHaze | Premium Web Agency & Enterprise Cloud Solutions" description="WebHaze is a premier web design, development, and cloud hosting agency. We offer enterprise-grade Linux/Windows VPS, Dedicated Servers, and scalable digital solutions." keywords="Web Designing Hyderabad, Enterprise Cloud Servers, Managed VPS Hosting, Dedicated Servers, App Development, WebHaze" canonical="/" />
+    <SEO 
+      title="WebHaze | Premium Web Agency & Enterprise Cloud Solutions" 
+      description="WebHaze is a premier web design, development, and cloud hosting agency. We offer enterprise-grade Linux/Windows VPS, Dedicated Servers, and scalable digital solutions." 
+      keywords="Web Designing Hyderabad, Enterprise Cloud Servers, Managed VPS Hosting, Dedicated Servers, App Development, WebHaze" 
+      canonical="/"
+      faq={[
+        { question: "Do you offer domain registration?", answer: "Yes. Elite global domain management with full DNS control, WHOIS privacy, and auto-renewal included." },
+        { question: "How fast can I launch?", answer: "Instantly. Our automated pipeline goes live the moment you approve. Zero waiting." },
+        { question: "Can I contact support via WhatsApp?", answer: "Absolutely. 24/7 direct access to our engineering team via WhatsApp, Phone, and Email." }
+      ]}
+    />
     <Bg3D />
     <Hero />
     <Features />

@@ -142,6 +142,11 @@ const CloudServers = () => {
         title="Managed Cloud & Dedicated Servers | WebHaze"
         description="Experience WebHaze high-performance, fully customizable servers with 99.999% SLA. Enterprise cloud architecture for your mission-critical workloads."
         keywords="Managed VPS, Dedicated Servers, Cloud Hosting, Windows VPS, Linux VPS, WebHaze Cloud"
+        breadcrumb={[
+          { name: "Home", url: "https://www.webhaze.in/" },
+          { name: "Services", url: "https://www.webhaze.in/services/cloud-servers" },
+          { name: "Cloud Servers", url: "https://www.webhaze.in/services/cloud-servers" }
+        ]}
       />
 
       <div className="container-site">

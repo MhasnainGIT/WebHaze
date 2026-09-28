@@ -155,9 +155,9 @@ const FeatureCard = ({ icon, title, description }) => (
   </div>
 );
 
-const IndustrySolution = ({ image, title, features }) => (
+  const IndustrySolution = ({ image, title, features }) => (
   <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-    <img src={image} alt={title} className="w-full h-48 object-cover" />
+    <img src={image} alt={title} loading="lazy" width="400" height="192" className="w-full h-48 object-cover" />
     <div className="p-6">
       <h3 className="text-xl font-semibold mb-4">{title}</h3>
       <ul className="space-y-2">

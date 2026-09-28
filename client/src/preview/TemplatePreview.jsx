@@ -30,6 +30,9 @@ const SortableSection = ({ section, onUpdate }) => {
               <img
                 src={section.background.defaultSrc}
                 alt="Hero Background"
+                loading="lazy"
+                width="800"
+                height="400"
                 className="absolute inset-0 w-full h-full object-cover"
               />
             )}

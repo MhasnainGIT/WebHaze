@@ -93,6 +93,10 @@ const Careers = () => {
         title="Careers | Join WebHaze | Build the Future of the Web"
         description="Join the WebHaze team. We're hiring developers, designers, and sales professionals to help build the future of digital experiences."
         keywords="WebHaze careers, web developer jobs Hyderabad, remote developer jobs India, join WebHaze"
+        breadcrumb={[
+          { name: "Home", url: "https://www.webhaze.in/" },
+          { name: "Careers", url: "https://www.webhaze.in/careers" }
+        ]}
       />
 
       <div className="max-w-[1440px] mx-auto">

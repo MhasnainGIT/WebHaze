@@ -4,11 +4,14 @@ Allow: /
 # Prioritize homepage
 Allow: /$
 
-# Allow important pages
+# Allow important public pages
 Allow: /about
 Allow: /contact
 Allow: /services/
 Allow: /pricing
+Allow: /careers
+Allow: /privacy
+Allow: /terms
 
 # Block admin and private areas
 Disallow: /admin/
@@ -16,7 +19,13 @@ Disallow: /dashboard/
 Disallow: /account/
 Disallow: /login
 Disallow: /signup
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /auth/
 Disallow: /api/
+
+# Crawl budget optimization
+Crawl-delay: 0
 
 # Sitemap location
 Sitemap: https://www.webhaze.in/sitemap.xml

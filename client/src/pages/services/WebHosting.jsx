@@ -51,6 +51,11 @@ const WebHosting = () => {
       <SEO 
         title="Web Hosting - WebHaze"
         description="Professional web hosting services with 99.9% uptime guarantee and lightning-fast performance."
+        breadcrumb={[
+          { name: "Home", url: "https://www.webhaze.in/" },
+          { name: "Services", url: "https://www.webhaze.in/services/web-hosting" },
+          { name: "Web Hosting", url: "https://www.webhaze.in/services/web-hosting" }
+        ]}
       />
       
       <div className="container-site py-16">

@@ -101,7 +101,7 @@ const TemplateCard = ({ title, description, features, image, onSelect }) => (
         className="bg-white rounded-lg shadow-lg overflow-hidden"
         whileHover={{ y: -5 }}
     >
-        <img src={image} alt={title} className="w-full h-64 object-cover" />
+        <img src={image} alt={title} loading="lazy" width="400" height="256" className="w-full h-64 object-cover" />
         <div className="p-6">
             <h3 className="text-xl font-semibold mb-2">{title}</h3>
             <p className="text-gray-600 mb-4">{description}</p>

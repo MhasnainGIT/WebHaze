@@ -48,6 +48,7 @@ const Signup = () => {
         title="Create an Account | Join WebHaze Studios"
         description="Join WebHaze Studios and start building your digital vision today. Provision your professional website with our elite Website-as-a-Service platform."
         keywords="WebHaze Signup, create website account, join web development platform, register webhaze"
+        noindex
       />
       
       <motion.div 

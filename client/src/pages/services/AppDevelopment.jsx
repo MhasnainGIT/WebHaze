@@ -34,6 +34,11 @@ const AppDevelopment = () => {
       <SEO 
         title="App Development - WebHaze"
         description="Professional mobile app development services for iOS, Android, and cross-platform solutions."
+        breadcrumb={[
+          { name: "Home", url: "https://www.webhaze.in/" },
+          { name: "Services", url: "https://www.webhaze.in/services/app-development" },
+          { name: "App Development", url: "https://www.webhaze.in/services/app-development" }
+        ]}
       />
       
       <div className="container-site py-16">

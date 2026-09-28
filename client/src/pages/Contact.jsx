@@ -55,6 +55,10 @@ const Contact = () => {
         title="Contact Us | #1 Website Development Company Hyderabad | WebHaze"
         description="Connect with WebHaze Studios in Hyderabad. Get a free quote for your web development project or support for your existing Nexus site."
         keywords="Contact web agency Hyderabad, website developer phone number Hyderabad, WebHaze location, hire web designer Hyderabad"
+        breadcrumb={[
+          { name: "Home", url: "https://www.webhaze.in/" },
+          { name: "Contact", url: "https://www.webhaze.in/contact" }
+        ]}
       />
       
       <div className="container-site">

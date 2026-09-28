@@ -8,6 +8,10 @@ const Privacy = () => {
       <SEO 
         title="Privacy Protocol | WebHaze Studios"
         description="Our commitment to your data security. Read the WebHaze Privacy Protocol to understand how we protect your digital identity and infrastructure."
+        breadcrumb={[
+          { name: "Home", url: "https://www.webhaze.in/" },
+          { name: "Privacy", url: "https://www.webhaze.in/privacy" }
+        ]}
       />
       
       <div className="container-site">

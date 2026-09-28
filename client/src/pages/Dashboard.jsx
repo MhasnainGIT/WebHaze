@@ -39,6 +39,7 @@ const Dashboard = () => {
       <SEO 
         title="Command Dashboard | WebHaze Infrastructure"
         description="Manage your digital infrastructure, view website analytics, and provision new nodes from your WebHaze command center."
+        noindex
       />
       
       <div className="container-site">

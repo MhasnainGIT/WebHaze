@@ -9,42 +9,77 @@
   <loc>https://www.webhaze.in/</loc>
   <lastmod>2025-11-02T09:42:34+00:00</lastmod>
   <priority>1.0</priority>
+  <changefreq>weekly</changefreq>
 </url>
 
 <url>
   <loc>https://www.webhaze.in/about</loc>
   <lastmod>2025-11-02T09:42:34+00:00</lastmod>
   <priority>0.6</priority>
+  <changefreq>monthly</changefreq>
 </url>
 
 <url>
   <loc>https://www.webhaze.in/pricing</loc>
   <lastmod>2025-11-02T09:42:34+00:00</lastmod>
   <priority>0.9</priority>
+  <changefreq>weekly</changefreq>
 </url>
 
 <url>
   <loc>https://www.webhaze.in/contact</loc>
   <lastmod>2025-11-02T09:42:34+00:00</lastmod>
   <priority>0.8</priority>
+  <changefreq>monthly</changefreq>
 </url>
 
 <url>
-  <loc>https://www.webhaze.in/services/web-development</loc>
+  <loc>https://www.webhaze.in/services/web-hosting</loc>
   <lastmod>2025-11-02T09:42:34+00:00</lastmod>
   <priority>0.7</priority>
+  <changefreq>monthly</changefreq>
 </url>
 
 <url>
-  <loc>https://www.webhaze.in/services/mobile-app</loc>
+  <loc>https://www.webhaze.in/services/website-development</loc>
   <lastmod>2025-11-02T09:42:34+00:00</lastmod>
   <priority>0.7</priority>
+  <changefreq>monthly</changefreq>
 </url>
 
 <url>
-  <loc>https://www.webhaze.in/services/hosting</loc>
+  <loc>https://www.webhaze.in/services/app-development</loc>
   <lastmod>2025-11-02T09:42:34+00:00</lastmod>
   <priority>0.7</priority>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>https://www.webhaze.in/services/cloud-servers</loc>
+  <lastmod>2025-11-02T09:42:34+00:00</lastmod>
+  <priority>0.7</priority>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>https://www.webhaze.in/careers</loc>
+  <lastmod>2025-11-02T09:42:34+00:00</lastmod>
+  <priority>0.6</priority>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>https://www.webhaze.in/privacy</loc>
+  <lastmod>2025-11-02T09:42:34+00:00</lastmod>
+  <priority>0.3</priority>
+  <changefreq>yearly</changefreq>
+</url>
+
+<url>
+  <loc>https://www.webhaze.in/terms</loc>
+  <lastmod>2025-11-02T09:42:34+00:00</lastmod>
+  <priority>0.3</priority>
+  <changefreq>yearly</changefreq>
 </url>
 
 </urlset>

@@ -110,7 +110,7 @@ const sendWelcomeEmail = async (email, name) => {
     const emailTemplate = getWelcomeEmailTemplate(name);
     
     await transporter.sendMail({
-      from: `"WebHaze Team" <${process.env.EMAIL_USER || 'noreply@webhaze.com'}>`,
+      from: `"WebHaze Team" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: emailTemplate.subject,
       html: emailTemplate.html

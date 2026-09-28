@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
+import { useMotionValue } from 'framer-motion';
 
 const SmoothScroll = ({ children }) => {
   useEffect(() => {
@@ -13,6 +14,12 @@ const SmoothScroll = ({ children }) => {
       smoothTouch: false,
       touchMultiplier: 2,
       infinite: false,
+    });
+
+    // Sync Lenis scroll position to window scroll so Framer Motion useScroll works
+    lenis.on('scroll', ({ scroll }) => {
+      window.scrollY = scroll;
+      document.documentElement.scrollTop = scroll;
     });
 
     function raf(time) {

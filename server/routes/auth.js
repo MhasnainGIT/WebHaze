@@ -14,25 +14,35 @@ const router = express.Router();
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
     const user = await User.findOne({ email: email.toLowerCase() });
 
     if (!user) {
-      // For security, don't reveal if user exists
       return res.json({ message: 'If an account exists with this email, a reset link has been sent.' });
     }
 
-    // Generate reset token
     const resetToken = crypto.randomBytes(32).toString('hex');
     user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-    user.resetPasswordExpire = Date.now() + 3600000; // 1 hour
-
+    user.resetPasswordExpire = Date.now() + 3600000;
     await user.save();
 
-    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password/${resetToken}`;
-    
-    await sendPasswordResetEmail(user.email, user.name, resetUrl);
+    const resetUrl = `${process.env.FRONTEND_URL || 'https://www.webhaze.in'}/reset-password/${resetToken}`;
 
-    res.json({ message: 'Reset link sent to your digital mail.' });
+    const sent = await sendPasswordResetEmail(user.email, user.name, resetUrl);
+
+    if (!sent) {
+      // rollback token so user can try again
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save();
+      return res.status(500).json({ error: 'Failed to send reset email. Please try again.' });
+    }
+
+    res.json({ message: 'If an account exists with this email, a reset link has been sent.' });
   } catch (error) {
     console.error('Forgot password error:', error);
     res.status(500).json({ error: 'Failed to initiate reset protocol.' });

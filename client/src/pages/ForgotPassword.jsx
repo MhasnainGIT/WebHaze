@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import SEO from '../components/SEO';
+import { API_BASE_URL } from '../config/api';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -19,9 +20,9 @@ const ForgotPassword = () => {
 
     setLoading(true);
     try {
-      await axios.post('/api/auth/forgot-password', { email });
+      await axios.post(`${API_BASE_URL}/api/auth/forgot-password`, { email });
       setSubmitted(true);
-      toast.success('Recovery link transmitted.');
+      toast.success('Recovery link transmitted. Check your inbox (and spam folder).');
     } catch (error) {
       toast.error(error.response?.data?.error || 'Transmission failed.');
     } finally {

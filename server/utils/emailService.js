@@ -1,16 +1,14 @@
 const nodemailer = require('nodemailer');
 
-// Create transporter (using Gmail as example - configure based on your email provider)
-// Create transporter (using Gmail as example - configure based on your email provider)
 const createTransporter = () => {
   return nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS
-    },
-    debug: true,
-    logger: true
+    }
   });
 };
 
@@ -129,18 +127,17 @@ const sendWelcomeEmail = async (email, name) => {
 const sendPasswordResetEmail = async (email, name, resetUrl) => {
   try {
     const transporter = createTransporter();
+    await transporter.verify();
     const emailTemplate = getPasswordResetTemplate(name, resetUrl);
-    
     await transporter.sendMail({
-      from: `"WebHaze Security" <${process.env.EMAIL_USER || 'security@webhaze.com'}>`,
+      from: `"WebHaze Security" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: emailTemplate.subject,
       html: emailTemplate.html
     });
-    
     return true;
   } catch (error) {
-    console.error('Error sending reset email:', error);
+    console.error('Error sending reset email:', error.message);
     return false;
   }
 };

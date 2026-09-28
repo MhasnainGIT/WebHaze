@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import SEO from '../components/SEO';
+import { API_BASE_URL } from '../config/api';
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -21,8 +22,8 @@ const ResetPassword = () => {
 
     setLoading(true);
     try {
-      await axios.post(`/api/auth/reset-password/${token}`, { password });
-      toast.success('Access protocol restored.');
+      await axios.post(`${API_BASE_URL}/api/auth/reset-password/${token}`, { password });
+      toast.success('Password reset successfully. You can now log in.');
       navigate('/login');
     } catch (error) {
       toast.error(error.response?.data?.error || 'Security override failed.');

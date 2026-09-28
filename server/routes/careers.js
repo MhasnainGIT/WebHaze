@@ -1,9 +1,13 @@
 const express = require('express');
 const multer = require('multer');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const rateLimit = require('express-rate-limit');
 const JobApplication = require('../models/JobApplication');
 const router = express.Router();
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const CAREERS_FROM = 'WebHaze Careers <noreply@webhaze.in>';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || process.env.RESEND_FROM_EMAIL || 'noreply@webhaze.in';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -37,14 +41,9 @@ router.post('/apply', limiter, upload.single('resume'), async (req, res) => {
 
     // Send email notification
     try {
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
-      });
-
-      await transporter.sendMail({
-        from: `"WebHaze Careers" <${process.env.EMAIL_USER}>`,
-        to: process.env.EMAIL_USER,
+      await resend.emails.send({
+        from: CAREERS_FROM,
+        to: ADMIN_EMAIL,
         replyTo: email,
         subject: `New Application: ${role} — ${name}`,
         html: `
@@ -62,8 +61,7 @@ router.post('/apply', limiter, upload.single('resume'), async (req, res) => {
             </div>
             ${req.file ? `<p style="margin-top:16px;color:#999;font-size:12px;">Resume attached: ${req.file.originalname}</p>` : '<p style="margin-top:16px;color:#666;font-size:12px;">No resume attached.</p>'}
           </div>
-        `,
-        attachments: req.file ? [{ filename: req.file.originalname, content: req.file.buffer, contentType: req.file.mimetype }] : []
+        `
       });
     } catch (emailErr) {
       console.error('Email send failed (application still saved):', emailErr.message);

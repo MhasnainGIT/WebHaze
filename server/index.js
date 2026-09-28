@@ -50,6 +50,8 @@ if (NODE_ENV !== 'production') {
 }
 
 // Security middleware
+const isProduction = NODE_ENV === 'production';
+
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -57,10 +59,32 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
-      scriptSrc: ["'self'", "https://www.clarity.ms"],
+      scriptSrc: ["'self'", "https://www.clarity.ms", "https://www.googletagmanager.com"],
+      connectSrc: ["'self'", "https://www.google-analytics.com", "https://www.googletagmanager.com", "https://cdn.clarity.ms"],
+      frameAncestors: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: isProduction ? { policy: 'require-corp' } : false,
+  crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' },
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  permissionsPolicy: {
+    features: {
+      geolocation: ["'none'"],
+      microphone: ["'none'"],
+      camera: ["'none'"],
+      payment: ["'self'"],
+      usb: ["'none'"],
     },
   },
 }));
+
+if (isProduction) {
+  app.use(helmet.hsts({
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true,
+  }));
+}
 
 // Rate limiting
 const limiter = rateLimit({

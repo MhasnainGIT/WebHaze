@@ -1,0 +1,43 @@
+{
+  "name": "WebHaze AI Catalog",
+  "version": "1.0.0",
+  "description": "WebHaze services, pages, and contact information for AI agents and LLMs.",
+  "website": "https://www.webhaze.in",
+  "services": [
+    {
+      "name": "Website Development",
+      "url": "https://www.webhaze.in/services/website-development",
+      "description": "Professional web development services worldwide for USA, Canada, UK, Germany, Australia, and India."
+    },
+    {
+      "name": "Web Hosting",
+      "url": "https://www.webhaze.in/services/web-hosting",
+      "description": "Lightning-fast web hosting with 99.9% uptime guarantee, SSD storage, free SSL, CDN integration, and 24/7 expert support."
+    },
+    {
+      "name": "Cloud Servers & VPS",
+      "url": "https://www.webhaze.in/services/cloud-servers",
+      "description": "Enterprise-grade managed VPS, dedicated servers, and cloud infrastructure with 99.999% SLA. Linux and Windows options available."
+    },
+    {
+      "name": "Mobile App Development",
+      "url": "https://www.webhaze.in/services/app-development",
+      "description": "High-performance iOS, Android, and cross-platform mobile applications with native-like experience and cloud integration."
+    }
+  ],
+  "pages": [
+    { "name": "Home", "url": "https://www.webhaze.in/" },
+    { "name": "About", "url": "https://www.webhaze.in/about" },
+    { "name": "Pricing", "url": "https://www.webhaze.in/pricing" },
+    { "name": "Contact", "url": "https://www.webhaze.in/contact" },
+    { "name": "Careers", "url": "https://www.webhaze.in/careers" },
+    { "name": "Privacy", "url": "https://www.webhaze.in/privacy" },
+    { "name": "Terms", "url": "https://www.webhaze.in/terms" }
+  ],
+  "contact": {
+    "email": "webhaze.in@gmail.com",
+    "phone": "+91-8919019679",
+    "location": "Hyderabad, India",
+    "address": "Innovation Hub, Financial District, Telangana, 500032"
+  }
+}

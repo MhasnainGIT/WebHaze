@@ -65,17 +65,17 @@ const Dashboard = () => {
         <div className="bento-grid mb-12">
           <div className="bento-item md:col-span-2 lg:col-span-2 border-white/5">
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-8">Active Nodes</p>
-            <h3 className="text-6xl font-black text-white mb-2">{stats.websites}</h3>
+            <p className="text-6xl font-black text-white mb-2">{stats.websites}</p>
             <p className="text-white/50 text-sm font-medium">Digital properties deployed</p>
           </div>
           <div className="bento-item md:col-span-2 lg:col-span-2 border-white/5">
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-8">Global Telemetry</p>
-            <h3 className="text-6xl font-black text-white mb-2">{stats.visits.toLocaleString()}</h3>
+            <p className="text-6xl font-black text-white mb-2">{stats.visits.toLocaleString()}</p>
             <p className="text-white/50 text-sm font-medium">Total unique visitors</p>
           </div>
           <div className="bento-item md:col-span-2 lg:col-span-2 border-white/5">
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-8">Network Uptime</p>
-            <h3 className="text-6xl font-black text-white mb-2">{stats.uptime}</h3>
+            <p className="text-6xl font-black text-white mb-2">{stats.uptime}</p>
             <p className="text-white/50 text-sm font-medium">Operational stability</p>
           </div>
         </div>

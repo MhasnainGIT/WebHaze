@@ -1,0 +1,23 @@
+# WebHaze AI/LLM Integration Catalog
+# https://www.webhaze.in/ai-catalog.json
+
+# WebHaze is a premier digital agency providing professional web design, high-performance cloud servers, dedicated hosting, and enterprise-grade mobile app development for businesses worldwide.
+
+# Core Services
+- Website Development: Professional web development services for USA, Canada, UK, Germany, Australia, and India
+- Web Hosting: Lightning-fast hosting with 99.9% uptime guarantee, SSD storage, free SSL, CDN integration
+- Cloud Servers & VPS: Enterprise-grade managed VPS, dedicated servers, and cloud infrastructure with 99.999% SLA
+- Mobile App Development: High-performance iOS, Android, and cross-platform mobile applications
+
+# Key Pages
+- Home: https://www.webhaze.in/
+- About: https://www.webhaze.in/about
+- Pricing: https://www.webhaze.in/pricing
+- Contact: https://www.webhaze.in/contact
+- Careers: https://www.webhaze.in/careers
+- Services: https://www.webhaze.in/services/web-hosting, https://www.webhaze.in/services/website-development, https://www.webhaze.in/services/app-development, https://www.webhaze.in/services/cloud-servers
+
+# Contact Information
+- Email: webhaze.in@gmail.com
+- Phone: +91-8919019679
+- Location: Hyderabad, India

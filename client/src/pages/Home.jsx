@@ -27,9 +27,8 @@ const Bg3D = () => {
 
 /* ─── GLASS CARD ─── */
 const Glass = ({ children, className = "" }) => (
-  <div className={`bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:border-white/20 transition-all duration-700 overflow-hidden relative group ${className}`} style={{ borderRadius: 0 }}>
+  <div className={`bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:border-white/20 active:border-white/20 transition-all duration-700 overflow-hidden relative ${className}`} style={{ borderRadius: 0 }}>
     {children}
-    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
   </div>
 );
 
@@ -37,25 +36,32 @@ const Glass = ({ children, className = "" }) => (
 const Hero = () => {
   const { user } = useAuth();
   const ref = useRef(null);
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["0%", "25%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.4], isMobile ? [1, 1] : [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
-  const mx = useSpring(0, { stiffness: 60, damping: 20 });
-  const my = useSpring(0, { stiffness: 60, damping: 20 });
-  const tx = useTransform(mx, [-0.5, 0.5], ["-12px", "12px"]);
-  const ty = useTransform(my, [-0.5, 0.5], ["-8px", "8px"]);
+  const mx = useSpring(0, { stiffness: 120, damping: 18 });
+  const my = useSpring(0, { stiffness: 120, damping: 18 });
+  const tx = useTransform(mx, [-0.5, 0.5], ["-20px", "20px"]);
+  const ty = useTransform(my, [-0.5, 0.5], ["-14px", "14px"]);
 
   useEffect(() => {
-    if (isMobile) return;
-    const h = (e) => {
-      mx.set(e.clientX / window.innerWidth - 0.5);
-      my.set(e.clientY / window.innerHeight - 0.5);
+    const onMove = (x, y) => {
+      mx.set(x / window.innerWidth - 0.5);
+      my.set(y / window.innerHeight - 0.5);
     };
-    window.addEventListener('mousemove', h);
-    return () => window.removeEventListener('mousemove', h);
-  }, [mx, my, isMobile]);
+    const onMouse = (e) => onMove(e.clientX, e.clientY);
+    const onTouch = (e) => {
+      const t = e.touches[0];
+      if (t) onMove(t.clientX, t.clientY);
+    };
+    window.addEventListener('mousemove', onMouse);
+    window.addEventListener('touchmove', onTouch, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', onMouse);
+      window.removeEventListener('touchmove', onTouch);
+    };
+  }, [mx, my]);
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-center bg-black overflow-hidden">

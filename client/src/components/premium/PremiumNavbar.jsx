@@ -44,7 +44,7 @@ const PremiumNavbar = () => {
       name: 'SERVICES', 
       dropdown: [
         { name: 'Web Hosting', path: '/services/web-hosting' },
-        { name: 'Web Development', path: '/services/web-development' },
+        { name: 'Web Development', path: '/services/website-development' },
         { name: 'App Development', path: '/services/app-development' },
         { name: 'Cloud Servers', path: '/services/cloud-servers' }
       ]

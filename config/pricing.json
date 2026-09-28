@@ -1,0 +1,139 @@
+{
+  "services": [
+    {
+      "id": "landing-page",
+      "name": "Landing Page",
+      "description": "Single-page high-converting website",
+      "deliveryDays": 3,
+      "prices": { "INR": 4999, "AED": 549, "USD": 149, "GBP": 119, "EUR": 129 },
+      "competitors": {
+        "IN": ["Freelancer avg ₹8,000–15,000", "Agency avg ₹12,000–25,000"],
+        "AE": ["DigiSphere AED 499+", "Vedha AED 1,500+"],
+        "US": ["Fiverr avg $200–500", "Agency avg $500–2,000"]
+      }
+    },
+    {
+      "id": "business-website",
+      "name": "Business Website",
+      "description": "5–8 page professional website with CMS",
+      "deliveryDays": 7,
+      "prices": { "INR": 12999, "AED": 1399, "USD": 399, "GBP": 319, "EUR": 349 },
+      "competitors": {
+        "IN": ["Agency avg ₹20,000–50,000", "Freelancer avg ₹15,000–30,000"],
+        "AE": ["Web Design UAE AED 3,500", "Almirsa AED 2,200+"],
+        "US": ["Agency avg $1,500–5,000", "Wix Partner avg $1,000–3,000"]
+      }
+    },
+    {
+      "id": "professional-website",
+      "name": "Professional Website",
+      "description": "10–15 page website with advanced features, SEO, animations",
+      "deliveryDays": 14,
+      "prices": { "INR": 24999, "AED": 2699, "USD": 749, "GBP": 599, "EUR": 649 },
+      "competitors": {
+        "IN": ["Agency avg ₹40,000–80,000"],
+        "AE": ["Web Design UAE AED 6,500", "Karve Digital AED 9,999+"],
+        "US": ["Agency avg $3,000–8,000"]
+      }
+    },
+    {
+      "id": "ecommerce",
+      "name": "E-Commerce Store",
+      "description": "Full online store with payment gateway, inventory, admin panel",
+      "deliveryDays": 21,
+      "prices": { "INR": 49999, "AED": 5499, "USD": 1499, "GBP": 1199, "EUR": 1299 },
+      "competitors": {
+        "IN": ["Agency avg ₹80,000–2,00,000"],
+        "AE": ["Marketing Agency UAE AED 30,000", "Web Design UAE AED 10,000+"],
+        "US": ["Shopify Partner avg $5,000–15,000"]
+      }
+    },
+    {
+      "id": "web-app",
+      "name": "Custom Web Application",
+      "description": "Full-stack web app with auth, dashboard, database, API",
+      "deliveryDays": 30,
+      "prices": { "INR": 99999, "AED": 10999, "USD": 2999, "GBP": 2399, "EUR": 2599 },
+      "competitors": {
+        "IN": ["Agency avg ₹1,50,000–5,00,000"],
+        "AE": ["Agency avg AED 15,000–50,000"],
+        "US": ["Agency avg $10,000–50,000"]
+      }
+    },
+    {
+      "id": "mobile-app",
+      "name": "Mobile App (iOS + Android)",
+      "description": "React Native cross-platform app with backend",
+      "deliveryDays": 45,
+      "prices": { "INR": 149999, "AED": 16499, "USD": 4499, "GBP": 3599, "EUR": 3899 },
+      "competitors": {
+        "IN": ["Agency avg ₹2,00,000–8,00,000"],
+        "AE": ["Agency avg AED 20,000–80,000"],
+        "US": ["Agency avg $15,000–80,000"]
+      }
+    },
+    {
+      "id": "qr-menu",
+      "name": "QR Digital Menu (Restaurant)",
+      "description": "Bilingual Arabic/English QR menu with ordering",
+      "deliveryDays": 3,
+      "prices": { "INR": 2999, "AED": 299, "USD": 79, "GBP": 65, "EUR": 69 },
+      "billingCycle": "yearly",
+      "competitors": {
+        "AE": ["Ordery AED 99/mo", "Tahlib AED 99/mo", "TableGreet AED varies"]
+      }
+    },
+    {
+      "id": "maintenance-basic",
+      "name": "Website Maintenance — Basic",
+      "description": "Monthly updates, backups, uptime monitoring",
+      "deliveryDays": null,
+      "prices": { "INR": 1999, "AED": 219, "USD": 59, "GBP": 49, "EUR": 54 },
+      "billingCycle": "monthly",
+      "competitors": {
+        "IN": ["Agency avg ₹3,000–8,000/mo"],
+        "AE": ["Marketing Agency UAE AED 1,500/mo"]
+      }
+    },
+    {
+      "id": "maintenance-pro",
+      "name": "Website Maintenance — Pro",
+      "description": "Priority support, SEO updates, performance tuning, content changes",
+      "deliveryDays": null,
+      "prices": { "INR": 4999, "AED": 549, "USD": 149, "GBP": 119, "EUR": 129 },
+      "billingCycle": "monthly",
+      "competitors": {
+        "IN": ["Agency avg ₹8,000–20,000/mo"],
+        "AE": ["Agency avg AED 2,000–5,000/mo"]
+      }
+    },
+    {
+      "id": "seo",
+      "name": "SEO Package",
+      "description": "On-page SEO, keyword research, monthly reporting",
+      "deliveryDays": null,
+      "prices": { "INR": 7999, "AED": 879, "USD": 239, "GBP": 189, "EUR": 209 },
+      "billingCycle": "monthly",
+      "competitors": {
+        "IN": ["Agency avg ₹10,000–30,000/mo"],
+        "AE": ["Agency avg AED 1,500–5,000/mo"],
+        "US": ["Agency avg $500–2,000/mo"]
+      }
+    },
+    {
+      "id": "arabic-addon",
+      "name": "Arabic / Bilingual Add-on",
+      "description": "Full RTL Arabic translation and layout for any website",
+      "deliveryDays": 5,
+      "prices": { "INR": 8999, "AED": 999, "USD": 269, "GBP": 219, "EUR": 239 },
+      "competitors": {
+        "AE": ["Agency avg AED 1,000–2,500 add-on"]
+      }
+    }
+  ],
+  "notes": {
+    "positioning": "WebHaze prices are 40-60% below UAE agency rates and 30-50% below Indian agency rates while maintaining quality. Ideal positioning: premium freelancer / boutique agency.",
+    "uaeOpportunity": "UAE market sweet spot is AED 1,500–6,500 for SMB websites. WebHaze undercuts local agencies significantly.",
+    "lastUpdated": "2026"
+  }
+}

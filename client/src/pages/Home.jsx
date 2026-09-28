@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import SEO from '../components/SEO';
 import ScrollReveal from '../components/ScrollReveal';
+import { useCurrency } from '../contexts/CurrencyContext';
+import { PLANS } from '../config/pricing';
 
 const f = { h: "'Inter',sans-serif", b: "'Hanken Grotesk',sans-serif", l: "'Geist Mono','monospace'" };
 
@@ -204,11 +206,7 @@ const Services = () => {
 
 /* ─── PRICING ─── */
 const Pricing = () => {
-  const plans = [
-    { t: "BASIC", p: "₹999", feats: ["Security patching", "Cloud backups", "Standard support"] },
-    { t: "PROFESSIONAL", p: "₹2,499", feats: ["SEO Optimization", "Elite Support", "Performance tuning"], pop: true },
-    { t: "ENTERPRISE", p: "₹4,999", feats: ["24/7 Response", "Shadow backups", "Custom integration"] },
-  ];
+  const { formatPrice, currency } = useCurrency();
   return (
     <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
       <div className="max-w-[1440px] mx-auto">
@@ -217,24 +215,24 @@ const Pricing = () => {
           <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>CARE<br/><span className="text-white/20">STUDIO.</span></h2>
         </ScrollReveal>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {plans.map((p, i) => (
+          {PLANS.map((plan, i) => (
             <ScrollReveal key={i} delay={i * 0.1}>
-              <div className={`relative flex flex-col h-full p-8 md:p-10 border transition-all duration-700 ${p.pop ? 'border-white/20 bg-white/[0.05]' : 'border-white/[0.08] bg-white/[0.02]'}`} style={{ borderRadius: 0 }}>
-                {p.pop && <div className="absolute -top-3.5 left-8 bg-white !text-black text-[10px] font-bold uppercase tracking-[0.15em] px-4 py-1.5" style={{ borderRadius: 0, fontFamily: f.l }}>Elite Choice</div>}
-                <span className="text-[11px] font-medium tracking-[0.15em] text-white/25 uppercase block mb-8" style={{ fontFamily: f.l }}>{p.t}</span>
+              <div className={`relative flex flex-col h-full p-8 md:p-10 border transition-all duration-700 ${plan.popular ? 'border-white/20 bg-white/[0.05]' : 'border-white/[0.08] bg-white/[0.02]'}`} style={{ borderRadius: 0 }}>
+                {plan.popular && <div className="absolute -top-3.5 left-8 bg-white !text-black text-[10px] font-bold uppercase tracking-[0.15em] px-4 py-1.5" style={{ borderRadius: 0, fontFamily: f.l }}>Elite Choice</div>}
+                <span className="text-[11px] font-medium tracking-[0.15em] text-white/25 uppercase block mb-8" style={{ fontFamily: f.l }}>{plan.name}</span>
                 <div className="flex items-baseline gap-2 mb-10">
-                  <span className="text-4xl md:text-[56px] font-black text-white tracking-[-0.03em]" style={{ fontFamily: f.h }}>{p.p}</span>
+                  <span className="text-4xl md:text-[56px] font-black text-white tracking-[-0.03em]" style={{ fontFamily: f.h }}>{formatPrice(plan.prices[currency])}</span>
                   <span className="text-white/20 text-[11px] tracking-[0.1em]" style={{ fontFamily: f.l }}>/MO</span>
                 </div>
                 <ul className="space-y-4 mb-10 flex-grow">
-                  {p.feats.map((feat, j) => (
+                  {plan.features.map((feat, j) => (
                     <li key={j} className="flex items-center text-white/35 gap-3 text-sm md:text-base" style={{ fontFamily: f.b }}>
                       <div className="w-1 h-1 bg-white/30 flex-shrink-0" />{feat}
                     </li>
                   ))}
                 </ul>
-                <Link to="/contact" className={`block text-center px-6 py-4 text-[11px] font-bold tracking-[0.15em] uppercase transition-all ${p.pop ? 'bg-white !text-black hover:bg-white/90' : 'bg-transparent text-white border border-white/[0.08] hover:border-white'}`} style={{ borderRadius: 0, fontFamily: f.l, color: p.pop ? '#000000' : undefined }}>
-                  {p.pop ? "Get Started" : "Initialize"}
+                <Link to="/contact" className={`block text-center px-6 py-4 text-[11px] font-bold tracking-[0.15em] uppercase transition-all ${plan.popular ? 'bg-white !text-black hover:bg-white/90' : 'bg-transparent text-white border border-white/[0.08] hover:border-white'}`} style={{ borderRadius: 0, fontFamily: f.l, color: plan.popular ? '#000000' : undefined }}>
+                  {plan.popular ? "Get Started" : "Initialize"}
                 </Link>
               </div>
             </ScrollReveal>

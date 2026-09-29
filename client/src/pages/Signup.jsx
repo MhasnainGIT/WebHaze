@@ -62,14 +62,14 @@ const Signup = () => {
           <Link to="/" className="inline-block group">
             <h1 className="text-3xl font-black tracking-tighter mb-2 group-hover:opacity-50 transition-opacity">WEBHAZE.</h1>
           </Link>
-          <h2 className="mt-8 text-5xl font-black tracking-tighter uppercase">Nexus <span className="text-white/20">Registry.</span></h2>
-          <p className="mt-4 text-white/40 font-medium tracking-tight uppercase text-[10px] tracking-[0.2em]">Provision your digital infrastructure account.</p>
+          <h2 className="mt-8 text-5xl font-black tracking-tighter uppercase">Nexus <span className="text-white">Registry.</span></h2>
+          <p className="mt-4 text-white font-medium tracking-tight uppercase text-[10px] tracking-[0.2em]">Provision your digital infrastructure account.</p>
         </div>
 
         <form className="space-y-6 glass-card border-white/5" onSubmit={handleSubmit}>
           <div className="space-y-6">
             <div>
-              <label htmlFor="name" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4 block px-1">
+              <label htmlFor="name" className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-4 block px-1">
                 Full Identity
               </label>
               <input
@@ -85,7 +85,7 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4 block px-1">
+              <label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-4 block px-1">
                 Digital Mail
               </label>
               <input
@@ -102,7 +102,7 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4 block px-1">
+              <label htmlFor="password" className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-4 block px-1">
                 Access Token
               </label>
               <input
@@ -118,7 +118,7 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4 block px-1">
+              <label htmlFor="confirmPassword" className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-4 block px-1">
                 Verify Token
               </label>
               <input
@@ -154,7 +154,7 @@ const Signup = () => {
               <div className="w-full border-t border-white/5" />
             </div>
             <div className="relative flex justify-center text-[10px] font-black uppercase tracking-[0.3em]">
-              <span className="px-6 bg-[#0A0A0A] text-white/20">External Gateway</span>
+              <span className="px-6 bg-[#0A0A0A] text-white">External Gateway</span>
             </div>
           </div>
 
@@ -176,7 +176,7 @@ const Signup = () => {
           </button>
         </form>
 
-        <p className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-white/30">
+        <p className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-white">
           Already Provisioned?{' '}
           <Link to="/login" className="text-white hover:opacity-50 transition-all underline underline-offset-8">
             Establish Connection

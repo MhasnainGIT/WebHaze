@@ -158,7 +158,7 @@ const Editor = () => {
           <div className="max-w-2xl mx-auto p-6">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-white">
                   Meta Title
                 </label>
                 <input
@@ -174,7 +174,7 @@ const Editor = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-white">
                   Meta Description
                 </label>
                 <textarea

@@ -56,14 +56,14 @@ const Login = () => {
           <Link to="/" className="inline-block group">
             <h1 className="text-3xl font-black tracking-tighter mb-2 group-hover:opacity-50 transition-opacity">WEBHAZE.</h1>
           </Link>
-          <h2 className="mt-8 text-5xl font-black tracking-tighter uppercase">Nexus <span className="text-white/20">Login.</span></h2>
-          <p className="mt-4 text-white/40 font-medium tracking-tight uppercase text-[10px] tracking-[0.2em]">Access your digital infrastructure dashboard.</p>
+          <h2 className="mt-8 text-5xl font-black tracking-tighter uppercase">Nexus <span className="text-white">Login.</span></h2>
+          <p className="mt-4 text-white font-medium tracking-tight uppercase text-[10px] tracking-[0.2em]">Access your digital infrastructure dashboard.</p>
         </div>
 
         <form className="space-y-6 glass-card border-white/5" onSubmit={handleSubmit}>
           <div className="space-y-6">
             <div>
-              <label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4 block px-1">
+              <label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-4 block px-1">
                 Auth Identifier
               </label>
               <input
@@ -80,7 +80,7 @@ const Login = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4 block px-1">
+              <label htmlFor="password" className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-4 block px-1">
                 Access Password
               </label>
               <input
@@ -105,13 +105,13 @@ const Login = () => {
                 type="checkbox"
                 className="h-4 w-4 bg-white/10 border-white/20 rounded focus:ring-0 accent-white"
               />
-              <label htmlFor="remember-me" className="ml-3 block text-[10px] font-black text-white/40 uppercase tracking-widest">
+              <label htmlFor="remember-me" className="ml-3 block text-[10px] font-black text-white uppercase tracking-widest">
                 Keep Session
               </label>
             </div>
 
             <div className="text-[10px]">
-              <Link to="/forgot-password" stroke="1" className="text-white/60 hover:text-white transition-colors font-black uppercase tracking-widest">
+              <Link to="/forgot-password" stroke="1" className="text-white hover:text-white transition-colors font-black uppercase tracking-widest">
                 Reset Access
               </Link>
             </div>
@@ -137,7 +137,7 @@ const Login = () => {
               <div className="w-full border-t border-white/5" />
             </div>
             <div className="relative flex justify-center text-[10px] font-black uppercase tracking-[0.3em]">
-              <span className="px-6 bg-[#0A0A0A] text-white/20">External Gateway</span>
+              <span className="px-6 bg-[#0A0A0A] text-white">External Gateway</span>
             </div>
           </div>
 
@@ -159,7 +159,7 @@ const Login = () => {
           </button>
         </form>
 
-        <p className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-white/30">
+        <p className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-white">
           No Terminal ID?{' '}
           <Link to="/signup" className="text-white hover:opacity-50 transition-all underline underline-offset-8">
             Request Provisioning

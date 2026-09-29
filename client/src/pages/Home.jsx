@@ -69,7 +69,7 @@ const Hero = () => {
           <ScrollReveal>
             <div className="inline-flex items-center gap-3 px-5 py-2.5 border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl mb-12" style={{ borderRadius: 0 }}>
               <div className="w-2 h-2 bg-white animate-pulse" />
-              <span className="text-[11px] font-medium tracking-[0.15em] uppercase text-white/50" style={{ fontFamily: f.l }}>#1 Web Agency Hyderabad</span>
+              <span className="text-[11px] font-medium tracking-[0.15em] uppercase text-white" style={{ fontFamily: f.l }}>#1 Web Agency Hyderabad</span>
             </div>
           </ScrollReveal>
           <motion.h1
@@ -79,10 +79,10 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
           >
-            WE BUILD<br /><span className="text-white/20">WITHOUT LIMITS.</span>
+            WE BUILD<br /><span className="text-white">WITHOUT LIMITS.</span>
           </motion.h1>
           <ScrollReveal delay={0.3}>
-            <p className="text-lg md:text-xl text-white/40 mb-16 max-w-xl leading-relaxed" style={{ fontFamily: f.b }}>
+            <p className="text-lg md:text-xl text-white mb-16 max-w-xl leading-relaxed" style={{ fontFamily: f.b }}>
               WebHaze is a premier digital agency providing comprehensive web design, high-performance app development, and enterprise-grade cloud server infrastructure. Scalable digital solutions for global visionaries.
             </p>
           </ScrollReveal>
@@ -107,18 +107,18 @@ const Features = () => {
     <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
       <div className="max-w-[1440px] mx-auto">
         <ScrollReveal className="mb-16 md:mb-24">
-          <span className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase block mb-6" style={{ fontFamily: f.l }}>INFRASTRUCTURE</span>
-          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>SCALABLE &<br/><span className="text-white/20">RELIABLE.</span></h2>
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-6" style={{ fontFamily: f.l }}>INFRASTRUCTURE</span>
+          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>SCALABLE &<br/><span className="text-white">RELIABLE.</span></h2>
         </ScrollReveal>
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
           {items.map((item, i) => (
             <ScrollReveal key={i} delay={i * 0.1} className={item.span}>
               <Glass className="h-full">
                 <div className="p-8 md:p-10 flex flex-col justify-between min-h-[200px] md:min-h-[240px]">
-                  <span className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase mb-6" style={{ fontFamily: f.l }}>0{i + 1}</span>
+                  <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase mb-6" style={{ fontFamily: f.l }}>0{i + 1}</span>
                   <div>
                     <h3 className="text-xl md:text-2xl font-bold mb-3 tracking-[-0.02em] uppercase" style={{ fontFamily: f.h }}>{item.t}</h3>
-                    <p className="text-white/70 text-sm md:text-base leading-relaxed" style={{ fontFamily: f.b }}>{item.d}</p>
+                    <p className="text-white text-sm md:text-base leading-relaxed" style={{ fontFamily: f.b }}>{item.d}</p>
                   </div>
                 </div>
               </Glass>
@@ -140,8 +140,8 @@ const Process = () => {
     <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
       <div className="max-w-[1440px] mx-auto">
         <ScrollReveal className="mb-16 md:mb-24">
-          <span className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase block mb-6" style={{ fontFamily: f.l }}>METHODOLOGY</span>
-          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>THE<br/><span className="text-white/20">PROCESS.</span></h2>
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-6" style={{ fontFamily: f.l }}>METHODOLOGY</span>
+          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>THE<br/><span className="text-white">PROCESS.</span></h2>
         </ScrollReveal>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {steps.map((s, i) => (
@@ -149,11 +149,11 @@ const Process = () => {
               <Glass className="h-full">
                 <div className="absolute -top-4 -right-2 text-[140px] md:text-[160px] font-black text-white/[0.03] select-none leading-none pointer-events-none transition-all duration-700 group-hover:text-white/[0.06]" style={{ fontFamily: f.h }}>{s.n}</div>
                 <div className="relative z-10 p-8 md:p-10 flex flex-col h-full min-h-[280px] md:min-h-[360px]">
-                  <span className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase mb-6" style={{ fontFamily: f.l }}>PHASE {s.n}</span>
+                  <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase mb-6" style={{ fontFamily: f.l }}>PHASE {s.n}</span>
                   <div className="w-8 h-px bg-white/25 mb-8 group-hover:w-16 group-hover:bg-white/60 transition-all duration-700" />
                   <h3 className="text-2xl md:text-[36px] font-bold mb-4 tracking-[-0.02em] uppercase leading-none" style={{ fontFamily: f.h }}>{s.t}</h3>
-                  <p className="text-white/70 text-sm md:text-base leading-relaxed" style={{ fontFamily: f.b }}>{s.d}</p>
-                  <p className="text-white/50 text-sm leading-relaxed mt-auto pt-6 border-t border-white/[0.05]" style={{ fontFamily: f.b }}>{s.detail}</p>
+                  <p className="text-white text-sm md:text-base leading-relaxed" style={{ fontFamily: f.b }}>{s.d}</p>
+                  <p className="text-white text-sm leading-relaxed mt-auto pt-6 border-t border-white/[0.05]" style={{ fontFamily: f.b }}>{s.detail}</p>
                 </div>
               </Glass>
             </ScrollReveal>
@@ -174,17 +174,17 @@ const Services = () => {
     <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
       <div className="max-w-[1440px] mx-auto">
         <ScrollReveal className="mb-16 md:mb-24">
-          <span className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase block mb-6" style={{ fontFamily: f.l }}>CAPABILITIES</span>
-          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>THE<br/><span className="text-white/20">STUDIO.</span></h2>
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-6" style={{ fontFamily: f.l }}>CAPABILITIES</span>
+          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>THE<br/><span className="text-white">STUDIO.</span></h2>
         </ScrollReveal>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16 md:mb-24">
           {items.map((s, i) => (
             <ScrollReveal key={i} delay={i * 0.1}>
               <Glass className="h-full">
                 <div className="p-8 md:p-10 flex flex-col min-h-[220px] md:min-h-[280px]">
-                  <span className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase mb-6" style={{ fontFamily: f.l }}>0{i + 1}</span>
+                  <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase mb-6" style={{ fontFamily: f.l }}>0{i + 1}</span>
                   <h3 className="text-xl md:text-2xl font-bold mb-4 tracking-[-0.02em] uppercase" style={{ fontFamily: f.h }}>{s.t}</h3>
-                  <p className="text-white/70 text-sm md:text-base leading-relaxed mt-auto" style={{ fontFamily: f.b }}>{s.d}</p>
+                  <p className="text-white text-sm md:text-base leading-relaxed mt-auto" style={{ fontFamily: f.b }}>{s.d}</p>
                 </div>
               </Glass>
             </ScrollReveal>
@@ -204,22 +204,22 @@ const Pricing = () => {
     <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
       <div className="max-w-[1440px] mx-auto">
         <ScrollReveal className="mb-16 md:mb-24">
-          <span className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase block mb-6" style={{ fontFamily: f.l }}>INVESTMENT</span>
-          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>CARE<br/><span className="text-white/20">STUDIO.</span></h2>
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-6" style={{ fontFamily: f.l }}>INVESTMENT</span>
+          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>CARE<br/><span className="text-white">STUDIO.</span></h2>
         </ScrollReveal>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {PLANS.map((plan, i) => (
             <ScrollReveal key={i} delay={i * 0.1}>
               <div className={`relative flex flex-col h-full p-8 md:p-10 border transition-all duration-700 ${plan.popular ? 'border-white/20 bg-white/[0.05]' : 'border-white/[0.08] bg-white/[0.02]'}`} style={{ borderRadius: 0 }}>
                 {plan.popular && <div className="absolute -top-3.5 left-8 bg-white text-black text-[10px] font-bold uppercase tracking-[0.15em] px-4 py-1.5" style={{ borderRadius: 0, fontFamily: f.l }}>Elite Choice</div>}
-                <span className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase block mb-8" style={{ fontFamily: f.l }}>{plan.name}</span>
+                <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-8" style={{ fontFamily: f.l }}>{plan.name}</span>
                 <div className="flex items-baseline gap-2 mb-10">
                   <span className="text-4xl md:text-[56px] font-black text-white tracking-[-0.03em]" style={{ fontFamily: f.h }}>{formatPrice(plan.prices[currency])}</span>
-                  <span className="text-white/50 text-[11px] tracking-[0.1em]" style={{ fontFamily: f.l }}>/MO</span>
+                  <span className="text-white text-[11px] tracking-[0.1em]" style={{ fontFamily: f.l }}>/MO</span>
                 </div>
                 <ul className="space-y-4 mb-10 flex-grow">
                   {plan.features.map((feat, j) => (
-                    <li key={j} className="flex items-center text-white/70 gap-3 text-sm md:text-base" style={{ fontFamily: f.b }}>
+                    <li key={j} className="flex items-center text-white gap-3 text-sm md:text-base" style={{ fontFamily: f.b }}>
                       <div className="w-1 h-1 bg-white/30 flex-shrink-0" />{feat}
                     </li>
                   ))}
@@ -246,8 +246,8 @@ const Testimonials = () => {
     <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
       <div className="max-w-[1440px] mx-auto">
         <ScrollReveal className="mb-16 md:mb-24">
-          <span className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase block mb-6" style={{ fontFamily: f.l }}>TESTIMONIALS</span>
-          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>THE<br/><span className="text-white/20">VOICE.</span></h2>
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-6" style={{ fontFamily: f.l }}>TESTIMONIALS</span>
+          <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>THE<br/><span className="text-white">VOICE.</span></h2>
         </ScrollReveal>
         <div className="flex flex-col gap-6 md:gap-12">
           {items.map((t, i) => (
@@ -255,14 +255,14 @@ const Testimonials = () => {
               <Glass className="h-full">
                 <div className="p-8 md:p-12 flex flex-col justify-between h-full min-h-[280px]">
                   <div>
-                    <div className="flex gap-1 text-white/40 mb-6">{[1,2,3,4,5].map(s => <svg key={s} className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)}</div>
-                    <p className="text-white/70 text-base md:text-xl leading-relaxed italic" style={{ fontFamily: f.b }}>"{t.q}"</p>
+                    <div className="flex gap-1 text-white mb-6">{[1,2,3,4,5].map(s => <svg key={s} className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)}</div>
+                    <p className="text-white text-base md:text-xl leading-relaxed italic" style={{ fontFamily: f.b }}>"{t.q}"</p>
                   </div>
                   <div className="flex items-center gap-4 border-t border-white/[0.05] pt-6 mt-8">
                      <img src={t.v} alt={t.a} loading="lazy" width="48" height="48" className="w-12 h-12 grayscale border border-white/[0.08]" style={{ borderRadius: 0 }} />
                     <div>
                       <p className="font-bold text-base text-white" style={{ fontFamily: f.h }}>{t.a}</p>
-                      <p className="text-white/50 text-[10px] uppercase tracking-[0.1em]" style={{ fontFamily: f.l }}>{t.r}</p>
+                      <p className="text-white text-[10px] uppercase tracking-[0.1em]" style={{ fontFamily: f.l }}>{t.r}</p>
                     </div>
                   </div>
                 </div>
@@ -287,9 +287,9 @@ const FAQ = () => {
       <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row gap-12 lg:gap-24">
         <div className="lg:w-5/12">
           <ScrollReveal className="lg:sticky lg:top-32">
-            <span className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase block mb-6" style={{ fontFamily: f.l }}>FAQ</span>
-            <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95] mb-6" style={{ fontFamily: f.h }}>THE<br/><span className="text-white/20">INSIGHTS.</span></h2>
-            <p className="text-white/50 text-sm leading-relaxed" style={{ fontFamily: f.b }}>Everything you need before launch.</p>
+            <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-6" style={{ fontFamily: f.l }}>FAQ</span>
+            <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95] mb-6" style={{ fontFamily: f.h }}>THE<br/><span className="text-white">INSIGHTS.</span></h2>
+            <p className="text-white text-sm leading-relaxed" style={{ fontFamily: f.b }}>Everything you need before launch.</p>
           </ScrollReveal>
         </div>
         <div className="lg:w-7/12 space-y-2">
@@ -305,7 +305,7 @@ const FAQ = () => {
                 <AnimatePresence>
                   {open === i && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }} className="overflow-hidden">
-                      <div className="p-6 md:p-8 text-white/70 text-sm md:text-base leading-relaxed bg-white/[0.02] border-x border-b border-white/[0.08]" style={{ fontFamily: f.b, borderRadius: 0 }}>{faq.a}</div>
+                      <div className="p-6 md:p-8 text-white text-sm md:text-base leading-relaxed bg-white/[0.02] border-x border-b border-white/[0.08]" style={{ fontFamily: f.b, borderRadius: 0 }}>{faq.a}</div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -324,8 +324,8 @@ const CTA = () => {
     <section className="py-32 md:py-48 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
       <div className="max-w-[1440px] mx-auto text-center">
         <ScrollReveal>
-          <span className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase block mb-8" style={{ fontFamily: f.l }}>LET'S WORK TOGETHER</span>
-          <h2 className="text-[48px] md:text-[96px] lg:text-[140px] font-black tracking-[-0.04em] leading-[0.85] uppercase mb-16" style={{ fontFamily: f.h }}>READY TO<br/><span className="text-white/20">SCALE?</span></h2>
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-8" style={{ fontFamily: f.l }}>LET'S WORK TOGETHER</span>
+          <h2 className="text-[48px] md:text-[96px] lg:text-[140px] font-black tracking-[-0.04em] leading-[0.85] uppercase mb-16" style={{ fontFamily: f.h }}>READY TO<br/><span className="text-white">SCALE?</span></h2>
         </ScrollReveal>
         <ScrollReveal delay={0.2} className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link to={user ? "/contact" : "/signup"} className="px-14 py-5 bg-white text-black text-[12px] font-bold tracking-[0.15em] uppercase hover:bg-white/90 transition-all" style={{ borderRadius: 0, fontFamily: f.l, color: '#000000' }}>Launch Vision</Link>

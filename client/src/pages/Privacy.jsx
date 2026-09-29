@@ -21,15 +21,15 @@ const Privacy = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            PRIVACY <span className="text-white/20">PROTOCOL.</span>
+            PRIVACY <span className="text-white">PROTOCOL.</span>
           </motion.h1>
-          <p className="text-xl text-white/40 font-medium tracking-tight uppercase text-[10px] tracking-[0.3em]">
+          <p className="text-xl text-white font-medium tracking-tight uppercase text-[10px] tracking-[0.3em]">
             Last updated: May 13, 2024
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
-            <a href="https://www.webhaze.in/about" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors">About WebHaze</a>
-            <a href="https://www.webhaze.in/contact" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors">Contact Us</a>
-            <a href="https://www.webhaze.in/terms" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors">Terms of Service</a>
+            <a href="https://www.webhaze.in/about" className="text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-white transition-colors">About WebHaze</a>
+            <a href="https://www.webhaze.in/contact" className="text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-white transition-colors">Contact Us</a>
+            <a href="https://www.webhaze.in/terms" className="text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-white transition-colors">Terms of Service</a>
           </div>
         </div>
 
@@ -48,7 +48,7 @@ const Privacy = () => {
               viewport={{ once: true }}
             >
               <h2 className="text-2xl font-black mb-6 tracking-tight uppercase">{section.title}</h2>
-              <p className="text-white/50 text-lg leading-relaxed font-medium">{section.content}</p>
+              <p className="text-white text-lg leading-relaxed font-medium">{section.content}</p>
             </motion.div>
           ))}
         </div>

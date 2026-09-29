@@ -89,11 +89,11 @@ const AdminNexus = () => {
           <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-12 mb-20">
             <div>
               <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase mb-6 leading-[0.9]">
-                SYSTEM <span className="text-white/20">OVERSIGHT.</span>
+                SYSTEM <span className="text-white">OVERSIGHT.</span>
               </h1>
               <div className="flex items-center gap-4">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30">
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white">
                   Nexus Protocol Active: Connected to Core
                 </p>
               </div>
@@ -104,7 +104,7 @@ const AdminNexus = () => {
                 <button 
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-6 py-3 rounded-full text-[9px] font-black uppercase tracking-[0.2em] transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-white !text-black' : 'text-white/40 hover:text-white'}`}
+                  className={`px-6 py-3 rounded-full text-[9px] font-black uppercase tracking-[0.2em] transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-white !text-black' : 'text-white hover:text-white'}`}
                 >
                   {tab.name}
                 </button>
@@ -114,7 +114,7 @@ const AdminNexus = () => {
 
           <div className="mb-8 flex justify-between items-center">
             <h2 className="text-2xl font-black uppercase tracking-tighter">
-              {activeTab} <span className="text-white/20 text-sm ml-2">{data.length} records</span>
+              {activeTab} <span className="text-white text-sm ml-2">{data.length} records</span>
             </h2>
             {(activeTab === 'pages' || activeTab === 'plans') && (
               <button className="px-8 py-3 bg-white !text-black text-[10px] font-black uppercase tracking-[0.2em] rounded-full hover:bg-white/90 transition-all">
@@ -126,7 +126,7 @@ const AdminNexus = () => {
           {loading ? (
             <div className="py-40 text-center glass-card border-white/5">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white mb-6"></div>
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">Syncing with Central Intelligence...</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white">Syncing with Central Intelligence...</p>
             </div>
           ) : (
             <motion.div
@@ -139,56 +139,56 @@ const AdminNexus = () => {
                     <tr className="border-b border-white/10">
                       {activeTab === 'users' && (
                         <>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Identity</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Email</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Role / Plan</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40 text-right">Actions</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Identity</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Email</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Role / Plan</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white text-right">Actions</th>
                         </>
                       )}
                       {activeTab === 'contacts' && (
                         <>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Sender</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Subject / Intent</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40 text-right">Actions</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Sender</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Subject / Intent</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white text-right">Actions</th>
                         </>
                       )}
                       {activeTab === 'dashboards' && (
                         <>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Owner</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Stats</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Last Uplink</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40 text-right">Actions</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Owner</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Stats</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Last Uplink</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white text-right">Actions</th>
                         </>
                       )}
                       {activeTab === 'pages' && (
                         <>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Slug / Title</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Summary</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40 text-right">Actions</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Slug / Title</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Summary</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white text-right">Actions</th>
                         </>
                       )}
                       {activeTab === 'plans' && (
                         <>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Plan Name</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Price</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Limits</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40 text-right">Actions</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Plan Name</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Price</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Limits</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white text-right">Actions</th>
                         </>
                       )}
                       {activeTab === 'transactions' && (
                         <>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">ID / Status</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">User</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Amount</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40 text-right">Actions</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">ID / Status</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">User</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Amount</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white text-right">Actions</th>
                         </>
                       )}
                       {activeTab === 'websites' && (
                         <>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Domain / Name</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Owner</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Status</th>
-                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white/40 text-right">Actions</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Domain / Name</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Owner</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white">Status</th>
+                          <th className="px-8 py-6 text-[9px] font-black uppercase tracking-[0.3em] text-white text-right">Actions</th>
                         </>
                       )}
                     </tr>
@@ -200,14 +200,14 @@ const AdminNexus = () => {
                           <>
                             <td className="px-8 py-6">
                               <p className="font-black text-white uppercase">{item.name}</p>
-                              <p className="text-[9px] text-white/20 tracking-widest">ID: {item._id.slice(-8)}</p>
+                              <p className="text-[9px] text-white tracking-widest">ID: {item._id.slice(-8)}</p>
                             </td>
-                            <td className="px-8 py-6 text-sm text-white/40">{item.email}</td>
+                            <td className="px-8 py-6 text-sm text-white">{item.email}</td>
                             <td className="px-8 py-6">
-                              <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest mr-2 ${item.role === 'admin' ? 'bg-red-500/20 text-red-500' : 'bg-white/10 text-white/40'}`}>
+                              <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest mr-2 ${item.role === 'admin' ? 'bg-red-500/20 text-red-500' : 'bg-white/10 text-white'}`}>
                                 {item.role}
                               </span>
-                              <span className="text-[8px] font-black uppercase tracking-widest text-white/60">{item.plan}</span>
+                              <span className="text-[8px] font-black uppercase tracking-widest text-white">{item.plan}</span>
                             </td>
                           </>
                         )}
@@ -215,11 +215,11 @@ const AdminNexus = () => {
                           <>
                             <td className="px-8 py-6">
                               <p className="font-black text-white uppercase">{item.name}</p>
-                              <p className="text-[9px] text-white/20 tracking-widest">{item.email}</p>
+                              <p className="text-[9px] text-white tracking-widest">{item.email}</p>
                             </td>
                             <td className="px-8 py-6">
-                              <p className="font-black text-white/80 uppercase text-xs mb-1">{item.subject}</p>
-                              <p className="text-sm text-white/30 line-clamp-1 max-w-sm">{item.message}</p>
+                              <p className="font-black text-white uppercase text-xs mb-1">{item.subject}</p>
+                              <p className="text-sm text-white line-clamp-1 max-w-sm">{item.message}</p>
                             </td>
                           </>
                         )}
@@ -227,12 +227,12 @@ const AdminNexus = () => {
                           <>
                             <td className="px-8 py-6">
                               <p className="font-black text-white uppercase">{item.userId?.name || 'Unknown'}</p>
-                              <p className="text-[9px] text-white/20 tracking-widest">{item.userId?.email}</p>
+                              <p className="text-[9px] text-white tracking-widest">{item.userId?.email}</p>
                             </td>
-                            <td className="px-8 py-6 text-sm text-white/40">
+                            <td className="px-8 py-6 text-sm text-white">
                               {item.websites?.length || 0} Sites • {item.totalVisitors || 0} Visitors
                             </td>
-                            <td className="px-8 py-6 text-xs text-white/20 uppercase tracking-widest">
+                            <td className="px-8 py-6 text-xs text-white uppercase tracking-widest">
                               {new Date(item.updatedAt).toLocaleDateString()}
                             </td>
                           </>
@@ -241,16 +241,16 @@ const AdminNexus = () => {
                           <>
                             <td className="px-8 py-6">
                               <p className="font-black text-white uppercase">/{item.slug}</p>
-                              <p className="text-[9px] text-white/20 tracking-widest">{item.title}</p>
+                              <p className="text-[9px] text-white tracking-widest">{item.title}</p>
                             </td>
-                            <td className="px-8 py-6 text-sm text-white/40 max-w-xs truncate">{item.summary}</td>
+                            <td className="px-8 py-6 text-sm text-white max-w-xs truncate">{item.summary}</td>
                           </>
                         )}
                         {activeTab === 'plans' && (
                           <>
                             <td className="px-8 py-6 font-black text-white uppercase">{item.name}</td>
-                            <td className="px-8 py-6 font-black text-white/60 uppercase text-xs">${item.basePrice}/{item.billingCycle}</td>
-                            <td className="px-8 py-6 text-[9px] text-white/30 uppercase tracking-widest">
+                            <td className="px-8 py-6 font-black text-white uppercase text-xs">${item.basePrice}/{item.billingCycle}</td>
+                            <td className="px-8 py-6 text-[9px] text-white uppercase tracking-widest">
                               {item.features?.websites} Sites • {item.features?.storage}GB
                             </td>
                           </>
@@ -259,10 +259,10 @@ const AdminNexus = () => {
                           <>
                             <td className="px-8 py-6">
                               <p className="font-black text-white uppercase text-xs">{item.status}</p>
-                              <p className="text-[9px] text-white/20 tracking-widest">REF: {item.transactionId || item._id.slice(-12)}</p>
+                              <p className="text-[9px] text-white tracking-widest">REF: {item.transactionId || item._id.slice(-12)}</p>
                             </td>
                             <td className="px-8 py-6">
-                              <p className="text-sm text-white/60">{item.userId?.email || 'N/A'}</p>
+                              <p className="text-sm text-white">{item.userId?.email || 'N/A'}</p>
                             </td>
                             <td className="px-8 py-6 font-black text-white uppercase text-xs">${item.amount}</td>
                           </>
@@ -271,9 +271,9 @@ const AdminNexus = () => {
                           <>
                             <td className="px-8 py-6">
                               <p className="font-black text-white uppercase">{item.domain}</p>
-                              <p className="text-[9px] text-white/20 tracking-widest">{item.name}</p>
+                              <p className="text-[9px] text-white tracking-widest">{item.name}</p>
                             </td>
-                            <td className="px-8 py-6 text-sm text-white/40">{item.userId?.email || 'Anonymous'}</td>
+                            <td className="px-8 py-6 text-sm text-white">{item.userId?.email || 'Anonymous'}</td>
                             <td className="px-8 py-6">
                               <span className="px-3 py-1 bg-green-500/10 text-green-500 rounded-full text-[8px] font-black uppercase tracking-widest">
                                 {item.status}
@@ -285,7 +285,7 @@ const AdminNexus = () => {
                         <td className="px-8 py-6 text-right">
                           <div className="flex justify-end gap-6">
                             {(activeTab === 'pages' || activeTab === 'plans') && (
-                              <button className="text-[9px] font-black uppercase tracking-[0.2em] text-white/30 hover:text-white transition-all">Edit</button>
+                              <button className="text-[9px] font-black uppercase tracking-[0.2em] text-white hover:text-white transition-all">Edit</button>
                             )}
                             <button 
                               onClick={() => handleDelete(item._id)}
@@ -303,7 +303,7 @@ const AdminNexus = () => {
               
               {!loading && data.length === 0 && (
                 <div className="py-32 text-center">
-                  <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 italic">"The database is silent. No records detected."</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white italic">"The database is silent. No records detected."</p>
                 </div>
               )}
             </motion.div>
@@ -315,3 +315,5 @@ const AdminNexus = () => {
 };
 
 export default AdminNexus;
+
+

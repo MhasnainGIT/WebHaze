@@ -44,9 +44,9 @@ const AppDevelopment = () => {
       <div className="container-site py-16">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-black mb-4">
-            App <span className="text-white/60">Development</span>
+            App <span className="text-white">Development</span>
           </h1>
-          <p className="text-lg text-white/70 max-w-3xl mx-auto">
+          <p className="text-lg text-white max-w-3xl mx-auto">
             Professional mobile app development for iOS, Android, and cross-platform solutions with modern UI/UX design.
           </p>
         </div>
@@ -61,7 +61,7 @@ const AppDevelopment = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
-              <p className="text-white/70 mb-6">{service.description}</p>
+              <p className="text-white mb-6">{service.description}</p>
               <div className="flex justify-between items-center">
                 <span className="text-xl font-semibold">{service.price}</span>
                 <Link 

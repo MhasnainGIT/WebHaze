@@ -77,7 +77,7 @@ const PremiumNavbar = () => {
             link.dropdown ? (
               <div key={link.name} className="relative group">
                 <button className={`text-[10px] font-black tracking-[0.2em] transition-colors ${
-                  location.pathname.startsWith('/services') ? 'text-white' : 'text-white/50 group-hover:text-white'
+                  location.pathname.startsWith('/services') ? 'text-white' : 'text-white group-hover:text-white'
                 }`}>
                   {link.name}
                 </button>
@@ -87,7 +87,7 @@ const PremiumNavbar = () => {
                       <Link 
                         key={sub.name}
                         to={sub.path}
-                        className={`text-[10px] font-black tracking-[0.15em] uppercase px-4 py-3 hover:bg-white/5 transition-colors whitespace-nowrap text-left ${location.pathname === sub.path ? 'text-white bg-white/5' : 'text-white/50 hover:text-white'}`}
+                        className={`text-[10px] font-black tracking-[0.15em] uppercase px-4 py-3 hover:bg-white/5 transition-colors whitespace-nowrap text-left ${location.pathname === sub.path ? 'text-white bg-white/5' : 'text-white hover:text-white'}`}
                       >
                         {sub.name}
                       </Link>
@@ -100,7 +100,7 @@ const PremiumNavbar = () => {
                 key={link.name}
                 to={link.path} 
                 className={`text-[10px] font-black tracking-[0.2em] transition-colors ${
-                  location.pathname === link.path ? 'text-white' : 'text-white/50 hover:text-white'
+                  location.pathname === link.path ? 'text-white' : 'text-white hover:text-white'
                 }`}
               >
                 {link.name}
@@ -113,12 +113,12 @@ const PremiumNavbar = () => {
         <div className="hidden lg:flex items-center gap-6 flex-shrink-0">
           {!loading && (user ? (
             <div className="flex items-center gap-6">
-              <Link to="/dashboard" className="text-[10px] font-black tracking-[0.2em] text-white/50 hover:text-white uppercase">Dashboard</Link>
+              <Link to="/dashboard" className="text-[10px] font-black tracking-[0.2em] text-white hover:text-white uppercase">Dashboard</Link>
               <button onClick={logout} className="px-6 py-2.5 bg-white/5 border border-white/10 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase">Logout</button>
             </div>
           ) : (
             <div className="flex items-center gap-6">
-              <Link to="/login" className="text-[10px] font-black tracking-[0.2em] text-white/50 hover:text-white uppercase">Login</Link>
+              <Link to="/login" className="text-[10px] font-black tracking-[0.2em] text-white hover:text-white uppercase">Login</Link>
               <Link to="/signup" className="px-6 py-2.5 bg-black text-white border border-white/20 rounded-full text-[10px] font-black tracking-[0.2em] hover:bg-white hover:!text-black hover:border-white transition-all duration-500 uppercase">Join Nexus</Link>
             </div>
           ))}
@@ -159,7 +159,7 @@ const PremiumNavbar = () => {
                       <div className="flex flex-col items-center w-full">
                         <button 
                           onClick={() => toggleDropdown(link.name)}
-                          className="flex items-center justify-center gap-3 text-4xl font-black tracking-tighter text-white hover:text-white/50 transition-all uppercase w-full py-2 focus:outline-none"
+                          className="flex items-center justify-center gap-3 text-4xl font-black tracking-tighter text-white hover:text-white transition-all uppercase w-full py-2 focus:outline-none"
                         >
                           {link.name}
                           <motion.svg 
@@ -181,7 +181,7 @@ const PremiumNavbar = () => {
                                 <Link 
                                   key={sub.name} 
                                   to={sub.path} 
-                                  className="text-xl font-bold tracking-tight text-white/50 hover:text-white transition-all uppercase block py-2"
+                                  className="text-xl font-bold tracking-tight text-white hover:text-white transition-all uppercase block py-2"
                                 >
                                   {sub.name}
                                 </Link>
@@ -193,7 +193,7 @@ const PremiumNavbar = () => {
                     ) : (
                       <Link 
                         to={link.path} 
-                        className="text-4xl font-black tracking-tighter text-white hover:text-white/50 transition-all uppercase block w-full py-2"
+                        className="text-4xl font-black tracking-tighter text-white hover:text-white transition-all uppercase block w-full py-2"
                       >
                         {link.name}
                       </Link>
@@ -206,15 +206,15 @@ const PremiumNavbar = () => {
                 <div className="flex flex-col items-center gap-8 w-full mt-4">
                   {!loading && (user ? (
                     <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-8 items-center w-full">
-                      <Link to="/dashboard" className="text-xl font-black tracking-[0.2em] text-white/50 hover:text-white uppercase">Dashboard</Link>
+                      <Link to="/dashboard" className="text-xl font-black tracking-[0.2em] text-white hover:text-white uppercase">Dashboard</Link>
                       {(user.role === 'admin' || user.email?.toLowerCase() === 'mohdhasnain1544@gmail.com' || user.email?.toLowerCase() === 'webhaze.in@gmail.com') && (
-                        <Link to="/admin-nexus" className="text-xl font-black tracking-[0.2em] text-white/50 hover:text-white uppercase text-red-500">Admin Nexus</Link>
+                        <Link to="/admin-nexus" className="text-xl font-black tracking-[0.2em] text-white hover:text-white uppercase text-red-500">Admin Nexus</Link>
                       )}
                       <button onClick={logout} className="px-12 py-5 bg-white !text-black text-xs font-black tracking-[0.3em] uppercase hover:bg-white/90 transition-all block w-full" style={{ borderRadius: 0 }}>Logout</button>
                     </motion.div>
                   ) : (
                     <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col gap-8 items-center w-full">
-                      <Link to="/login" className="text-xl font-black tracking-[0.2em] text-white/50 hover:text-white uppercase">Login</Link>
+                      <Link to="/login" className="text-xl font-black tracking-[0.2em] text-white hover:text-white uppercase">Login</Link>
                       <Link to="/signup" className="px-12 py-5 bg-white !text-black text-xs font-black tracking-[0.3em] uppercase hover:bg-white/90 transition-all block w-full" style={{ borderRadius: 0 }}>
                         Join Nexus
                       </Link>

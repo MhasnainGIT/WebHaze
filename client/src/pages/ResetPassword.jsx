@@ -43,19 +43,19 @@ const ResetPassword = () => {
       >
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase">
-            NEW <span className="text-white/20">ACCESS.</span>
+            NEW <span className="text-white">ACCESS.</span>
           </h1>
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white">
             Establish Secure Protocol
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <div>
-            <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4">New Access Code</label>
+            <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white mb-4">New Access Code</label>
             <input 
               type="password" 
-              className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/10 focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+              className="w-full bg-transparent border-b border-white/10 py-4 text-white text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -64,10 +64,10 @@ const ResetPassword = () => {
           </div>
 
           <div>
-            <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4">Verify Access Code</label>
+            <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white mb-4">Verify Access Code</label>
             <input 
               type="password" 
-              className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/10 focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+              className="w-full bg-transparent border-b border-white/10 py-4 text-white text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
               placeholder="••••••••"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -85,7 +85,7 @@ const ResetPassword = () => {
         </form>
 
         <div className="mt-12 pt-8 border-t border-white/5 text-center">
-          <Link to="/login" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 hover:text-white transition-colors">
+          <Link to="/login" className="text-[10px] font-black uppercase tracking-[0.3em] text-white hover:text-white transition-colors">
             Cancel Override?
           </Link>
         </div>
@@ -95,3 +95,5 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
+
+

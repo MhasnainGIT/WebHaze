@@ -37,9 +37,9 @@ const Account = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            IDENTITY <span className="text-white/20">UPLINK.</span>
+            IDENTITY <span className="text-white">UPLINK.</span>
           </motion.h1>
-          <p className="text-xl text-white/40 font-medium tracking-tight uppercase text-[10px] tracking-[0.3em]">
+          <p className="text-xl text-white font-medium tracking-tight uppercase text-[10px] tracking-[0.3em]">
             Manage your global infrastructure permissions.
           </p>
         </div>
@@ -53,7 +53,7 @@ const Account = () => {
                 className={`w-full text-left px-8 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all border ${
                   activeTab === tab 
                     ? 'bg-white !text-black border-white' 
-                    : 'text-white/40 border-white/5 hover:border-white/20'
+                    : 'text-white border-white/5 hover:border-white/20'
                 }`}
               >
                 {tab}
@@ -73,7 +73,7 @@ const Account = () => {
                   <h2 className="text-3xl font-black mb-12 tracking-tight uppercase">Identity Profile</h2>
                   <form onSubmit={handleUpdate} className="space-y-8">
                     <div>
-                      <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4">Legal Identity</label>
+                      <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white mb-4">Legal Identity</label>
                       <input 
                         type="text" 
                         className="form-input"
@@ -82,7 +82,7 @@ const Account = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4">Digital Mail</label>
+                      <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white mb-4">Digital Mail</label>
                       <input 
                         type="email" 
                         className="form-input opacity-50 cursor-not-allowed"
@@ -104,18 +104,18 @@ const Account = () => {
                     <div className="p-8 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
                       <div>
                         <p className="font-bold text-lg text-white mb-1">Two-Factor Authentication</p>
-                        <p className="text-sm text-white/40">Enhanced security for nexus uplink access.</p>
+                        <p className="text-sm text-white">Enhanced security for nexus uplink access.</p>
                       </div>
-                      <button className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50 border border-white/10 px-6 py-2 rounded-full hover:text-white transition-all">
+                      <button className="text-[10px] font-black uppercase tracking-[0.2em] text-white border border-white/10 px-6 py-2 rounded-full hover:text-white transition-all">
                         Configure
                       </button>
                     </div>
                     <div className="p-8 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
                       <div>
                         <p className="font-bold text-lg text-white mb-1">Session Management</p>
-                        <p className="text-sm text-white/40">Terminate all active connections globally.</p>
+                        <p className="text-sm text-white">Terminate all active connections globally.</p>
                       </div>
-                      <button className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50 border border-white/10 px-6 py-2 rounded-full hover:text-white transition-all">
+                      <button className="text-[10px] font-black uppercase tracking-[0.2em] text-white border border-white/10 px-6 py-2 rounded-full hover:text-white transition-all">
                         Wipe Sessions
                       </button>
                     </div>
@@ -126,7 +126,7 @@ const Account = () => {
               {/* Placeholder for other tabs */}
               {['billing', 'nodes'].includes(activeTab) && (
                 <div className="py-20 text-center">
-                  <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.3em]">Protocol data pending...</p>
+                  <p className="text-white text-[10px] font-black uppercase tracking-[0.3em]">Protocol data pending...</p>
                 </div>
               )}
             </motion.div>

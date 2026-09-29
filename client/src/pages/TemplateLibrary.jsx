@@ -32,7 +32,7 @@ const TemplateLibrary = () => {
             <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto text-center mb-12">
                     <h1 className="text-4xl font-bold mb-4">Choose Your Industry</h1>
-                    <p className="text-xl text-gray-600">
+                    <p className="text-xl text-white">
                         Get started with a professionally designed template tailored for your business
                     </p>
                 </div>
@@ -51,7 +51,7 @@ const TemplateLibrary = () => {
                         >
                             <div className="text-4xl mb-4">{industry.icon}</div>
                             <h3 className="text-xl font-semibold mb-2">{industry.name}</h3>
-                            <p className={selectedIndustry === industry.id ? 'text-blue-100' : 'text-gray-600'}>
+                            <p className={selectedIndustry === industry.id ? 'text-blue-100' : 'text-white'}>
                                 {industry.description}
                             </p>
                         </motion.div>
@@ -104,7 +104,7 @@ const TemplateCard = ({ title, description, features, image, onSelect }) => (
         <img src={image} alt={title} loading="lazy" width="400" height="256" className="w-full h-64 object-cover" />
         <div className="p-6">
             <h3 className="text-xl font-semibold mb-2">{title}</h3>
-            <p className="text-gray-600 mb-4">{description}</p>
+            <p className="text-white mb-4">{description}</p>
             <ul className="space-y-2 mb-6">
                 {features.map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">

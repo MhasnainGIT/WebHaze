@@ -65,11 +65,11 @@ const Contact = () => {
         <div className="max-w-4xl mb-32">
           <ScrollReveal>
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-10 tracking-tighter leading-[0.8] uppercase">
-              THE <span className="text-white/20">UPLINK.</span>
+              THE <span className="text-white">UPLINK.</span>
             </h1>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
-            <p className="text-xl md:text-2xl text-white/70 max-w-2xl font-medium px-4 md:px-0">
+            <p className="text-xl md:text-2xl text-white max-w-2xl font-medium px-4 md:px-0">
               Direct access to Hyderabad's elite engineering nexus. Let's build your future.
             </p>
           </ScrollReveal>
@@ -80,9 +80,9 @@ const Contact = () => {
           <div className="space-y-12">
             <ScrollReveal direction="right" delay={0.1}>
                <div className="glass-card border-white/5 p-8 md:p-12">
-                 <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-white/70">Location</h3>
+                 <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-white">Location</h3>
                  <p className="text-2xl md:text-3xl font-black text-white mb-2 uppercase tracking-tight">Hyderabad, India</p>
-                 <p className="text-white/70 font-medium text-lg leading-relaxed">
+                 <p className="text-white font-medium text-lg leading-relaxed">
                    Innovation Hub, Financial District<br />
                    Telangana, 500032
                  </p>
@@ -91,9 +91,9 @@ const Contact = () => {
 
              <ScrollReveal direction="right" delay={0.2}>
                <div className="glass-card border-white/5 p-8 md:p-12">
-                 <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-white/70">Direct Lines</h3>
+                 <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-white">Direct Lines</h3>
                  <p className="text-2xl md:text-3xl font-black text-white mb-4 tracking-tight uppercase">+91 8919019679</p>
-                 <p className="text-white/70 font-medium text-lg">info.webhaze@gmail.com</p>
+                 <p className="text-white font-medium text-lg">info.webhaze@gmail.com</p>
                </div>
              </ScrollReveal>
           </div>
@@ -101,7 +101,7 @@ const Contact = () => {
           {/* Minimalist Contact Form */}
           <ScrollReveal direction="left" delay={0.3}>
              <div className="glass-card border-white/5 p-8 md:p-12">
-               <h3 className="text-[10px] font-black mb-10 uppercase tracking-[0.3em] text-white/70">Initialize Project</h3>
+               <h3 className="text-[10px] font-black mb-10 uppercase tracking-[0.3em] text-white">Initialize Project</h3>
               <form className="space-y-8" onSubmit={handleSubmit}>
                 <div>
                   <input 
@@ -110,7 +110,7 @@ const Contact = () => {
                     placeholder="NAME" 
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
                     disabled={loading}
                   />
                 </div>
@@ -122,7 +122,7 @@ const Contact = () => {
                       placeholder="EMAIL" 
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
                       disabled={loading}
                     />
                   </div>
@@ -133,7 +133,7 @@ const Contact = () => {
                       placeholder="PHONE" 
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
                       disabled={loading}
                     />
                   </div>
@@ -145,7 +145,7 @@ const Contact = () => {
                     placeholder="SUBJECT" 
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
                     disabled={loading}
                   />
                 </div>
@@ -156,7 +156,7 @@ const Contact = () => {
                     placeholder="MESSAGE" 
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-black tracking-widest text-xs resize-none"
+                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs resize-none"
                     disabled={loading}
                   ></textarea>
                 </div>
@@ -177,3 +177,4 @@ const Contact = () => {
 };
 
 export default Contact;
+

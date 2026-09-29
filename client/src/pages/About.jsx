@@ -20,11 +20,11 @@ const About = () => {
         <div className="max-w-4xl mb-32">
           <ScrollReveal>
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-12 tracking-tighter leading-[0.8] uppercase">
-              OUR <span className="text-white/20">MISSION.</span>
+              OUR <span className="text-white">MISSION.</span>
             </h1>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
-            <p className="text-xl md:text-2xl text-white/70 max-w-2xl font-medium leading-relaxed px-4 md:px-0">
+            <p className="text-xl md:text-2xl text-white max-w-2xl font-medium leading-relaxed px-4 md:px-0">
               A Hyderabad-based collective of engineers building digital ecosystems that empower visionaries across India.
             </p>
           </ScrollReveal>
@@ -35,10 +35,10 @@ const About = () => {
             <div className="glass-card border-white/5 p-8 md:p-12">
               <h2 className="text-3xl md:text-4xl font-black mb-8 tracking-tight uppercase">The Innovation Node</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-                <p className="text-white/70 text-lg md:text-xl font-medium leading-relaxed">
+                <p className="text-white text-lg md:text-xl font-medium leading-relaxed">
                   Proudly part of Hyderabad's tech hub. We leverage global standards to deliver unmatched web solutions.
                 </p>
-                <p className="text-white/70 text-lg md:text-xl font-medium leading-relaxed">
+                <p className="text-white text-lg md:text-xl font-medium leading-relaxed">
                   Innovative technology met with minimalist design. Ensuring every business has a seat at the digital table.
                 </p>
               </div>
@@ -47,8 +47,8 @@ const About = () => {
 
           <ScrollReveal delay={0.1} direction="left">
             <div className="glass-card border-white/5 p-8 md:p-12 h-full">
-              <h3 className="text-2xl font-black mb-6 tracking-tight uppercase text-white/70">Vision</h3>
-              <p className="text-white/70 text-lg font-medium leading-relaxed">
+              <h3 className="text-2xl font-black mb-6 tracking-tight uppercase text-white">Vision</h3>
+              <p className="text-white text-lg font-medium leading-relaxed">
                 Leading India's Website-as-a-Service frontier, starting from our home in Hyderabad.
               </p>
             </div>
@@ -56,8 +56,8 @@ const About = () => {
 
           <ScrollReveal delay={0.2} direction="right">
             <div className="glass-card border-white/5 p-8 md:p-12 h-full">
-              <h3 className="text-2xl font-black mb-6 tracking-tight uppercase text-white/70">Values</h3>
-              <p className="text-white/70 text-lg font-medium leading-relaxed">
+              <h3 className="text-2xl font-black mb-6 tracking-tight uppercase text-white">Values</h3>
+              <p className="text-white text-lg font-medium leading-relaxed">
                 Integrity and hard work drive every line of code we write and every node we deploy.
               </p>
             </div>
@@ -69,3 +69,4 @@ const About = () => {
 };
 
 export default About;
+

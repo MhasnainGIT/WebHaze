@@ -56,20 +56,20 @@ const PremiumHero = () => {
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-              <span className="text-white/70 text-sm font-medium tracking-wide">WEBHAZE STUDIO</span>
+              <span className="text-white text-sm font-medium tracking-wide">WEBHAZE STUDIO</span>
             </div>
           </motion.div>
 
           {/* Main headline */}
           <motion.h1 
-            className="text-6xl md:text-8xl lg:text-9xl font-bold text-white/90 mb-8 leading-[0.9] tracking-tight font-heading"
+            className="text-6xl md:text-8xl lg:text-9xl font-bold text-white mb-8 leading-[0.9] tracking-tight font-heading"
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
             WE CREATE
             <br />
-            <span className="text-white/90">
+            <span className="text-white">
               DIGITAL
             </span>
             <br />
@@ -78,7 +78,7 @@ const PremiumHero = () => {
 
           {/* Subtitle */}
           <motion.p 
-            className="text-xl md:text-2xl text-white/70 mb-12 max-w-3xl mx-auto leading-relaxed"
+            className="text-xl md:text-2xl text-white mb-12 max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8 }}
@@ -122,7 +122,7 @@ const PremiumHero = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 2 }}
         >
-          <div className="flex flex-col items-center gap-2 text-white/50">
+          <div className="flex flex-col items-center gap-2 text-white">
             <span className="text-xs tracking-widest">SCROLL</span>
             <motion.div 
               className="w-px h-12 bg-gradient-to-b from-white/50 to-transparent"

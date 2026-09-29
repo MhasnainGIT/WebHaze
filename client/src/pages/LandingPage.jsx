@@ -151,7 +151,7 @@ const FeatureCard = ({ icon, title, description }) => (
   <div className="p-6 bg-white rounded-lg shadow-lg text-center">
     <div className="text-4xl mb-4">{icon}</div>
     <h3 className="text-xl font-semibold mb-2">{title}</h3>
-    <p className="text-gray-600">{description}</p>
+    <p className="text-white">{description}</p>
   </div>
 );
 
@@ -178,7 +178,7 @@ const GrowthTool = ({ icon, title, description }) => (
   <div className="p-6 text-center">
     <div className="text-4xl mb-4">{icon}</div>
     <h3 className="text-lg font-semibold mb-2">{title}</h3>
-    <p className="text-gray-600 text-sm">{description}</p>
+    <p className="text-white text-sm">{description}</p>
   </div>
 );
 

@@ -51,9 +51,9 @@ const Dashboard = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              COMMAND <span className="text-white/20">CENTER.</span>
+              COMMAND <span className="text-white">CENTER.</span>
             </motion.h1>
-            <p className="text-xl text-white/40 font-medium tracking-tight uppercase text-[10px] tracking-[0.3em]">
+            <p className="text-xl text-white font-medium tracking-tight uppercase text-[10px] tracking-[0.3em]">
               Welcome back, {user?.name || 'Administrator'}
             </p>
           </div>
@@ -64,26 +64,26 @@ const Dashboard = () => {
 
         <div className="bento-grid mb-12">
           <div className="bento-item md:col-span-2 lg:col-span-2 border-white/5">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-8">Active Nodes</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-8">Active Nodes</p>
             <p className="text-6xl font-black text-white mb-2">{stats.websites}</p>
-            <p className="text-white/50 text-sm font-medium">Digital properties deployed</p>
+            <p className="text-white text-sm font-medium">Digital properties deployed</p>
           </div>
           <div className="bento-item md:col-span-2 lg:col-span-2 border-white/5">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-8">Global Telemetry</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-8">Global Telemetry</p>
             <p className="text-6xl font-black text-white mb-2">{stats.visits.toLocaleString()}</p>
-            <p className="text-white/50 text-sm font-medium">Total unique visitors</p>
+            <p className="text-white text-sm font-medium">Total unique visitors</p>
           </div>
           <div className="bento-item md:col-span-2 lg:col-span-2 border-white/5">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-8">Network Uptime</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-8">Network Uptime</p>
             <p className="text-6xl font-black text-white mb-2">{stats.uptime}</p>
-            <p className="text-white/50 text-sm font-medium">Operational stability</p>
+            <p className="text-white text-sm font-medium">Operational stability</p>
           </div>
         </div>
 
         <div className="glass-card border-white/5">
           <div className="flex justify-between items-center mb-12">
             <h2 className="text-3xl font-black tracking-tight uppercase">Recent Deployments</h2>
-            <Link to="/account" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 hover:text-white transition-colors">
+            <Link to="/account" className="text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-white transition-colors">
               Manage All Nodes
             </Link>
           </div>
@@ -92,18 +92,18 @@ const Dashboard = () => {
               dashboardData.websites.map((site) => (
                 <div key={site._id} className="flex items-center justify-between p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group">
                   <div className="flex items-center gap-6">
-                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-white/10 transition-colors">
+                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white group-hover:bg-white/10 transition-colors">
                       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                       </svg>
                     </div>
                     <div>
                       <p className="font-bold text-white text-lg tracking-tight">{site.domain}</p>
-                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">{site.name}</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white">{site.name}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-6">
-                    <span className="hidden sm:inline text-[10px] font-black uppercase tracking-[0.2em] text-white/40 bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
+                    <span className="hidden sm:inline text-[10px] font-black uppercase tracking-[0.2em] text-white bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
                       {site.status || 'Operational'}
                     </span>
                     <Link to={`/editor/${site._id}`} className="text-white hover:opacity-50 transition-all">
@@ -116,7 +116,7 @@ const Dashboard = () => {
               ))
             ) : (
               <div className="text-center py-20 border-2 border-dashed border-white/5 rounded-2xl">
-                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 italic">No active nodes detected in this sector.</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white italic">No active nodes detected in this sector.</p>
               </div>
             )}
           </div>

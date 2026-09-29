@@ -44,7 +44,7 @@ class ErrorBoundary extends Component {
               </svg>
             </div>
             <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
-            <p className="text-gray-400 mb-6">
+            <p className="text-white mb-6">
               We apologize for the inconvenience. Please try again or reload the page.
             </p>
             {this.state.error && process.env.NODE_ENV === 'development' && (
@@ -76,3 +76,4 @@ class ErrorBoundary extends Component {
 }
 
 export default ErrorBoundary;
+

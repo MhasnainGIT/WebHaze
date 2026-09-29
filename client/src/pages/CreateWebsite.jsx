@@ -37,7 +37,7 @@ const CreateWebsite = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              PROVISION <span className="text-white/20">NODE.</span>
+              PROVISION <span className="text-white">NODE.</span>
             </motion.h1>
             <div className="flex justify-center gap-4">
               {[1, 2, 3].map((i) => (
@@ -59,7 +59,7 @@ const CreateWebsite = () => {
               <div className="space-y-8">
                 <h2 className="text-3xl font-black tracking-tight uppercase">01. Initialization</h2>
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-4">Project Label</label>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white mb-4">Project Label</label>
                   <input 
                     type="text" 
                     placeholder="Enter node identifier"

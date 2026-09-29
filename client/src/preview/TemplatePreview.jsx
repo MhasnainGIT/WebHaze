@@ -53,7 +53,7 @@ const SortableSection = ({ section, onUpdate }) => {
             {section.items.map((item, index) => (
               <div key={index} className="p-4 border rounded">
                 <h3 className="text-xl font-semibold">{item.name}</h3>
-                <p className="text-gray-600">{item.description}</p>
+                <p className="text-white">{item.description}</p>
                 {item.price && (
                   <p className="text-lg font-bold mt-2">${item.price}</p>
                 )}
@@ -67,7 +67,7 @@ const SortableSection = ({ section, onUpdate }) => {
             <form className="space-y-4">
               {section.form.fields.map((field, index) => (
                 <div key={index}>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-white">
                     {field.label}
                   </label>
                   {field.type === 'textarea' ? (

@@ -63,7 +63,7 @@ const WebHosting = () => {
           <h1 className="text-4xl md:text-6xl font-black mb-4">
             Web <span className="text-white/60">Hosting</span>
           </h1>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+          <p className="text-lg text-white/70 max-w-3xl mx-auto">
             Professional web hosting with 99.9% uptime guarantee, lightning-fast performance, and 24/7 support.
           </p>
         </div>
@@ -79,7 +79,7 @@ const WebHosting = () => {
             >
               <div className="text-white mb-4">{feature.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-400 text-sm">{feature.description}</p>
+              <p className="text-white/70 text-sm">{feature.description}</p>
             </motion.div>
           ))}
         </div>

@@ -28,7 +28,7 @@ const Pricing = () => {
             </h1>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
-            <p className="text-xl md:text-2xl text-white/50 max-w-2xl font-medium px-4 md:px-0">
+            <p className="text-xl md:text-2xl text-white/70 max-w-2xl font-medium px-4 md:px-0">
               Transparent, performance-driven solutions for every scale of digital ambition.
             </p>
           </ScrollReveal>
@@ -44,18 +44,18 @@ const Pricing = () => {
                   </div>
                 )}
                 <div className="mb-12">
-                  <h3 className="text-[10px] font-black mb-4 uppercase tracking-[0.3em] text-white/50">{tier.name}</h3>
+                  <h3 className="text-[10px] font-black mb-4 uppercase tracking-[0.3em] text-white/70">{tier.name}</h3>
                   <div className="flex items-baseline gap-2">
                     <span className="text-5xl md:text-6xl font-black text-white">
                       {formatPrice(tier.prices[currency])}
                     </span>
-                    <span className="text-white/30 text-xs">/ONCE</span>
+                    <span className="text-white/70 text-xs">/ONCE</span>
                   </div>
-                  <p className="mt-6 text-white/40 text-sm font-medium leading-relaxed">{tier.description}</p>
+                  <p className="mt-6 text-white/70 text-sm font-medium leading-relaxed">{tier.description}</p>
                 </div>
                 <ul className="space-y-4 md:space-y-6 mb-12 flex-grow">
                   {tier.features.map((feature, i) => (
-                    <li key={i} className="flex items-center text-white/50 gap-4 font-medium">
+                    <li key={i} className="flex items-center text-white/70 gap-4 font-medium">
                       <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
                       <span className="text-base">{feature}</span>
                     </li>

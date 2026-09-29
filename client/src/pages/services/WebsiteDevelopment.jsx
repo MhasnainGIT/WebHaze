@@ -46,7 +46,7 @@ const WebsiteDevelopment = () => {
           <h1 className="text-4xl md:text-6xl font-black mb-4">
             Website <span className="text-white/60">Development</span>
           </h1>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+          <p className="text-lg text-white/70 max-w-3xl mx-auto">
             Professional website development services with modern designs, responsive layouts, and cutting-edge technology.
           </p>
         </div>
@@ -61,7 +61,7 @@ const WebsiteDevelopment = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
-              <p className="text-gray-400 mb-6">{service.description}</p>
+              <p className="text-white/70 mb-6">{service.description}</p>
               <div className="flex justify-between items-center">
                 <span className="text-xl font-semibold">{service.price}</span>
                 <Link 

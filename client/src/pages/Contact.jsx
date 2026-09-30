@@ -26,6 +26,8 @@ const Contact = () => {
     message: ''
   });
 
+  const [activeTab, setActiveTab] = useState('meet');
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -77,7 +79,7 @@ const Contact = () => {
 
     try {
       const response = await axios.post('/api/booking/submit', bookingData);
-      toast.success(response.data.message || 'Uplink request received. We will confirm and transmit the Google Meet link shortly.', { id: loadingToast });
+      toast.success(response.data.message || 'Meeting booked successfully. Check your email for the Google Meet link.', { id: loadingToast });
       setBookingData({
         name: '',
         email: '',
@@ -122,128 +124,37 @@ const Contact = () => {
           </ScrollReveal>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-          {/* Contact Information */}
-          <div className="space-y-12">
-            <ScrollReveal direction="right" delay={0.1}>
-               <div className="glass-card border-white/5 p-8 md:p-12">
-                 <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-white">Location</h3>
-                 <p className="text-2xl md:text-3xl font-black text-white mb-2 uppercase tracking-tight">Hyderabad, India</p>
-                 <p className="text-white font-medium text-lg leading-relaxed">
-                   Innovation Hub, Financial District<br />
-                   Telangana, 500032
-                 </p>
-               </div>
-             </ScrollReveal>
-
-             <ScrollReveal direction="right" delay={0.2}>
-               <div className="glass-card border-white/5 p-8 md:p-12">
-                 <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-white">Direct Lines</h3>
-                 <p className="text-2xl md:text-3xl font-black text-white mb-4 tracking-tight uppercase">+91 8919019679</p>
-                 <p className="text-white font-medium text-lg">info.webhaze@gmail.com</p>
-               </div>
-             </ScrollReveal>
-
-             <ScrollReveal direction="right" delay={0.3}>
-               <div className="glass-card border-white/5 p-8 md:p-12">
-                 <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-white">Google Meet</h3>
-                 <p className="text-white font-medium text-lg leading-relaxed">
-                   Book an appointment and we will send you a Google Meet link for a face-to-face consultation.
-                 </p>
-               </div>
-             </ScrollReveal>
+        <ScrollReveal delay={0.2}>
+          <div className="flex gap-4 mb-12">
+            <button
+              type="button"
+              onClick={() => setActiveTab('meet')}
+              className={`px-8 py-4 rounded-full font-black tracking-[0.3em] uppercase text-xs border transition-all duration-500 ${
+                activeTab === 'meet'
+                  ? 'bg-white text-black border-white'
+                  : 'bg-transparent text-white border-white/20 hover:border-white/50'
+              }`}
+            >
+              Book Google Meet
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('project')}
+              className={`px-8 py-4 rounded-full font-black tracking-[0.3em] uppercase text-xs border transition-all duration-500 ${
+                activeTab === 'project'
+                  ? 'bg-white text-black border-white'
+                  : 'bg-transparent text-white border-white/20 hover:border-white/50'
+              }`}
+            >
+              Initialize Project
+            </button>
           </div>
+        </ScrollReveal>
 
-          {/* Minimalist Contact Form */}
-          <ScrollReveal direction="left" delay={0.3}>
-             <div className="glass-card border-white/5 p-8 md:p-12">
-               <h3 className="text-[10px] font-black mb-10 uppercase tracking-[0.3em] text-white">Initialize Project</h3>
-              <form className="space-y-8" onSubmit={handleSubmit}>
-                <div>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="NAME"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
-                    disabled={loading}
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div>
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="EMAIL"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
-                      disabled={loading}
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="tel"
-                      name="phone"
-                      placeholder="PHONE"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
-                      disabled={loading}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    name="subject"
-                    placeholder="SUBJECT"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
-                    disabled={loading}
-                  />
-                </div>
-                <div>
-                  <textarea
-                    name="message"
-                    rows="4"
-                    placeholder="MESSAGE"
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs resize-none"
-                    disabled={loading}
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`w-full py-6 bg-white !text-black font-black tracking-[0.3em] uppercase text-xs border border-white transition-all duration-500 rounded-full mt-10 ${loading ? 'opacity-50 cursor-wait' : 'hover:bg-white/90'}`}
-                >
-                  {loading ? 'Transmitting...' : 'Transmit Signal'}
-                </button>
-              </form>
-            </div>
-          </ScrollReveal>
-        </div>
-
-        {/* Appointment Booking Section */}
-        <div className="mt-40">
-          <ScrollReveal>
-            <div className="max-w-4xl mb-20">
-              <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase mb-6">
-                BOOK <span className="text-white">MEETING.</span>
-              </h2>
-              <p className="text-xl md:text-2xl text-white font-medium max-w-2xl">
-                Schedule a Google Meet session with our team. Select your preferred date and time below.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.2}>
+        {activeTab === 'meet' && (
+          <ScrollReveal delay={0.3}>
             <div className="glass-card border-white/5 p-8 md:p-12 max-w-4xl">
-              <h3 className="text-[10px] font-black mb-10 uppercase tracking-[0.3em] text-white">Initialize Uplink</h3>
+              <h3 className="text-[10px] font-black mb-10 uppercase tracking-[0.3em] text-white">Book Google Meet</h3>
               <form className="space-y-8" onSubmit={handleBookingSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
@@ -338,6 +249,101 @@ const Contact = () => {
               </form>
             </div>
           </ScrollReveal>
+        )}
+
+        {activeTab === 'project' && (
+          <ScrollReveal delay={0.3}>
+            <div className="glass-card border-white/5 p-8 md:p-12 max-w-4xl">
+              <h3 className="text-[10px] font-black mb-10 uppercase tracking-[0.3em] text-white">Initialize Project</h3>
+              <form className="space-y-8" onSubmit={handleSubmit}>
+                <div>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="NAME"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                    disabled={loading}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="EMAIL"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                      disabled={loading}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="PHONE"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    name="subject"
+                    placeholder="SUBJECT"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                    disabled={loading}
+                  />
+                </div>
+                <div>
+                  <textarea
+                    name="message"
+                    rows="4"
+                    placeholder="MESSAGE"
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs resize-none"
+                    disabled={loading}
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full py-6 bg-white !text-black font-black tracking-[0.3em] uppercase text-xs border border-white transition-all duration-500 rounded-full mt-10 ${loading ? 'opacity-50 cursor-wait' : 'hover:bg-white/90'}`}
+                >
+                  {loading ? 'Transmitting...' : 'Transmit Signal'}
+                </button>
+              </form>
+            </div>
+          </ScrollReveal>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 mt-32">
+          <ScrollReveal direction="up" delay={0.1}>
+             <div className="glass-card border-white/5 p-8 md:p-12">
+               <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-white">Location</h3>
+               <p className="text-2xl md:text-3xl font-black text-white mb-2 uppercase tracking-tight">Hyderabad, India</p>
+               <p className="text-white font-medium text-lg leading-relaxed">
+                 Innovation Hub, Financial District<br />
+                 Telangana, 500032
+               </p>
+             </div>
+           </ScrollReveal>
+
+           <ScrollReveal direction="up" delay={0.2}>
+             <div className="glass-card border-white/5 p-8 md:p-12">
+               <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-white">Direct Lines</h3>
+               <p className="text-2xl md:text-3xl font-black text-white mb-4 tracking-tight uppercase">+91 8919019679</p>
+               <p className="text-white font-medium text-lg">info.webhaze@gmail.com</p>
+             </div>
+           </ScrollReveal>
         </div>
       </div>
     </div>

@@ -2,7 +2,8 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const Booking = require('../models/Booking');
 const { authenticate, admin } = require('../middleware/auth');
-const { sendWelcomeEmail, sendPasswordResetEmail } = require('../utils/emailService');
+const { sendBookingConfirmationEmail, sendBookingAdminNotification } = require('../utils/emailService');
+const { createMeetingEvent } = require('../services/googleCalendar');
 const router = express.Router();
 
 const bookingLimiter = rateLimit({
@@ -22,6 +23,27 @@ router.post('/submit', bookingLimiter, async (req, res) => {
       });
     }
 
+    let meetLink = null;
+    let eventId = null;
+    let eventLink = null;
+
+    try {
+      const meeting = await createMeetingEvent({
+        name,
+        email,
+        phone,
+        subject,
+        message,
+        preferredDate,
+        preferredTime
+      });
+      meetLink = meeting.meetLink;
+      eventId = meeting.eventId;
+      eventLink = meeting.eventLink;
+    } catch (calendarError) {
+      console.error('Google Meet creation failed:', calendarError.message);
+    }
+
     const bookingData = {
       name: name.trim(),
       email: email.trim().toLowerCase(),
@@ -30,7 +52,10 @@ router.post('/submit', bookingLimiter, async (req, res) => {
       preferredTime: preferredTime.trim(),
       subject: subject.trim(),
       message: message.trim(),
-      status: 'pending'
+      status: 'confirmed',
+      googleMeetLink: meetLink,
+      calendarEventId: eventId,
+      calendarEventLink: eventLink
     };
 
     let booking;
@@ -46,9 +71,26 @@ router.post('/submit', bookingLimiter, async (req, res) => {
       await booking.save();
     }
 
+    if (meetLink) {
+      sendBookingConfirmationEmail(email, name, preferredDate, preferredTime, meetLink, subject).catch(() => {});
+      sendBookingAdminNotification({
+        name,
+        email,
+        phone,
+        preferredDate,
+        preferredTime,
+        subject,
+        message,
+        meetLink
+      }).catch(() => {});
+    }
+
     res.status(201).json({
-      message: 'Booking request submitted successfully. Admin will confirm and send a Google Meet link shortly.',
-      id: booking._id
+      message: meetLink
+        ? 'Appointment booked successfully. A Google Meet link has been sent to your email.'
+        : 'Booking request received. We will confirm and send a Google Meet link shortly.',
+      meetLink,
+      bookingId: booking._id
     });
 
   } catch (error) {

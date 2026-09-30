@@ -125,14 +125,14 @@ const Contact = () => {
         </div>
 
         <ScrollReveal delay={0.2}>
-          <div className="flex gap-4 mb-12">
+          <div className="flex flex-col md:flex-row gap-3 md:gap-4 mb-12">
             <button
               type="button"
               onClick={() => setActiveTab('meet')}
-              className={`px-8 py-4 rounded-full font-black tracking-[0.3em] uppercase text-xs border transition-all duration-500 ${
+              className={`w-full md:w-auto px-6 py-4 rounded-full font-black tracking-[0.15em] uppercase text-xs border transition-all duration-500 ${
                 activeTab === 'meet'
                   ? 'bg-white text-black border-white'
-                  : 'bg-transparent text-white border-white/20 hover:border-white/50'
+                  : 'bg-white/5 text-white border-white/20 hover:border-white/50'
               }`}
             >
               Book Google Meet
@@ -140,10 +140,10 @@ const Contact = () => {
             <button
               type="button"
               onClick={() => setActiveTab('project')}
-              className={`px-8 py-4 rounded-full font-black tracking-[0.3em] uppercase text-xs border transition-all duration-500 ${
+              className={`w-full md:w-auto px-6 py-4 rounded-full font-black tracking-[0.15em] uppercase text-xs border transition-all duration-500 ${
                 activeTab === 'project'
                   ? 'bg-white text-black border-white'
-                  : 'bg-transparent text-white border-white/20 hover:border-white/50'
+                  : 'bg-white/5 text-white border-white/20 hover:border-white/50'
               }`}
             >
               Initialize Project

@@ -72,18 +72,19 @@ router.post('/submit', bookingLimiter, async (req, res) => {
     }
 
     if (meetLink) {
-      sendBookingConfirmationEmail(email, name, preferredDate, preferredTime, meetLink, subject).catch(() => {});
-      sendBookingAdminNotification({
-        name,
-        email,
-        phone,
-        preferredDate,
-        preferredTime,
-        subject,
-        message,
-        meetLink
-      }).catch(() => {});
+      sendBookingConfirmationEmail(email, name, preferredDate, preferredTime, meetLink, subject).catch((err) => console.error('Booking confirmation email error:', err));
     }
+
+    sendBookingAdminNotification({
+      name,
+      email,
+      phone,
+      preferredDate,
+      preferredTime,
+      subject,
+      message,
+      meetLink
+    }).catch((err) => console.error('Booking admin notification error:', err));
 
     res.status(201).json({
       message: meetLink

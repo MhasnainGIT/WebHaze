@@ -15,13 +15,28 @@ const Contact = () => {
     message: ''
   });
 
+  const [bookingLoading, setBookingLoading] = useState(false);
+  const [bookingData, setBookingData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    preferredDate: '',
+    preferredTime: '',
+    subject: '',
+    message: ''
+  });
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleBookingChange = (e) => {
+    setBookingData({ ...bookingData, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.email || !formData.phone || !formData.subject || !formData.message) {
       toast.error('All protocols must be initialized (All fields required).');
       return;
@@ -49,9 +64,41 @@ const Contact = () => {
     }
   };
 
+  const handleBookingSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!bookingData.name || !bookingData.email || !bookingData.phone || !bookingData.preferredDate || !bookingData.preferredTime || !bookingData.subject || !bookingData.message) {
+      toast.error('All protocols must be initialized (All fields required).');
+      return;
+    }
+
+    setBookingLoading(true);
+    const loadingToast = toast.loading('Initializing uplink...');
+
+    try {
+      const response = await axios.post('/api/booking/submit', bookingData);
+      toast.success(response.data.message || 'Uplink request received. We will confirm and transmit the Google Meet link shortly.', { id: loadingToast });
+      setBookingData({
+        name: '',
+        email: '',
+        phone: '',
+        preferredDate: '',
+        preferredTime: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Booking submission error:', error);
+      const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Signal interference. Please try again.';
+      toast.error(errorMsg, { id: loadingToast });
+    } finally {
+      setBookingLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black pt-32 pb-20">
-      <SEO 
+      <SEO
         title="Contact Us | #1 Website Development Company Hyderabad | WebHaze"
         description="Connect with WebHaze Studios in Hyderabad. Get a free quote for your web development project or support for your existing Nexus site."
         keywords="Contact web agency Hyderabad, website developer phone number Hyderabad, WebHaze location, hire web designer Hyderabad"
@@ -60,7 +107,7 @@ const Contact = () => {
           { name: "Contact", url: "https://www.webhaze.in/contact" }
         ]}
       />
-      
+
       <div className="container-site">
         <div className="max-w-4xl mb-32">
           <ScrollReveal>
@@ -96,6 +143,15 @@ const Contact = () => {
                  <p className="text-white font-medium text-lg">info.webhaze@gmail.com</p>
                </div>
              </ScrollReveal>
+
+             <ScrollReveal direction="right" delay={0.3}>
+               <div className="glass-card border-white/5 p-8 md:p-12">
+                 <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-white">Google Meet</h3>
+                 <p className="text-white font-medium text-lg leading-relaxed">
+                   Book an appointment and we will send you a Google Meet link for a face-to-face consultation.
+                 </p>
+               </div>
+             </ScrollReveal>
           </div>
 
           {/* Minimalist Contact Form */}
@@ -104,10 +160,10 @@ const Contact = () => {
                <h3 className="text-[10px] font-black mb-10 uppercase tracking-[0.3em] text-white">Initialize Project</h3>
               <form className="space-y-8" onSubmit={handleSubmit}>
                 <div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     name="name"
-                    placeholder="NAME" 
+                    placeholder="NAME"
                     value={formData.name}
                     onChange={handleChange}
                     className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
@@ -116,10 +172,10 @@ const Contact = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
-                    <input 
-                      type="email" 
+                    <input
+                      type="email"
                       name="email"
-                      placeholder="EMAIL" 
+                      placeholder="EMAIL"
                       value={formData.email}
                       onChange={handleChange}
                       className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
@@ -127,10 +183,10 @@ const Contact = () => {
                     />
                   </div>
                   <div>
-                    <input 
-                      type="tel" 
+                    <input
+                      type="tel"
                       name="phone"
-                      placeholder="PHONE" 
+                      placeholder="PHONE"
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
@@ -139,10 +195,10 @@ const Contact = () => {
                   </div>
                 </div>
                 <div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     name="subject"
-                    placeholder="SUBJECT" 
+                    placeholder="SUBJECT"
                     value={formData.subject}
                     onChange={handleChange}
                     className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
@@ -150,22 +206,134 @@ const Contact = () => {
                   />
                 </div>
                 <div>
-                  <textarea 
+                  <textarea
                     name="message"
-                    rows="4" 
-                    placeholder="MESSAGE" 
+                    rows="4"
+                    placeholder="MESSAGE"
                     value={formData.message}
                     onChange={handleChange}
                     className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs resize-none"
                     disabled={loading}
                   ></textarea>
                 </div>
-                <button 
+                <button
                   type="submit"
                   disabled={loading}
                   className={`w-full py-6 bg-white !text-black font-black tracking-[0.3em] uppercase text-xs border border-white transition-all duration-500 rounded-full mt-10 ${loading ? 'opacity-50 cursor-wait' : 'hover:bg-white/90'}`}
                 >
                   {loading ? 'Transmitting...' : 'Transmit Signal'}
+                </button>
+              </form>
+            </div>
+          </ScrollReveal>
+        </div>
+
+        {/* Appointment Booking Section */}
+        <div className="mt-40">
+          <ScrollReveal>
+            <div className="max-w-4xl mb-20">
+              <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase mb-6">
+                BOOK <span className="text-white">MEETING.</span>
+              </h2>
+              <p className="text-xl md:text-2xl text-white font-medium max-w-2xl">
+                Schedule a Google Meet session with our team. Select your preferred date and time below.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.2}>
+            <div className="glass-card border-white/5 p-8 md:p-12 max-w-4xl">
+              <h3 className="text-[10px] font-black mb-10 uppercase tracking-[0.3em] text-white">Initialize Uplink</h3>
+              <form className="space-y-8" onSubmit={handleBookingSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="NAME"
+                      value={bookingData.name}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                      disabled={bookingLoading}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="EMAIL"
+                      value={bookingData.email}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                      disabled={bookingLoading}
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="PHONE"
+                      value={bookingData.phone}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                      disabled={bookingLoading}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      name="subject"
+                      placeholder="MEETING SUBJECT"
+                      value={bookingData.subject}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                      disabled={bookingLoading}
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2 block">Preferred Date</label>
+                    <input
+                      type="date"
+                      name="preferredDate"
+                      value={bookingData.preferredDate}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs [color-scheme:dark]"
+                      disabled={bookingLoading}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2 block">Preferred Time</label>
+                    <input
+                      type="time"
+                      name="preferredTime"
+                      value={bookingData.preferredTime}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs [color-scheme:dark]"
+                      disabled={bookingLoading}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <textarea
+                    name="message"
+                    rows="4"
+                    placeholder="BRIEF DESCRIPTION"
+                    value={bookingData.message}
+                    onChange={handleBookingChange}
+                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs resize-none"
+                    disabled={bookingLoading}
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  disabled={bookingLoading}
+                  className={`w-full py-6 bg-white !text-black font-black tracking-[0.3em] uppercase text-xs border border-white transition-all duration-500 rounded-full mt-10 ${bookingLoading ? 'opacity-50 cursor-wait' : 'hover:bg-white/90'}`}
+                >
+                  {bookingLoading ? 'Initializing...' : 'Book Meeting'}
                 </button>
               </form>
             </div>
@@ -177,4 +345,3 @@ const Contact = () => {
 };
 
 export default Contact;
-

@@ -16,6 +16,7 @@ const mediaRouter = require('./routes/media');
 const templatesRouter = require('./routes/templates');
 const websitesRouter = require('./routes/websites');
 const contactRouter = require('./routes/contact');
+const bookingRouter = require('./routes/booking');
 const healthRouter = require('./routes/health');
 const Page = require('./models/Page');
 
@@ -185,6 +186,7 @@ app.use('/api/media', mediaRouter);
 app.use('/api/templates', templatesRouter);
 app.use('/api/websites', websitesRouter);
 app.use('/api/contact', contactRouter);
+app.use('/api/booking', bookingRouter);
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/plans', require('./routes/plans'));

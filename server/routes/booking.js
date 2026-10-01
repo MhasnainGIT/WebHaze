@@ -2,8 +2,8 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const Booking = require('../models/Booking');
 const { authenticate, admin } = require('../middleware/auth');
-const { sendBookingConfirmationEmail, sendBookingAdminNotification } = require('../utils/emailService');
-const { buildICS } = require('../services/googleCalendar');
+const { sendBookingConfirmationEmail, sendBookingAdminNotification, ADMIN_EMAILS } = require('../utils/emailService');
+const { createMeetingEvent, buildICS, getAvailableSlots } = require('../services/googleCalendar');
 const router = express.Router();
 
 const bookingLimiter = rateLimit({
@@ -23,6 +23,27 @@ router.post('/submit', bookingLimiter, async (req, res) => {
       });
     }
 
+    let meetLink = null;
+    let eventId = null;
+    let eventLink = null;
+
+    try {
+      const meeting = await createMeetingEvent({
+        name,
+        email,
+        phone,
+        subject,
+        message,
+        preferredDate,
+        preferredTime
+      });
+      meetLink = meeting.meetLink;
+      eventId = meeting.eventId;
+      eventLink = meeting.eventLink;
+    } catch (calendarError) {
+      console.error('Google Meet creation failed:', calendarError.message);
+    }
+
     const [year, month, day] = preferredDate.split('-').map(Number);
     const [hours, minutes] = preferredTime.split(':').map(Number);
     const start = new Date(year, month - 1, day, hours, minutes, 0);
@@ -36,10 +57,10 @@ router.post('/submit', bookingLimiter, async (req, res) => {
       preferredTime: preferredTime.trim(),
       subject: subject.trim(),
       message: message.trim(),
-      status: 'pending',
-      googleMeetLink: '',
-      calendarEventId: '',
-      calendarEventLink: ''
+      status: meetLink ? 'confirmed' : 'pending',
+      googleMeetLink: meetLink || '',
+      calendarEventId: eventId || '',
+      calendarEventLink: eventLink || ''
     };
 
     let booking;
@@ -55,43 +76,81 @@ router.post('/submit', bookingLimiter, async (req, res) => {
       await booking.save();
     }
 
-    const description = `Booking request from ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}\n\nPreferred Date: ${preferredDate}\nPreferred Time: ${preferredTime}`;
+    if (meetLink) {
+      const description = `Meeting with WebHaze\n\nGoogle Meet Link: ${meetLink}`;
 
-    const userICS = buildICS({
-      summary: subject || 'WebHaze Consultation',
-      description,
-      start,
-      end,
-      location: 'Google Meet - link to be shared',
-      attendeeEmails: [email],
-    });
+      const userICS = buildICS({
+        summary: subject || 'WebHaze Consultation',
+        description,
+        start,
+        end,
+        location: meetLink,
+        attendeeEmails: [email],
+      });
 
-    const adminICS = buildICS({
-      summary: subject || 'WebHaze Consultation',
-      description: `Booking request from ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}\n\nPreferred Date: ${preferredDate}\nPreferred Time: ${preferredTime}`,
-      start,
-      end,
-      location: 'Google Meet - link to be shared',
-      attendeeEmails: ADMIN_EMAILS,
-    });
+      const adminICS = buildICS({
+        summary: subject || 'WebHaze Consultation',
+        description: `Booking request from ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}\n\nGoogle Meet Link: ${meetLink}`,
+        start,
+        end,
+        location: meetLink,
+        attendeeEmails: ADMIN_EMAILS,
+      });
 
-    sendBookingConfirmationEmail(email, name, preferredDate, preferredTime, '', subject, userICS).catch((err) => console.error('Booking confirmation email error:', err));
+      sendBookingConfirmationEmail(email, name, preferredDate, preferredTime, meetLink, subject, userICS).catch((err) => console.error('Booking confirmation email error:', err));
 
-    sendBookingAdminNotification({
-      name,
-      email,
-      phone,
-      preferredDate,
-      preferredTime,
-      subject,
-      message,
-      meetLink: '',
-      icsBuffer: adminICS
-    }).catch((err) => console.error('Booking admin notification error:', err));
+      sendBookingAdminNotification({
+        name,
+        email,
+        phone,
+        preferredDate,
+        preferredTime,
+        subject,
+        message,
+        meetLink,
+        icsBuffer: adminICS
+      }).catch((err) => console.error('Booking admin notification error:', err));
+    } else {
+      const description = `Booking request from ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}\n\nPreferred Date: ${preferredDate}\nPreferred Time: ${preferredTime}`;
+
+      const userICS = buildICS({
+        summary: subject || 'WebHaze Consultation',
+        description,
+        start,
+        end,
+        location: 'Google Meet - link to be shared',
+        attendeeEmails: [email],
+      });
+
+      const adminICS = buildICS({
+        summary: subject || 'WebHaze Consultation',
+        description: `Booking request from ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}\n\nPreferred Date: ${preferredDate}\nPreferred Time: ${preferredTime}`,
+        start,
+        end,
+        location: 'Google Meet - link to be shared',
+        attendeeEmails: ADMIN_EMAILS,
+      });
+
+      sendBookingConfirmationEmail(email, name, preferredDate, preferredTime, '', subject, userICS).catch((err) => console.error('Booking confirmation email error:', err));
+
+      sendBookingAdminNotification({
+        name,
+        email,
+        phone,
+        preferredDate,
+        preferredTime,
+        subject,
+        message,
+        meetLink: '',
+        icsBuffer: adminICS
+      }).catch((err) => console.error('Booking admin notification error:', err));
+    }
 
     res.status(201).json({
-      message: 'Booking request received successfully. We will send you the Google Meet link shortly.',
-      meetLink: '',
+      message: meetLink
+        ? 'Appointment booked successfully. A Google Meet link has been sent to your email.'
+        : 'Booking request received. We will confirm and send a Google Meet link shortly.',
+      meetLink,
       bookingId: booking._id
     });
 
@@ -101,6 +160,22 @@ router.post('/submit', bookingLimiter, async (req, res) => {
       error: 'Failed to submit booking request',
       message: 'Internal server error'
     });
+  }
+});
+
+router.get('/slots', async (req, res) => {
+  try {
+    const { date } = req.query;
+
+    if (!date) {
+      return res.status(400).json({ error: 'Date is required' });
+    }
+
+    const slots = await getAvailableSlots(date, 60);
+    res.json({ slots });
+  } catch (error) {
+    console.error('Failed to fetch available slots:', error);
+    res.status(500).json({ error: 'Failed to fetch available slots' });
   }
 });
 

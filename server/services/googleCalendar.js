@@ -1,24 +1,18 @@
 const { google } = require('googleapis');
 
 const getCalendarClient = () => {
-  const serviceAccountKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
-  const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN;
 
-  if (!serviceAccountKey && !credentialsPath) {
-    throw new Error('Missing Google credentials: set GOOGLE_SERVICE_ACCOUNT_KEY or GOOGLE_APPLICATION_CREDENTIALS');
+  if (!clientId || !clientSecret || !refreshToken) {
+    throw new Error('Missing Google OAuth credentials: set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REFRESH_TOKEN');
   }
 
-  let credentials;
-  if (serviceAccountKey) {
-    credentials = JSON.parse(serviceAccountKey);
-  } else {
-    credentials = require(credentialsPath);
-  }
+  const auth = new google.auth.OAuth2(clientId, clientSecret);
 
-  const auth = new google.auth.JWT({
-    email: credentials.client_email,
-    key: credentials.private_key,
-    scopes: ['https://www.googleapis.com/auth/calendar'],
+  auth.setCredentials({
+    refresh_token: refreshToken,
   });
 
   return google.calendar({ version: 'v3', auth });
@@ -72,11 +66,7 @@ const buildICS = ({ summary, description, start, end, location, attendeeEmails =
 };
 
 const createMeetingEvent = async ({ name, email, phone, subject, message, preferredDate, preferredTime }) => {
-  const calendarId = process.env.GOOGLE_CALENDAR_ID;
-  if (!calendarId) {
-    throw new Error('Missing GOOGLE_CALENDAR_ID');
-  }
-
+  const calendarId = process.env.GOOGLE_CALENDAR_ID || 'primary';
   const calendar = getCalendarClient();
 
   const [year, month, day] = preferredDate.split('-').map(Number);
@@ -96,11 +86,17 @@ const createMeetingEvent = async ({ name, email, phone, subject, message, prefer
       dateTime: end.toISOString(),
       timeZone: 'Asia/Kolkata',
     },
+    attendees: [
+      { email, displayName: name },
+    ],
     conferenceData: {
       createRequest: {
         requestId: `webhaze-${Date.now()}`,
         conferenceSolutionKey: { type: 'hangoutsMeet' },
       },
+    },
+    reminders: {
+      useDefault: true,
     },
   };
 
@@ -108,27 +104,10 @@ const createMeetingEvent = async ({ name, email, phone, subject, message, prefer
     calendarId,
     requestBody: event,
     conferenceDataVersion: 1,
-    sendUpdates: 'none',
+    sendUpdates: 'all',
   });
 
   const meetLink = response.data.conferenceData?.entryPoints?.find((entry) => entry.entryPointType === 'video')?.uri || response.data.hangoutLink;
-
-  const descriptionWithLink = `${response.data.description || ''}\n\nGoogle Meet Link: ${meetLink}`;
-  const updatedEvent = {
-    ...response.data,
-    description: descriptionWithLink,
-  };
-
-  try {
-    await calendar.events.update({
-      calendarId,
-      eventId: response.data.id,
-      requestBody: updatedEvent,
-      sendUpdates: 'none',
-    });
-  } catch (updateError) {
-    console.error('Failed to update event with Meet link:', updateError.message);
-  }
 
   return {
     meetLink,
@@ -139,4 +118,44 @@ const createMeetingEvent = async ({ name, email, phone, subject, message, prefer
   };
 };
 
-module.exports = { createMeetingEvent, buildICS };
+const getAvailableSlots = async (date, slotDurationMinutes = 60) => {
+  const calendar = getCalendarClient();
+  const calendarId = process.env.GOOGLE_CALENDAR_ID || 'primary';
+
+  const [year, month, day] = date.split('-').map(Number);
+  const dayStart = new Date(year, month - 1, day, 9, 0, 0);
+  const dayEnd = new Date(year, month - 1, day, 18, 0, 0);
+
+  const freeBusyResponse = await calendar.freebusy.query({
+    requestBody: {
+      timeMin: dayStart.toISOString(),
+      timeMax: dayEnd.toISOString(),
+      items: [{ id: calendarId }],
+    },
+  });
+
+  const busy = freeBusyResponse.data.calendars?.[calendarId]?.busy || [];
+
+  const slots = [];
+  for (let t = dayStart.getTime(); t < dayEnd.getTime(); t += slotDurationMinutes * 60 * 1000) {
+    const slotStart = new Date(t);
+    const slotEnd = new Date(t + slotDurationMinutes * 60 * 1000);
+
+    const isClash = busy.some((b) => {
+      const busyStart = new Date(b.start);
+      const busyEnd = new Date(b.end);
+      return slotStart < busyEnd && slotEnd > busyStart;
+    });
+
+    if (!isClash && slotStart > new Date()) {
+      slots.push({
+        start: slotStart.toISOString(),
+        end: slotEnd.toISOString(),
+      });
+    }
+  }
+
+  return slots;
+};
+
+module.exports = { createMeetingEvent, buildICS, getAvailableSlots };

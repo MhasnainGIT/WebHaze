@@ -24,6 +24,53 @@ const getCalendarClient = () => {
   return google.calendar({ version: 'v3', auth });
 };
 
+const formatICSDateTime = (date) => {
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}T${pad(date.getHours())}${pad(date.getMinutes())}00`;
+};
+
+const buildICS = ({ summary, description, start, end, location, attendeeEmails = [] }) => {
+  const uid = `webhaze-${Date.now()}@webhaze.in`;
+  const dtstamp = formatICSDateTime(new Date());
+  const dtstart = formatICSDateTime(start);
+  const dtend = formatICSDateTime(end);
+
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//WebHaze//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:REQUEST',
+    `UID:${uid}`,
+    `DTSTAMP:${dtstamp}`,
+    `DTSTART;TZID=Asia/Kolkata:${dtstart}`,
+    `DTEND;TZID=Asia/Kolkata:${dtend}`,
+    `SUMMARY:${summary}`,
+    `DESCRIPTION:${description.replace(/\n/g, '\\n')}`,
+    `LOCATION:${location}`,
+    'STATUS:CONFIRMED',
+    'SEQUENCE:0',
+    'BEGIN:VALARM',
+    'TRIGGER:-PT15M',
+    'ACTION:DISPLAY',
+    `DESCRIPTION:Reminder: ${summary}`,
+    'END:VALARM',
+    'BEGIN:VALARM',
+    'TRIGGER:-PT1H',
+    'ACTION:DISPLAY',
+    `DESCRIPTION:Reminder: ${summary}`,
+    'END:VALARM',
+  ];
+
+  for (const email of attendeeEmails) {
+    lines.push(`ATTENDEE;CN=${email};RSVP=TRUE:mailto:${email}`);
+  }
+
+  lines.push('END:VCALENDAR');
+
+  return lines.join('\r\n');
+};
+
 const createMeetingEvent = async ({ name, email, phone, subject, message, preferredDate, preferredTime }) => {
   const calendarId = process.env.GOOGLE_CALENDAR_ID;
   if (!calendarId) {
@@ -61,16 +108,35 @@ const createMeetingEvent = async ({ name, email, phone, subject, message, prefer
     calendarId,
     requestBody: event,
     conferenceDataVersion: 1,
-    sendUpdates: 'all',
+    sendUpdates: 'none',
   });
 
   const meetLink = response.data.conferenceData?.entryPoints?.find((entry) => entry.entryPointType === 'video')?.uri || response.data.hangoutLink;
+
+  const descriptionWithLink = `${response.data.description || ''}\n\nGoogle Meet Link: ${meetLink}`;
+  const updatedEvent = {
+    ...response.data,
+    description: descriptionWithLink,
+  };
+
+  try {
+    await calendar.events.update({
+      calendarId,
+      eventId: response.data.id,
+      requestBody: updatedEvent,
+      sendUpdates: 'none',
+    });
+  } catch (updateError) {
+    console.error('Failed to update event with Meet link:', updateError.message);
+  }
 
   return {
     meetLink,
     eventId: response.data.id,
     eventLink: response.data.htmlLink,
+    start,
+    end,
   };
 };
 
-module.exports = { createMeetingEvent };
+module.exports = { createMeetingEvent, buildICS };

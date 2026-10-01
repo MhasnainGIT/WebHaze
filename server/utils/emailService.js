@@ -59,7 +59,7 @@ const sendPasswordResetEmail = async (email, name, resetUrl) => {
   }
 };
 
-const sendBookingConfirmationEmail = async (email, name, preferredDate, preferredTime, meetLink, subject) => {
+const sendBookingConfirmationEmail = async (email, name, preferredDate, preferredTime, meetLink, subject, icsBuffer) => {
   try {
     await resend.emails.send({
       from: FROM,
@@ -79,9 +79,18 @@ const sendBookingConfirmationEmail = async (email, name, preferredDate, preferre
             JOIN GOOGLE MEET
           </a>
           <p style="margin-top:32px;color:#555;font-size:12px;word-break:break-all;">Or copy this link: ${meetLink}</p>
+          <p style="margin-top:32px;color:#777;font-size:12px;">We've also attached a calendar invite (.ics) to this email. Open it to add this meeting to your calendar with reminders.</p>
           <p style="margin-top:48px;color:#444;font-size:12px;">© 2026 WebHaze. All rights reserved.</p>
         </div>
-      `
+      `,
+      attachments: icsBuffer
+        ? [
+            {
+              filename: 'meeting-invite.ics',
+              content: Buffer.from(icsBuffer),
+            },
+          ]
+        : []
     });
     return true;
   } catch (error) {
@@ -90,7 +99,7 @@ const sendBookingConfirmationEmail = async (email, name, preferredDate, preferre
   }
 };
 
-const sendBookingAdminNotification = async ({ name, email, phone, preferredDate, preferredTime, subject, message, meetLink }) => {
+const sendBookingAdminNotification = async ({ name, email, phone, preferredDate, preferredTime, subject, message, meetLink, icsBuffer }) => {
   try {
     await resend.emails.send({
       from: FROM,
@@ -110,9 +119,18 @@ const sendBookingAdminNotification = async ({ name, email, phone, preferredDate,
           <p style="color:#ccc;line-height:1.7;"><strong>Preferred Time:</strong> ${preferredTime}</p>
           <p style="color:#ccc;line-height:1.7;"><strong>Message:</strong> ${message}</p>
           <p style="color:#ccc;line-height:1.7;margin-top:16px;"><strong>Google Meet Link:</strong> <a href="${meetLink}" style="color:#fff;text-decoration:underline;">${meetLink}</a></p>
+          <p style="margin-top:32px;color:#777;font-size:12px;">We've also attached a calendar invite (.ics) to this email. Open it to add this meeting to your calendar with reminders.</p>
           <p style="margin-top:48px;color:#444;font-size:12px;">© 2026 WebHaze. All rights reserved.</p>
         </div>
-      `
+      `,
+      attachments: icsBuffer
+        ? [
+            {
+              filename: 'meeting-invite.ics',
+              content: Buffer.from(icsBuffer),
+            },
+          ]
+        : []
     });
     return true;
   } catch (error) {

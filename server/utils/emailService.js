@@ -140,4 +140,4 @@ const sendBookingAdminNotification = async ({ name, email, phone, preferredDate,
   }
 };
 
-module.exports = { sendWelcomeEmail, sendPasswordResetEmail, sendBookingConfirmationEmail, sendBookingAdminNotification };
+module.exports = { sendWelcomeEmail, sendPasswordResetEmail, sendBookingConfirmationEmail, sendBookingAdminNotification, ADMIN_EMAILS };

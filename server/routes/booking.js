@@ -2,7 +2,7 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const Booking = require('../models/Booking');
 const { authenticate, admin } = require('../middleware/auth');
-const { sendBookingConfirmationEmail, sendBookingAdminNotification } = require('../utils/emailService');
+const { sendBookingConfirmationEmail, sendBookingAdminNotification, ADMIN_EMAILS } = require('../utils/emailService');
 const { createMeetingEvent, buildICS } = require('../services/googleCalendar');
 const router = express.Router();
 

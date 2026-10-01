@@ -49,7 +49,6 @@ const createMeetingEvent = async ({ name, email, phone, subject, message, prefer
       dateTime: end.toISOString(),
       timeZone: 'Asia/Kolkata',
     },
-    attendees: [{ email, displayName: name }],
     conferenceData: {
       createRequest: {
         requestId: `webhaze-${Date.now()}`,

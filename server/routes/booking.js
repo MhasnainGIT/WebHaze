@@ -71,12 +71,12 @@ router.post('/submit', bookingLimiter, async (req, res) => {
       await booking.save();
     }
 
-    if (meetLink) {
-      const [year, month, day] = preferredDate.split('-').map(Number);
-      const [hours, minutes] = preferredTime.split(':').map(Number);
-      const start = new Date(year, month - 1, day, hours, minutes, 0);
-      const end = new Date(year, month - 1, day, hours + 1, minutes, 0);
+    const [year, month, day] = preferredDate.split('-').map(Number);
+    const [hours, minutes] = preferredTime.split(':').map(Number);
+    const start = new Date(year, month - 1, day, hours, minutes, 0);
+    const end = new Date(year, month - 1, day, hours + 1, minutes, 0);
 
+    if (meetLink) {
       const description = `Meeting with WebHaze\n\nGoogle Meet Link: ${meetLink}`;
 
       const userICS = buildICS({
@@ -108,6 +108,40 @@ router.post('/submit', bookingLimiter, async (req, res) => {
         subject,
         message,
         meetLink,
+        icsBuffer: adminICS
+      }).catch((err) => console.error('Booking admin notification error:', err));
+    } else {
+      const description = `Meeting with WebHaze\n\nPreferred Date: ${preferredDate}\nPreferred Time: ${preferredTime}`;
+
+      const userICS = buildICS({
+        summary: subject || 'WebHaze Consultation',
+        description,
+        start,
+        end,
+        location: 'Google Meet - link to be shared',
+        attendeeEmails: [email],
+      });
+
+      const adminICS = buildICS({
+        summary: subject || 'WebHaze Consultation',
+        description: `Booking request from ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}\n\nPreferred Date: ${preferredDate}\nPreferred Time: ${preferredTime}`,
+        start,
+        end,
+        location: 'Google Meet - link to be shared',
+        attendeeEmails: ADMIN_EMAILS,
+      });
+
+      sendBookingConfirmationEmail(email, name, preferredDate, preferredTime, '', subject, userICS).catch((err) => console.error('Booking confirmation email error:', err));
+
+      sendBookingAdminNotification({
+        name,
+        email,
+        phone,
+        preferredDate,
+        preferredTime,
+        subject,
+        message,
+        meetLink: '',
         icsBuffer: adminICS
       }).catch((err) => console.error('Booking admin notification error:', err));
     }

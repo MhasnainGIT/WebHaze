@@ -61,24 +61,25 @@ const sendPasswordResetEmail = async (email, name, resetUrl) => {
 
 const sendBookingConfirmationEmail = async (email, name, preferredDate, preferredTime, meetLink, subject, icsBuffer) => {
   try {
+    const meetSection = meetLink
+      ? `<a href="${meetLink}" style="display:inline-block;margin-top:32px;padding:14px 32px;background:#fff;color:#000;font-weight:900;font-size:12px;letter-spacing:2px;text-decoration:none;text-transform:uppercase;">JOIN GOOGLE MEET</a>
+         <p style="margin-top:32px;color:#555;font-size:12px;word-break:break-all;">Or copy this link: ${meetLink}</p>`
+      : `<p style="margin-top:32px;color:#999;font-size:12px;">Your appointment request has been received. We will send you the Google Meet link shortly.</p>`;
+
     await resend.emails.send({
       from: FROM,
       to: email,
-      subject: 'Your Google Meet appointment is confirmed | WebHaze',
+      subject: meetLink ? 'Your Google Meet appointment is confirmed | WebHaze' : 'Your appointment request has been received | WebHaze',
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#000;color:#fff;padding:40px;">
           <h1 style="font-size:28px;font-weight:900;letter-spacing:-1px;margin-bottom:8px;">WEBHAZE.</h1>
           <hr style="border:none;border-top:1px solid #222;margin:24px 0;" />
-          <h2 style="font-size:22px;font-weight:700;">Meeting Confirmed</h2>
-          <p style="color:#999;line-height:1.7;">Hi ${name}, your appointment has been confirmed. Join the meeting using the link below.</p>
+          <h2 style="font-size:22px;font-weight:700;">${meetLink ? 'Meeting Confirmed' : 'Appointment Request Received'}</h2>
+          <p style="color:#999;line-height:1.7;">Hi ${name}, ${meetLink ? 'your appointment has been confirmed. Join the meeting using the link below.' : 'we have received your appointment request. We will get back to you shortly with the Google Meet link.'}</p>
           <p style="color:#ccc;line-height:1.7;margin-top:16px;"><strong>Subject:</strong> ${subject}</p>
           <p style="color:#ccc;line-height:1.7;"><strong>Date:</strong> ${preferredDate}</p>
           <p style="color:#ccc;line-height:1.7;"><strong>Time:</strong> ${preferredTime}</p>
-          <a href="${meetLink}"
-             style="display:inline-block;margin-top:32px;padding:14px 32px;background:#fff;color:#000;font-weight:900;font-size:12px;letter-spacing:2px;text-decoration:none;text-transform:uppercase;">
-            JOIN GOOGLE MEET
-          </a>
-          <p style="margin-top:32px;color:#555;font-size:12px;word-break:break-all;">Or copy this link: ${meetLink}</p>
+          ${meetSection}
           <p style="margin-top:32px;color:#777;font-size:12px;">We've also attached a calendar invite (.ics) to this email. Open it to add this meeting to your calendar with reminders.</p>
           <p style="margin-top:48px;color:#444;font-size:12px;">© 2026 WebHaze. All rights reserved.</p>
         </div>
@@ -104,7 +105,7 @@ const sendBookingAdminNotification = async ({ name, email, phone, preferredDate,
     await resend.emails.send({
       from: FROM,
       to: ADMIN_EMAILS,
-      subject: 'New Appointment Booking Received | WebHaze',
+      subject: meetLink ? 'New Appointment Booking Received | WebHaze' : 'New Appointment Booking Request Received | WebHaze',
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#000;color:#fff;padding:40px;">
           <h1 style="font-size:28px;font-weight:900;letter-spacing:-1px;margin-bottom:8px;">WEBHAZE.</h1>
@@ -118,7 +119,7 @@ const sendBookingAdminNotification = async ({ name, email, phone, preferredDate,
           <p style="color:#ccc;line-height:1.7;"><strong>Preferred Date:</strong> ${preferredDate}</p>
           <p style="color:#ccc;line-height:1.7;"><strong>Preferred Time:</strong> ${preferredTime}</p>
           <p style="color:#ccc;line-height:1.7;"><strong>Message:</strong> ${message}</p>
-          <p style="color:#ccc;line-height:1.7;margin-top:16px;"><strong>Google Meet Link:</strong> <a href="${meetLink}" style="color:#fff;text-decoration:underline;">${meetLink}</a></p>
+          <p style="color:#ccc;line-height:1.7;margin-top:16px;"><strong>Google Meet Link:</strong> ${meetLink ? `<a href="${meetLink}" style="color:#fff;text-decoration:underline;">${meetLink}</a>` : 'Not yet created - please create manually and send to user'}</p>
           <p style="margin-top:32px;color:#777;font-size:12px;">We've also attached a calendar invite (.ics) to this email. Open it to add this meeting to your calendar with reminders.</p>
           <p style="margin-top:48px;color:#444;font-size:12px;">© 2026 WebHaze. All rights reserved.</p>
         </div>

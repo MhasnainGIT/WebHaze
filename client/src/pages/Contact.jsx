@@ -15,15 +15,18 @@ const Contact = () => {
     message: ''
   });
 
-  const [activeTab, setActiveTab] = useState('meet');
-
+  const [bookingLoading, setBookingLoading] = useState(false);
   const [bookingData, setBookingData] = useState({
     name: '',
     email: '',
     phone: '',
+    preferredDate: '',
+    preferredTime: '',
     subject: '',
     message: ''
   });
+
+  const [activeTab, setActiveTab] = useState('meet');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,6 +63,38 @@ const Contact = () => {
       toast.error(errorMsg, { id: loadingToast });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleBookingSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!bookingData.name || !bookingData.email || !bookingData.phone || !bookingData.preferredDate || !bookingData.preferredTime || !bookingData.subject || !bookingData.message) {
+      toast.error('All protocols must be initialized (All fields required).');
+      return;
+    }
+
+    setBookingLoading(true);
+    const loadingToast = toast.loading('Initializing uplink...');
+
+    try {
+      const response = await axios.post('/api/booking/submit', bookingData);
+      toast.success(response.data.message || 'Meeting booked successfully. Check your email for the Google Meet link.', { id: loadingToast });
+      setBookingData({
+        name: '',
+        email: '',
+        phone: '',
+        preferredDate: '',
+        preferredTime: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Booking submission error:', error);
+      const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Signal interference. Please try again.';
+      toast.error(errorMsg, { id: loadingToast });
+    } finally {
+      setBookingLoading(false);
     }
   };
 
@@ -120,19 +155,7 @@ const Contact = () => {
           <ScrollReveal delay={0.3}>
             <div className="glass-card border-white/5 p-8 md:p-12 max-w-4xl">
               <h3 className="text-[10px] font-black mb-10 uppercase tracking-[0.3em] text-white">Book Google Meet</h3>
-              <form
-                className="space-y-8"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  const bookingUrl = new URL('https://calendar.app.google/V7GwQjyVs1WR6M5Y8');
-                  bookingUrl.searchParams.set('name', bookingData.name || '');
-                  bookingUrl.searchParams.set('email', bookingData.email || '');
-                  bookingUrl.searchParams.set('phone', bookingData.phone || '');
-                  bookingUrl.searchParams.set('subject', bookingData.subject || '');
-                  bookingUrl.searchParams.set('message', bookingData.message || '');
-                  window.open(bookingUrl.toString(), '_blank');
-                }}
-              >
+              <form className="space-y-8" onSubmit={handleBookingSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
                     <input
@@ -177,6 +200,28 @@ const Contact = () => {
                     />
                   </div>
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2 block">Preferred Date</label>
+                    <input
+                      type="date"
+                      name="preferredDate"
+                      value={bookingData.preferredDate}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs [color-scheme:dark]"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-2 block">Preferred Time</label>
+                    <input
+                      type="time"
+                      name="preferredTime"
+                      value={bookingData.preferredTime}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs [color-scheme:dark]"
+                    />
+                  </div>
+                </div>
                 <div>
                   <textarea
                     name="message"
@@ -191,11 +236,8 @@ const Contact = () => {
                   type="submit"
                   className="w-full py-6 bg-white !text-black font-black tracking-[0.3em] uppercase text-xs border border-white transition-all duration-500 rounded-full mt-10 hover:bg-white/90"
                 >
-                  Continue to Google Calendar
+                  Book Meeting
                 </button>
-                <p className="text-[10px] text-white/50 tracking-widest uppercase text-center">
-                  You will be redirected to Google Calendar to select a time slot
-                </p>
               </form>
             </div>
           </ScrollReveal>

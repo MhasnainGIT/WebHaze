@@ -2,9 +2,13 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SEO from '../../components/SEO';
+import CurrencySelector from '../../components/CurrencySelector';
+import { useCurrency } from '../../contexts/CurrencyContext';
+import { PLANS, formatPrice } from '../../config/pricing';
 
 const ServicePage = () => {
   const { slug } = useParams();
+  const { currency } = useCurrency();
 
   const services = {
     'web-hosting': {
@@ -20,9 +24,9 @@ const ServicePage = () => {
         { title: 'CDN Integration', description: 'Global content delivery for faster loading times' }
       ],
       plans: [
-        { name: 'Starter', price: '$9.99', features: ['1 Website', '10GB Storage', 'Free SSL'] },
-        { name: 'Professional', price: '$19.99', features: ['5 Websites', '50GB Storage', 'Free SSL', 'Priority Support'], popular: true },
-        { name: 'Enterprise', price: '$39.99', features: ['Unlimited Websites', '200GB Storage', 'Free SSL', '24/7 Support', 'CDN'] }
+        { name: 'Starter', priceKey: 0, features: ['1 Website', '10GB Storage', 'Free SSL'] },
+        { name: 'Professional', priceKey: 1, features: ['5 Websites', '50GB Storage', 'Free SSL', 'Priority Support'], popular: true },
+        { name: 'Enterprise', priceKey: 2, features: ['Unlimited Websites', '200GB Storage', 'Free SSL', '24/7 Support', 'CDN'] }
       ]
     },
     'website-development': {
@@ -38,9 +42,9 @@ const ServicePage = () => {
         { title: 'Analytics Integration', description: 'Track your website performance' }
       ],
       plans: [
-        { name: 'Basic', price: '$599', features: ['5 Pages', 'Responsive Design', 'Contact Form'] },
-        { name: 'Professional', price: '$1299', features: ['10 Pages', 'CMS', 'SEO Setup', 'Analytics'], popular: true },
-        { name: 'Enterprise', price: '$2499', features: ['Unlimited Pages', 'E-commerce', 'Custom Features', 'Priority Support'] }
+        { name: 'Basic', priceKey: 0, features: ['5 Pages', 'Responsive Design', 'Contact Form'] },
+        { name: 'Professional', priceKey: 1, features: ['10 Pages', 'CMS', 'SEO Setup', 'Analytics'], popular: true },
+        { name: 'Enterprise', priceKey: 2, features: ['Unlimited Pages', 'E-commerce', 'Custom Features', 'Priority Support'] }
       ]
     },
     'app-development': {
@@ -56,9 +60,9 @@ const ServicePage = () => {
         { title: 'App Store Deployment', description: 'We handle the app store submission process' }
       ],
       plans: [
-        { name: 'MVP', price: '$2999', features: ['Basic Features', 'iOS or Android', '3 Months Support'] },
-        { name: 'Professional', price: '$5999', features: ['Advanced Features', 'iOS & Android', '6 Months Support'], popular: true },
-        { name: 'Enterprise', price: '$12999', features: ['Custom Features', 'Backend API', '12 Months Support', 'Maintenance'] }
+        { name: 'MVP', priceKey: 0, features: ['Basic Features', 'iOS or Android', '3 Months Support'] },
+        { name: 'Professional', priceKey: 1, features: ['Advanced Features', 'iOS & Android', '6 Months Support'], popular: true },
+        { name: 'Enterprise', priceKey: 2, features: ['Custom Features', 'Backend API', '12 Months Support', 'Maintenance'] }
       ]
     }
   };
@@ -84,6 +88,10 @@ const ServicePage = () => {
       />
       
       <div className="container-site py-20">
+        <div className="flex justify-end mb-8">
+          <CurrencySelector />
+        </div>
+        
         {/* Hero Section */}
         <div className="max-w-4xl mb-24">
           <motion.h1 
@@ -127,45 +135,49 @@ const ServicePage = () => {
         <div className="mb-32">
           <h2 className="text-3xl font-bold mb-12 tracking-tight">Investment Plans</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {service.plans.map((plan, index) => (
-              <motion.div
-                key={index}
-                className={`glass-card relative flex flex-col h-full ${plan.popular ? 'border-primary/50' : ''}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-4 right-8 bg-secondary text-white text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full">
-                    Most Popular
-                  </div>
-                )}
-                
-                <div className="mb-10">
-                  <h3 className="text-2xl font-bold mb-4 tracking-tight">{plan.name}</h3>
-                  <div className="text-5xl font-black mb-4">{plan.price}</div>
-                </div>
-
-                <ul className="space-y-4 mb-12 flex-grow">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-center text-text-light gap-3 font-medium">
-                      <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                      <span className="text-sm">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link 
-                  to="/contact" 
-                  className={plan.popular ? "btn-primary w-full" : "btn-secondary w-full"}
+            {service.plans.map((plan, index) => {
+              const planData = PLANS[plan.priceKey];
+              const price = planData?.prices?.[currency] || planData?.prices?.USD || 0;
+              return (
+                <motion.div
+                  key={index}
+                  className={`glass-card relative flex flex-col h-full ${plan.popular ? 'border-primary/50' : ''}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -10 }}
                 >
-                  Initiate Project
-                </Link>
-              </motion.div>
-            ))}
+                  {plan.popular && (
+                    <div className="absolute -top-4 right-8 bg-secondary text-white text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full">
+                      Most Popular
+                    </div>
+                  )}
+                  
+                  <div className="mb-10">
+                    <h3 className="text-2xl font-bold mb-4 tracking-tight">{plan.name}</h3>
+                    <div className="text-5xl font-black mb-4">{formatPrice(price, currency)}</div>
+                  </div>
+
+                  <ul className="space-y-4 mb-12 flex-grow">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-center text-text-light gap-3 font-medium">
+                        <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link 
+                    to="/contact" 
+                    className={plan.popular ? "btn-primary w-full" : "btn-secondary w-full"}
+                  >
+                    Initiate Project
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
 

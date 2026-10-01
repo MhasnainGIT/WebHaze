@@ -37,9 +37,30 @@ export const PLANS = [
   },
 ];
 
+export const SERVICE_PRICES = {
+  'website-development': {
+    'Custom Website Design': { INR: 999, USD: 999, AED: 349, GBP: 79, EUR: 89 },
+    'E-commerce Development': { INR: 1999, USD: 1999, AED: 649, GBP: 159, EUR: 179 },
+    'CMS Development': { INR: 1499, USD: 1499, AED: 449, GBP: 119, EUR: 139 },
+    'Website Redesign': { INR: 799, USD: 799, AED: 249, GBP: 59, EUR: 69 },
+  },
+  'app-development': {
+    'iOS App Development': { INR: 4999, USD: 4999, AED: 1649, GBP: 399, EUR: 459 },
+    'Android App Development': { INR: 4999, USD: 4999, AED: 1649, GBP: 399, EUR: 459 },
+    'Cross-Platform Apps': { INR: 6999, USD: 6999, AED: 2299, GBP: 549, EUR: 639 },
+    'Web Applications': { INR: 2999, USD: 2999, AED: 999, GBP: 239, EUR: 279 },
+  },
+  'cloud-servers': {
+    base: { INR: 1, USD: 1, AED: 1, GBP: 1, EUR: 1 },
+  },
+};
+
 export const formatPrice = (amount, currencyCode) => {
   const { symbol, locale } = CURRENCIES[currencyCode];
   const formatted = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(amount);
-  // AED prefix, others prefix with symbol
   return currencyCode === 'AED' ? `AED ${formatted}` : `${symbol}${formatted}`;
+};
+
+export const formatPriceWithLabel = (amount, currencyCode, label = 'Starting at') => {
+  return `${label} ${formatPrice(amount, currencyCode)}`;
 };

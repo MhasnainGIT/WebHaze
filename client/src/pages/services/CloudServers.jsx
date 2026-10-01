@@ -3,10 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import SEO from '../../components/SEO';
 import ScrollReveal from '../../components/ScrollReveal';
+import CurrencySelector from '../../components/CurrencySelector';
+import { useCurrency } from '../../contexts/CurrencyContext';
+import { formatPrice } from '../../config/pricing';
 
 const MARGIN = 1.30; // 30% commission markup
 const applyMargin = (price) => Math.ceil((price * MARGIN) / 10) * 10;
-const formatPrice = (price) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(applyMargin(price));
 
 const linuxVpsData = [
   { plan: 'VPS 01', cores: 1, ram: '1 GB', storage: '30 GB', price: 890 },
@@ -123,6 +125,7 @@ const panelsWindows = [
 
 const CloudServers = () => {
   const [activeTab, setActiveTab] = useState('linux-vps');
+  const { currency } = useCurrency();
 
   const getTableData = () => {
     switch (activeTab) {
@@ -150,6 +153,10 @@ const CloudServers = () => {
       />
 
       <div className="container-site">
+        <div className="flex justify-end mb-8">
+          <CurrencySelector />
+        </div>
+        
         {/* Header */}
         <div className="max-w-4xl mb-24">
           <ScrollReveal>
@@ -238,7 +245,7 @@ const CloudServers = () => {
                         <div className="text-white">{row.cores} vCore{row.cores > 1 ? 's' : ''}</div>
                         <div className="text-white">{row.ram}</div>
                         <div className="text-white">{row.storage}</div>
-                        <div className="font-bold text-lg text-white">{formatPrice(row.price)}</div>
+                        <div className="font-bold text-lg text-white">{formatPrice(applyMargin(row.price), currency)}</div>
                         <div className="text-right">
                           <Link 
                             to="/contact" 
@@ -300,5 +307,3 @@ const CloudServers = () => {
 };
 
 export default CloudServers;
-
-

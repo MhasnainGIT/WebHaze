@@ -43,8 +43,8 @@ const buildICS = ({ summary, description, start, end, location, attendeeEmails =
     'METHOD:REQUEST',
     `UID:${uid}`,
     `DTSTAMP:${dtstamp}`,
-    `DTSTART;TZID=Asia/Kolkata:${dtstart}`,
-    `DTEND;TZID=Asia/Kolkata:${dtend}`,
+    `DTSTART:${dtstart}`,
+    `DTEND:${dtend}`,
     `SUMMARY:${summary}`,
     `DESCRIPTION:${description.replace(/\n/g, '\\n')}`,
     `LOCATION:${location}`,
@@ -63,7 +63,7 @@ const buildICS = ({ summary, description, start, end, location, attendeeEmails =
   ];
 
   for (const email of attendeeEmails) {
-    lines.push(`ATTENDEE;CN=${email};RSVP=TRUE:mailto:${email}`);
+    lines.push(`ATTENDEE;CN=${email}:mailto:${email}`);
   }
 
   lines.push('END:VCALENDAR');

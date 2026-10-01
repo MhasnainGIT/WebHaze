@@ -119,7 +119,7 @@ const sendBookingAdminNotification = async ({ name, email, phone, preferredDate,
           <p style="color:#ccc;line-height:1.7;"><strong>Preferred Date:</strong> ${preferredDate}</p>
           <p style="color:#ccc;line-height:1.7;"><strong>Preferred Time:</strong> ${preferredTime}</p>
           <p style="color:#ccc;line-height:1.7;"><strong>Message:</strong> ${message}</p>
-          <p style="color:#ccc;line-height:1.7;margin-top:16px;"><strong>Google Meet Link:</strong> ${meetLink ? `<a href="${meetLink}" style="color:#fff;text-decoration:underline;">${meetLink}</a>` : 'Not yet created - please create manually and send to user'}</p>
+          <p style="color:#ccc;line-height:1.7;margin-top:16px;"><strong>Google Meet Link:</strong> ${meetLink ? `<a href="${meetLink}" style="color:#fff;text-decoration:underline;">${meetLink}</a>` : 'Not yet created - please create manually and update booking'}</p>
           <p style="margin-top:32px;color:#777;font-size:12px;">We've also attached a calendar invite (.ics) to this email. Open it to add this meeting to your calendar with reminders.</p>
           <p style="margin-top:48px;color:#444;font-size:12px;">© 2026 WebHaze. All rights reserved.</p>
         </div>

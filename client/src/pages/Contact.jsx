@@ -17,8 +17,20 @@ const Contact = () => {
 
   const [activeTab, setActiveTab] = useState('meet');
 
+  const [bookingData, setBookingData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleBookingChange = (e) => {
+    setBookingData({ ...bookingData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -106,14 +118,85 @@ const Contact = () => {
 
         {activeTab === 'meet' && (
           <ScrollReveal delay={0.3}>
-            <div className="glass-card border-white/5 p-2 md:p-4 max-w-4xl">
-              <iframe
-                title="Book Google Meet"
-                src="https://calendar.app.google/V7GwQjyVs1WR6M5Y8"
-                className="w-full"
-                style={{ height: '720px', border: 'none' }}
-                allow="camera; microphone; geolocation; display-capture"
-              />
+            <div className="glass-card border-white/5 p-8 md:p-12 max-w-4xl">
+              <h3 className="text-[10px] font-black mb-10 uppercase tracking-[0.3em] text-white">Book Google Meet</h3>
+              <form
+                className="space-y-8"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const bookingUrl = new URL('https://calendar.app.google/V7GwQjyVs1WR6M5Y8');
+                  bookingUrl.searchParams.set('name', bookingData.name || '');
+                  bookingUrl.searchParams.set('email', bookingData.email || '');
+                  bookingUrl.searchParams.set('phone', bookingData.phone || '');
+                  bookingUrl.searchParams.set('subject', bookingData.subject || '');
+                  bookingUrl.searchParams.set('message', bookingData.message || '');
+                  window.open(bookingUrl.toString(), '_blank');
+                }}
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="NAME"
+                      value={bookingData.name}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="EMAIL"
+                      value={bookingData.email}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="PHONE"
+                      value={bookingData.phone}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      name="subject"
+                      placeholder="MEETING SUBJECT"
+                      value={bookingData.subject}
+                      onChange={handleBookingChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <textarea
+                    name="message"
+                    rows="4"
+                    placeholder="BRIEF DESCRIPTION"
+                    value={bookingData.message}
+                    onChange={handleBookingChange}
+                    className="w-full bg-transparent border-b border-white/10 py-4 text-white placeholder:text-white focus:border-white outline-none transition-colors font-black tracking-widest text-xs resize-none"
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-6 bg-white !text-black font-black tracking-[0.3em] uppercase text-xs border border-white transition-all duration-500 rounded-full mt-10 hover:bg-white/90"
+                >
+                  Continue to Google Calendar
+                </button>
+                <p className="text-[10px] text-white/50 tracking-widest uppercase text-center">
+                  You will be redirected to Google Calendar to select a time slot
+                </p>
+              </form>
             </div>
           </ScrollReveal>
         )}

@@ -6,7 +6,25 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const winston = require('winston');
 const cookieParser = require('cookie-parser');
+const timeout = require('./middleware/timeout');
 require('dotenv').config();
+
+// Redis client (optional — gracefully disabled if REDIS_URL not set)
+let redisClient = null;
+if (process.env.REDIS_URL) {
+  const Redis = require('ioredis');
+  redisClient = new Redis(process.env.REDIS_URL, { lazyConnect: true, maxRetriesPerRequest: 1 });
+  redisClient.connect().catch(() => {
+    console.warn('Redis connection failed — caching disabled');
+    redisClient = null;
+  });
+}
+module.exports.redisClient = redisClient;
+
+const { initEmailQueue } = require('./utils/emailQueue');
+if (process.env.REDIS_URL) {
+  initEmailQueue(process.env.REDIS_URL);
+}
 
 const clarityInjector = require('./middleware/clarityInjector');
 const demoSiteRouter = require('./routes/demoSite');
@@ -97,6 +115,7 @@ const limiter = rateLimit({
 });
 
 app.use('/api/', limiter);
+app.use(timeout(10000));
 
 // CORS configuration
 const parseOrigins = (val) => {
@@ -192,17 +211,36 @@ app.use('/api/payments', require('./routes/payments'));
 app.use('/api/plans', require('./routes/plans'));
 app.use('/api/careers', require('./routes/careers'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/blog', require('./routes/blog'));
 
 // Demo site route
 app.use('/site', demoSiteRouter);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'healthy',
+app.get('/health', async (req, res) => {
+  const mem = process.memoryUsage();
+  const dbState = mongoose.connection.readyState;
+  const dbStatus = ['disconnected', 'connected', 'connecting', 'disconnecting'][dbState] || 'unknown';
+
+  let redisStatus = 'disabled';
+  if (redisClient) {
+    try { await redisClient.ping(); redisStatus = 'connected'; }
+    catch { redisStatus = 'error'; }
+  }
+
+  const healthy = dbStatus === 'connected' || process.env.SKIP_DB === 'true';
+  res.status(healthy ? 200 : 503).json({
+    status: healthy ? 'healthy' : 'degraded',
     timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    environment: NODE_ENV
+    uptime: Math.floor(process.uptime()),
+    environment: NODE_ENV,
+    database: dbStatus,
+    redis: redisStatus,
+    memory: {
+      heapUsedMB: Math.round(mem.heapUsed / 1024 / 1024),
+      heapTotalMB: Math.round(mem.heapTotal / 1024 / 1024),
+      rssMB: Math.round(mem.rss / 1024 / 1024),
+    },
   });
 });
 

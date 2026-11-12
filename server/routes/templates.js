@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { authenticate } = require('../middleware/auth');
+const { cache } = require('../middleware/cache');
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -13,7 +14,7 @@ const sanitizeTemplateId = (id) => {
 };
 
 // Get all available templates
-router.get('/', async (req, res) => {
+router.get('/', cache(300), async (req, res) => {
   try {
     const templates = await fs.readdir(TEMPLATES_DIR);
     

@@ -2,8 +2,10 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const Booking = require('../models/Booking');
 const { authenticate, admin } = require('../middleware/auth');
-const { sendBookingConfirmationEmail, sendBookingAdminNotification, ADMIN_EMAILS } = require('../utils/emailService');
+const { ADMIN_EMAILS } = require('../utils/emailService');
+const { enqueue } = require('../utils/emailQueue');
 const { createMeetingEvent, buildICS, getAvailableSlots } = require('../services/googleCalendar');
+const { validateBooking } = require('../middleware/validation');
 const router = express.Router();
 
 const bookingLimiter = rateLimit({
@@ -12,7 +14,7 @@ const bookingLimiter = rateLimit({
   message: 'Too many booking requests, please try again later.'
 });
 
-router.post('/submit', bookingLimiter, async (req, res) => {
+router.post('/submit', bookingLimiter, validateBooking, async (req, res) => {
   try {
     const { name, email, phone, preferredDate, preferredTime, subject, message } = req.body;
 
@@ -97,9 +99,9 @@ router.post('/submit', bookingLimiter, async (req, res) => {
         attendeeEmails: ADMIN_EMAILS,
       });
 
-      sendBookingConfirmationEmail(email, name, preferredDate, preferredTime, meetLink, subject, userICS).catch((err) => console.error('Booking confirmation email error:', err));
+      enqueue('bookingConfirmation', { email, name, preferredDate, preferredTime, meetLink, subject, icsBuffer: userICS }).catch((err) => console.error('Booking confirmation email error:', err));
 
-      sendBookingAdminNotification({
+      enqueue('bookingAdminNotification', {
         name,
         email,
         phone,
@@ -131,9 +133,9 @@ router.post('/submit', bookingLimiter, async (req, res) => {
         attendeeEmails: ADMIN_EMAILS,
       });
 
-      sendBookingConfirmationEmail(email, name, preferredDate, preferredTime, '', subject, userICS).catch((err) => console.error('Booking confirmation email error:', err));
+      enqueue('bookingConfirmation', { email, name, preferredDate, preferredTime, meetLink: '', subject, icsBuffer: userICS }).catch((err) => console.error('Booking confirmation email error:', err));
 
-      sendBookingAdminNotification({
+      enqueue('bookingAdminNotification', {
         name,
         email,
         phone,
@@ -235,7 +237,7 @@ router.put('/:id', authenticate, admin, async (req, res) => {
         attendeeEmails: [booking.email],
       });
 
-      sendBookingConfirmationEmail(booking.email, booking.name, preferredDateStr, booking.preferredTime, googleMeetLink, booking.subject, userICS).catch((err) => console.error('Booking Meet link notification error:', err));
+      enqueue('bookingConfirmation', { email: booking.email, name: booking.name, preferredDate: preferredDateStr, preferredTime: booking.preferredTime, meetLink: googleMeetLink, subject: booking.subject, icsBuffer: userICS }).catch((err) => console.error('Booking Meet link notification error:', err));
     }
 
     res.json({

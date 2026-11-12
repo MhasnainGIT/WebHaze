@@ -1,0 +1,76 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: |
+            client/package-lock.json
+            server/package-lock.json
+
+      - name: Install client deps
+        run: npm ci
+        working-directory: client
+
+      - name: Install server deps
+        run: npm ci
+        working-directory: server
+
+      - name: Lint client
+        run: npm run lint --if-present
+        working-directory: client
+
+      - name: Lint server
+        run: npm run lint --if-present
+        working-directory: server
+
+      - name: Test server
+        run: npm test --if-present
+        working-directory: server
+        env:
+          NODE_ENV: test
+          SKIP_DB: "true"
+          JWT_SECRET: ci-test-secret
+          JWT_REFRESH_SECRET: ci-test-refresh-secret
+
+      - name: Build client
+        run: npm run build
+        working-directory: client
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL || 'https://webhaze.onrender.com' }}
+
+  deploy-server:
+    needs: lint-test-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Deploy to Render
+        run: |
+          curl -s -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" || echo "Render deploy hook not configured"
+
+  deploy-client:
+    needs: lint-test-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Vercel
+        run: |
+          if [ -n "${{ secrets.VERCEL_TOKEN }}" ]; then
+            npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+          else
+            echo "Vercel token not configured — skipping deploy"
+          fi
+        working-directory: client

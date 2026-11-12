@@ -1,11 +1,12 @@
 const express = require('express');
 const PlanService = require('../services/PlanService');
+const { cache } = require('../middleware/cache');
 const router = express.Router();
 
 const planService = new PlanService();
 
 // Get all active plans
-router.get('/', async (req, res) => {
+router.get('/', cache(300), async (req, res) => {
     try {
         const result = await planService.getActivePlans();
         

@@ -8,21 +8,35 @@ const Page = require('../models/Page');
 const Plan = require('../models/Plan');
 const Transaction = require('../models/Transaction');
 const Website = require('../models/Website');
+const Booking = require('../models/Booking');
 const memoryStore = require('../utils/memoryStore');
 
 // Middleware: All routes here require admin privileges
 router.use(authenticate, admin);
 
+const paginate = (query, page, limit) => ({
+  skip: (page - 1) * limit,
+  limit,
+});
+
 // --- USERS ---
 router.get('/users', async (req, res) => {
   try {
-    let users;
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, parseInt(req.query.limit) || 20);
+    let users, total;
     if (process.env.SKIP_DB === 'true') {
-      users = memoryStore.getAllUsers();
+      const all = memoryStore.getAllUsers();
+      total = all.length;
+      users = all.slice((page - 1) * limit, page * limit);
     } else {
-      users = await User.find().select('-password').sort({ createdAt: -1 });
+      const { skip } = paginate({}, page, limit);
+      [users, total] = await Promise.all([
+        User.find().select('-password').sort({ createdAt: -1 }).skip(skip).limit(limit),
+        User.countDocuments()
+      ]);
     }
-    res.json(users);
+    res.json({ data: users, total, page, totalPages: Math.ceil(total / limit) });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch users' });
   }
@@ -44,8 +58,14 @@ router.delete('/users/:id', async (req, res) => {
 // --- CONTACTS ---
 router.get('/contacts', async (req, res) => {
   try {
-    const contacts = await Contact.find().sort({ createdAt: -1 });
-    res.json(contacts);
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, parseInt(req.query.limit) || 20);
+    const skip = (page - 1) * limit;
+    const [contacts, total] = await Promise.all([
+      Contact.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Contact.countDocuments()
+    ]);
+    res.json({ data: contacts, total, page, totalPages: Math.ceil(total / limit) });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch contacts' });
   }
@@ -149,10 +169,32 @@ router.delete('/plans/:id', async (req, res) => {
 // --- TRANSACTIONS ---
 router.get('/transactions', async (req, res) => {
   try {
-    const transactions = await Transaction.find().populate('userId', 'name email').sort({ createdAt: -1 });
-    res.json(transactions);
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, parseInt(req.query.limit) || 20);
+    const skip = (page - 1) * limit;
+    const [transactions, total] = await Promise.all([
+      Transaction.find().populate('userId', 'name email').sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Transaction.countDocuments()
+    ]);
+    res.json({ data: transactions, total, page, totalPages: Math.ceil(total / limit) });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch transactions' });
+  }
+});
+
+// --- BOOKINGS ---
+router.get('/bookings', async (req, res) => {
+  try {
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, parseInt(req.query.limit) || 20);
+    const skip = (page - 1) * limit;
+    const [bookings, total] = await Promise.all([
+      Booking.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Booking.countDocuments()
+    ]);
+    res.json({ data: bookings, total, page, totalPages: Math.ceil(total / limit) });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch bookings' });
   }
 });
 

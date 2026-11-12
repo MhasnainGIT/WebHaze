@@ -122,12 +122,16 @@ router.get('/transaction/:transactionId', auth, async (req, res) => {
     }
 });
 
-// Webhook endpoint
-router.post('/webhook/:provider', async (req, res) => {
+// Webhook endpoint — uses raw body for signature verification
+router.post('/webhook/:provider', express.raw({ type: 'application/json' }), async (req, res) => {
     try {
         const { provider } = req.params;
         const signature = req.headers['x-razorpay-signature'] || req.headers['stripe-signature'];
-        
+
+        if (!signature) {
+            return res.status(400).json({ error: 'Missing webhook signature' });
+        }
+
         const result = await paymentService.processWebhook(
             provider,
             req.body,

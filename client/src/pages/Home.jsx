@@ -90,6 +90,14 @@ const Hero = () => {
             <Link to={user ? "/contact" : "/signup"} className="px-10 py-4 bg-white text-black text-[12px] font-bold tracking-[0.15em] uppercase hover:bg-white/90 transition-all" style={{ borderRadius: 0, fontFamily: f.l, color: '#000000' }}>Launch Vision</Link>
             <Link to="/pricing" className="px-10 py-4 bg-transparent text-white border border-white/[0.15] text-[12px] font-bold tracking-[0.15em] uppercase hover:border-white transition-all" style={{ borderRadius: 0, fontFamily: f.l }}>View Solutions</Link>
           </ScrollReveal>
+          <ScrollReveal delay={0.7}>
+            <div className="mt-12 flex flex-wrap items-center gap-6 md:gap-10">
+              <span className="text-[11px] text-white/40 tracking-[0.1em] uppercase" style={{ fontFamily: f.l }}>Trusted by</span>
+              {['UrbanCart', 'Spice Route', 'GreenBuild', 'NexaTech', 'BoldMedia'].map((name, i) => (
+                <span key={i} className="text-[12px] font-bold text-white/30 tracking-[0.08em] uppercase hover:text-white/60 transition-colors" style={{ fontFamily: f.h }}>{name}</span>
+              ))}
+            </div>
+          </ScrollReveal>
         </div>
       </motion.div>
     </section>
@@ -190,8 +198,9 @@ const Services = () => {
             </ScrollReveal>
           ))}
         </div>
-        <ScrollReveal className="flex justify-center">
+        <ScrollReveal className="flex justify-center gap-4">
           <Link to="/pricing" className="px-14 py-5 bg-white text-black text-[12px] font-bold tracking-[0.15em] uppercase hover:bg-white/90 transition-all" style={{ borderRadius: 0, fontFamily: f.l, color: '#000000' }}>Explore Plans</Link>
+          <Link to="/portfolio" className="px-14 py-5 bg-transparent text-white border border-white/[0.15] text-[12px] font-bold tracking-[0.15em] uppercase hover:border-white transition-all" style={{ borderRadius: 0, fontFamily: f.l }}>Our Work</Link>
         </ScrollReveal>
       </div>
     </section>
@@ -215,7 +224,7 @@ const Pricing = () => {
                 <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-8" style={{ fontFamily: f.l }}>{plan.name}</span>
                 <div className="flex items-baseline gap-2 mb-10">
                   <span className="text-4xl md:text-[56px] font-black text-white tracking-[-0.03em]" style={{ fontFamily: f.h }}>{formatPrice(plan.prices[currency])}</span>
-                  <span className="text-white text-[11px] tracking-[0.1em]" style={{ fontFamily: f.l }}>/MO</span>
+                  <span className="text-white text-[11px] tracking-[0.1em]" style={{ fontFamily: f.l }}>/ONCE</span>
                 </div>
                 <ul className="space-y-4 mb-10 flex-grow">
                   {plan.features.map((feat, j) => (
@@ -238,15 +247,15 @@ const Pricing = () => {
 
 const Testimonials = () => {
   const items = [
-    { q: "WebHaze transformed our online presence. 40% growth in organic traffic within weeks.", a: "Sarah M.", r: "CEO, TechFlow", v: "https://i.pravatar.cc/150?u=sarah" },
-    { q: "Modern, responsive, and it doubled our online orders. Outstanding support.", a: "Marco R.", r: "Owner, Bella Vista", v: "https://i.pravatar.cc/150?u=marco" },
-    { q: "A site that perfectly represents our brand. Worth every rupee invested.", a: "Jennifer C.", r: "Founder, GreenLeaf", v: "https://i.pravatar.cc/150?u=jennifer" },
+    { q: "WebHaze redesigned our entire platform in 3 weeks. Conversion rate went up 40% in the first month.", a: "Ravi K.", r: "Founder, UrbanCart — E-commerce", metric: "+40% conversions" },
+    { q: "Our restaurant bookings doubled after the new site launched. The mobile experience is flawless.", a: "Priya S.", r: "Owner, Spice Route — F&B", metric: "2× bookings" },
+    { q: "We went from zero online presence to ranking on page 1 for our target keywords within 60 days.", a: "Arjun M.", r: "CEO, GreenBuild — Construction", metric: "Page 1 in 60 days" },
   ];
   return (
     <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
       <div className="max-w-[1440px] mx-auto">
         <ScrollReveal className="mb-16 md:mb-24">
-          <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-6" style={{ fontFamily: f.l }}>TESTIMONIALS</span>
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-6" style={{ fontFamily: f.l }}>CLIENT RESULTS</span>
           <h2 className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]" style={{ fontFamily: f.h }}>THE<br/><span className="text-white">VOICE.</span></h2>
         </ScrollReveal>
         <div className="flex flex-col gap-6 md:gap-12">
@@ -255,11 +264,11 @@ const Testimonials = () => {
               <Glass className="h-full">
                 <div className="p-8 md:p-12 flex flex-col justify-between h-full min-h-[280px]">
                   <div>
-                    <div className="flex gap-1 text-white mb-6">{[1,2,3,4,5].map(s => <svg key={s} className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)}</div>
+                    <div className="inline-block px-3 py-1 bg-white/[0.06] border border-white/[0.1] text-[10px] font-bold tracking-[0.15em] uppercase text-white mb-6" style={{ fontFamily: f.l, borderRadius: 0 }}>{t.metric}</div>
                     <p className="text-white text-base md:text-xl leading-relaxed italic" style={{ fontFamily: f.b }}>"{t.q}"</p>
                   </div>
                   <div className="flex items-center gap-4 border-t border-white/[0.05] pt-6 mt-8">
-                     <img src={t.v} alt={t.a} loading="lazy" width="48" height="48" className="w-12 h-12 grayscale border border-white/[0.08]" style={{ borderRadius: 0 }} />
+                    <div className="w-12 h-12 bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-white font-black text-lg" style={{ borderRadius: 0, fontFamily: f.h }}>{t.a[0]}</div>
                     <div>
                       <p className="font-bold text-base text-white" style={{ fontFamily: f.h }}>{t.a}</p>
                       <p className="text-white text-[10px] uppercase tracking-[0.1em]" style={{ fontFamily: f.l }}>{t.r}</p>

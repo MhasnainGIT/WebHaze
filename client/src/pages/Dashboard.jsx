@@ -1,10 +1,33 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import SEO from '../components/SEO';
 
-const Dashboard = () => {
+const StatSkeleton = () => (
+  <div className="bento-item md:col-span-2 lg:col-span-2 border-white/5 animate-pulse">
+    <div className="h-3 w-24 bg-white/[0.06] rounded mb-8" />
+    <div className="h-14 w-20 bg-white/[0.06] rounded mb-2" />
+    <div className="h-3 w-32 bg-white/[0.04] rounded" />
+  </div>
+);
+
+const RowSkeleton = () => (
+  <div className="flex items-center justify-between p-6 rounded-2xl bg-white/[0.02] border border-white/5 animate-pulse">
+    <div className="flex items-center gap-6">
+      <div className="w-12 h-12 rounded-xl bg-white/[0.06]" />
+      <div>
+        <div className="h-4 w-32 bg-white/[0.06] rounded mb-2" />
+        <div className="h-3 w-20 bg-white/[0.04] rounded" />
+      </div>
+    </div>
+    <div className="h-6 w-6 bg-white/[0.04] rounded" />
+  </div>
+);
+
+const Dashboard = () => {  `
+  `
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState(null);
@@ -63,6 +86,10 @@ const Dashboard = () => {
         </div>
 
         <div className="bento-grid mb-12">
+          {loading ? (
+            <><StatSkeleton /><StatSkeleton /><StatSkeleton /></>
+          ) : (
+            <>
           <div className="bento-item md:col-span-2 lg:col-span-2 border-white/5">
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-8">Active Nodes</p>
             <p className="text-6xl font-black text-white mb-2">{stats.websites}</p>
@@ -78,6 +105,8 @@ const Dashboard = () => {
             <p className="text-6xl font-black text-white mb-2">{stats.uptime}</p>
             <p className="text-white text-sm font-medium">Operational stability</p>
           </div>
+            </>
+          )}
         </div>
 
         <div className="glass-card border-white/5">
@@ -88,7 +117,9 @@ const Dashboard = () => {
             </Link>
           </div>
           <div className="space-y-4">
-            {dashboardData?.websites?.length > 0 ? (
+            {loading ? (
+              <><RowSkeleton /><RowSkeleton /><RowSkeleton /></>
+            ) : dashboardData?.websites?.length > 0 ? (
               dashboardData.websites.map((site) => (
                 <div key={site._id} className="flex items-center justify-between p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group">
                   <div className="flex items-center gap-6">

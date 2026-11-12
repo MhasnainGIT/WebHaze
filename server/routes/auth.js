@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
 const User = require('../models/User');
 const memoryStore = require('../utils/memoryStore');
-const { sendWelcomeEmail, sendPasswordResetEmail } = require('../utils/emailService');
+const { enqueue } = require('../utils/emailQueue');
 const { authenticate, admin } = require('../middleware/auth');
 const crypto = require('crypto');
 const router = express.Router();
@@ -32,15 +32,7 @@ router.post('/forgot-password', async (req, res) => {
 
     const resetUrl = `${process.env.FRONTEND_URL || 'https://www.webhaze.in'}/reset-password/${resetToken}`;
 
-    const sent = await sendPasswordResetEmail(user.email, user.name, resetUrl);
-
-    if (!sent) {
-      // rollback token so user can try again
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
-      await user.save();
-      return res.status(500).json({ error: 'Failed to send reset email. Please try again.' });
-    }
+    enqueue('passwordReset', { email: user.email, name: user.name, resetUrl }).catch(console.error);
 
     res.json({ message: 'If an account exists with this email, a reset link has been sent.' });
   } catch (error) {
@@ -128,19 +120,24 @@ router.post('/register', authLimiter, async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '15m' }
+    );
+    const refreshToken = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET,
+      { expiresIn: '30d' }
     );
 
     res.cookie('token', token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      httpOnly: true, secure: true, sameSite: 'none', maxAge: 15 * 60 * 1000
+    });
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true, secure: true, sameSite: 'none', maxAge: 30 * 24 * 60 * 60 * 1000
     });
 
-    // Send welcome email (don't wait for it to complete)
-    sendWelcomeEmail(user.email, user.name).catch(err => {
-      console.error('Failed to send welcome email:', err);
+    // Send welcome email via queue
+    enqueue('welcome', { email: user.email, name: user.name }).catch(err => {
+      console.error('Failed to queue welcome email:', err);
     });
 
     res.status(201).json({
@@ -208,14 +205,19 @@ router.post('/login', authLimiter, async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '15m' }
+    );
+    const refreshToken = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET,
+      { expiresIn: '30d' }
     );
 
     res.cookie('token', token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      httpOnly: true, secure: true, sameSite: 'none', maxAge: 15 * 60 * 1000
+    });
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true, secure: true, sameSite: 'none', maxAge: 30 * 24 * 60 * 60 * 1000
     });
 
     res.json({
@@ -463,7 +465,36 @@ router.delete('/users/:id', authenticate, admin, async (req, res) => {
 // Logout endpoint
 router.post('/logout', (req, res) => {
   res.clearCookie('token', { httpOnly: true, secure: true, sameSite: 'none' });
+  res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'none' });
   res.json({ message: 'Logged out successfully' });
+});
+
+// Refresh token endpoint
+router.post('/refresh', async (req, res) => {
+  try {
+    const refreshToken = req.cookies?.refreshToken;
+    if (!refreshToken) return res.status(401).json({ error: 'No refresh token' });
+
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET);
+    let user;
+    if (process.env.SKIP_DB === 'true') {
+      user = await memoryStore.findUserById(decoded.userId);
+    } else {
+      user = await User.findById(decoded.userId);
+    }
+    if (!user || !user.isActive) return res.status(401).json({ error: 'Invalid refresh token' });
+
+    const newToken = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '15m' }
+    );
+
+    res.cookie('token', newToken, { httpOnly: true, secure: true, sameSite: 'none', maxAge: 15 * 60 * 1000 });
+    res.json({ message: 'Token refreshed' });
+  } catch {
+    res.status(401).json({ error: 'Invalid or expired refresh token' });
+  }
 });
 
 module.exports = router;

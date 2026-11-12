@@ -62,7 +62,14 @@ class RazorpayAdapter extends PaymentGatewayAdapter {
     }
 
     verifyWebhook(payload, signature) {
-        return true; // Simplified for demo
+        if (!this.webhookSecret || !signature) return false;
+        const crypto = require('crypto');
+        const body = typeof payload === 'string' ? payload : JSON.stringify(payload);
+        const expected = crypto
+            .createHmac('sha256', this.webhookSecret)
+            .update(body)
+            .digest('hex');
+        return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
     }
 }
 

@@ -63,6 +63,33 @@ const About = () => {
             </div>
           </ScrollReveal>
         </div>
+
+        {/* Team Section — TICKET-014 */}
+        <div className="mb-40">
+          <ScrollReveal className="mb-16">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight uppercase">THE <span className="text-white">TEAM.</span></h2>
+            <p className="text-white/60 text-lg mt-4 max-w-xl">The people behind every pixel and every deployment.</p>
+          </ScrollReveal>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              { name: 'Mohd Hasnain', role: 'Founder & Lead Engineer', bio: 'Full-stack engineer and product architect. Built WebHaze from the ground up to serve Hyderabad businesses with global-grade digital infrastructure.', linkedin: 'https://linkedin.com' },
+              { name: 'Design Lead', role: 'UI/UX & Brand', bio: 'Crafts every interface with precision — from wireframe to pixel-perfect production. Obsessed with conversion-focused design.', linkedin: 'https://linkedin.com' },
+              { name: 'Growth Lead', role: 'SEO & Digital Strategy', bio: 'Drives organic growth through technical SEO, content strategy, and data-driven campaigns for clients across India.', linkedin: 'https://linkedin.com' },
+            ].map((member, i) => (
+              <ScrollReveal key={i} delay={i * 0.1}>
+                <div className="border border-white/[0.08] bg-white/[0.02] p-8 hover:border-white/20 transition-all duration-500" style={{ borderRadius: 0 }}>
+                  <div className="w-16 h-16 bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-white font-black text-2xl mb-6" style={{ borderRadius: 0 }}>
+                    {member.name[0]}
+                  </div>
+                  <h3 className="text-xl font-black uppercase tracking-[-0.02em] mb-1">{member.name}</h3>
+                  <p className="text-[10px] font-medium tracking-[0.15em] text-white/40 uppercase mb-4">{member.role}</p>
+                  <p className="text-white/60 text-sm leading-relaxed mb-6">{member.bio}</p>
+                  <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold tracking-[0.15em] text-white/30 uppercase hover:text-white transition-colors">LinkedIn →</a>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

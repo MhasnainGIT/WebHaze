@@ -8,4 +8,7 @@ const PageSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+PageSchema.index({ slug: 1 });
+PageSchema.index({ createdAt: -1 });
+
 module.exports = mongoose.model('Page', PageSchema);

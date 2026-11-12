@@ -2,17 +2,18 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const Contact = require('../models/Contact');
 const { authenticate, admin } = require('../middleware/auth');
+const { validateContact } = require('../middleware/validation');
 const router = express.Router();
 
 // Rate limiting for contact form
 const contactLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 3, // limit each IP to 3 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 3,
   message: 'Too many contact form submissions, please try again later.',
 });
 
 // Submit contact form
-router.post('/submit', contactLimiter, async (req, res) => {
+router.post('/submit', contactLimiter, validateContact, async (req, res) => {
   try {
     const { name, email, phone, subject, message } = req.body;
 

@@ -40,5 +40,7 @@ const contactSchema = new mongoose.Schema({
 
 // Create compound index to prevent duplicate submissions
 contactSchema.index({ email: 1, subject: 1 }, { unique: true });
+contactSchema.index({ createdAt: -1 });
+contactSchema.index({ status: 1 });
 
 module.exports = mongoose.model('Contact', contactSchema);

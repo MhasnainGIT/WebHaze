@@ -50,6 +50,8 @@ const PremiumNavbar = () => {
       ]
     },
     { name: 'PRICING', path: '/pricing' },
+    { name: 'PORTFOLIO', path: '/portfolio' },
+    { name: 'BLOG', path: '/blog' },
     { name: 'ABOUT', path: '/about' },
     { name: 'CONTACT', path: '/contact' },
   ];

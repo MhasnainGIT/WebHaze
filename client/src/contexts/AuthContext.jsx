@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useRef } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { API_BASE_URL } from '../config/api';
@@ -21,15 +21,31 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const refreshTimerRef = useRef(null);
+
+  const scheduleRefresh = () => {
+    if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+    // Refresh 1 minute before 15-min token expires
+    refreshTimerRef.current = setTimeout(async () => {
+      try {
+        await axios.post('/api/auth/refresh');
+        scheduleRefresh();
+      } catch {
+        setUser(null);
+      }
+    }, 14 * 60 * 1000);
+  };
 
   useEffect(() => {
     fetchUser();
+    return () => { if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current); };
   }, []);
 
   const fetchUser = async () => {
     try {
       const response = await axios.get('/api/auth/me');
       setUser(response.data.user);
+      scheduleRefresh();
     } catch {
       setUser(null);
     } finally {
@@ -42,6 +58,7 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post('/api/auth/login', { email, password });
       const { user } = response.data;
       setUser(user);
+      scheduleRefresh();
       clarityAnalytics?.identify(user.id, null, null, user.name);
       clarityAnalytics?.trackEvent('user_login');
       clarityAnalytics?.setTag('user_plan', user.plan);
@@ -59,6 +76,7 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post('/api/auth/register', { email, password, name });
       const { user } = response.data;
       setUser(user);
+      scheduleRefresh();
       clarityAnalytics?.identify(user.id, null, null, user.name);
       clarityAnalytics?.trackEvent('user_registration');
       clarityAnalytics?.setTag('user_plan', user.plan);
@@ -74,6 +92,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     clarityAnalytics?.trackEvent('user_logout');
+    if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
     try {
       await axios.post('/api/auth/logout');
     } catch (error) {

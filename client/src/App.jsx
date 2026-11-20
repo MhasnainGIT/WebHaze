@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import StructuredData from './components/StructuredData';
 import CookieConsent from './components/CookieConsent';
 import SmoothScroll from './components/SmoothScroll';
+import FallingLeavesBackground from './components/FallingLeavesBackground';
 
 const WhatsAppButton = () => {
   const { pathname } = useLocation();
@@ -80,6 +81,7 @@ export default function App() {
             <SmoothScroll>
               <div className="min-h-screen bg-black text-white overflow-x-hidden relative">
                 <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900 -z-50" />
+                <FallingLeavesBackground />
                 <StructuredData />
                 <ScrollToTop />
                 <PremiumNavbar />

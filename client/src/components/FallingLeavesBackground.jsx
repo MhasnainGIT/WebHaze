@@ -12,25 +12,25 @@ const FallingLeavesBackground = () => {
   return (
     <FallingLeaves
       fullScreen
-      count={18}
-      size={[10, 22]}
-      speed={[0.4, 1.0]}
-      wind={[-0.2, 0.6]}
-      sway={[0.3, 1.0]}
-      rotationSpeed={[-1.2, 1.2]}
-      opacity={0.18}
+      count={25}
+      size={[14, 28]}
+      speed={[0.5, 1.2]}
+      wind={[-0.3, 0.7]}
+      sway={[0.4, 1.2]}
+      rotationSpeed={[-1.5, 1.5]}
+      opacity={0.75}
       shapes={['maple', 'oak', 'ginkgo']}
       colors={[
-        '#8B3A0F',
-        '#6B2D0A',
-        '#A0522D',
-        '#7B3F00',
-        '#5C2A00',
-        '#9B4400',
-        '#4A1A00',
-        '#C46200',
+        '#D4621A',
+        '#E8832A',
+        '#C4501A',
+        '#F0A040',
+        '#B84010',
+        '#E06020',
+        '#A03010',
+        '#F0C060',
       ]}
-      zIndex={1}
+      zIndex={50}
     />
   );
 };

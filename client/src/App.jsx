@@ -85,7 +85,7 @@ export default function App() {
                 <StructuredData />
                 <ScrollToTop />
                 <PremiumNavbar />
-                <main className="relative z-10">
+                <main className="relative">
                   <ErrorBoundary>
                     <Suspense fallback={<LoadingSpinner />}>
                       <Routes>

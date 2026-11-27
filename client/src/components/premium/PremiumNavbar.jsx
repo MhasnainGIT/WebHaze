@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { SpotlightCard } from '../ui/aceternity';
 
 const PremiumNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -83,18 +84,22 @@ const PremiumNavbar = () => {
                 }`}>
                   {link.name}
                 </button>
-                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                  <div className="bg-black/90 backdrop-blur-xl border border-white/10 p-2 flex flex-col gap-2 min-w-[220px]">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                  {/* Aceternity: SpotlightCard for dropdown */}
+                  <SpotlightCard
+                    className="border border-white/[0.1] bg-black/95 backdrop-blur-xl p-2 flex flex-col gap-1 min-w-[220px]"
+                    spotlightColor="rgba(255,255,255,0.05)"
+                  >
                     {link.dropdown.map(sub => (
-                      <Link 
+                      <Link
                         key={sub.name}
                         to={sub.path}
-                        className={`text-[10px] font-black tracking-[0.15em] uppercase px-4 py-3 hover:bg-white/5 transition-colors whitespace-nowrap text-left ${location.pathname === sub.path ? 'text-white bg-white/5' : 'text-white hover:text-white'}`}
+                        className={`text-[10px] font-black tracking-[0.15em] uppercase px-4 py-3 hover:bg-white/5 transition-colors whitespace-nowrap text-left ${location.pathname === sub.path ? 'text-white bg-white/5' : 'text-white/70 hover:text-white'}`}
                       >
                         {sub.name}
                       </Link>
                     ))}
-                  </div>
+                  </SpotlightCard>
                 </div>
               </div>
             ) : (

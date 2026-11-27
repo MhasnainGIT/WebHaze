@@ -6,6 +6,21 @@ import ScrollReveal from '../../components/ScrollReveal';
 import CurrencySelector from '../../components/CurrencySelector';
 import { useCurrency } from '../../contexts/CurrencyContext';
 import { formatPrice } from '../../config/pricing';
+import {
+  SpotlightCard,
+  WavyText,
+  TextGenerateEffect,
+  BackgroundBeams,
+  GlowingStarsBackground,
+  LampContainer,
+  ScrollVelocity,
+} from '../../components/ui/aceternity';
+
+const f = {
+  h: "'Inter',sans-serif",
+  b: "'Hanken Grotesk',sans-serif",
+  l: "'Geist Mono','monospace'",
+};
 
 const MARGIN = 1.30; // 30% commission markup
 const applyMargin = (price) => Math.ceil((price * MARGIN) / 10) * 10;
@@ -140,7 +155,7 @@ const CloudServers = () => {
   const isWindows = activeTab.includes('windows');
 
   return (
-    <div className="min-h-screen bg-black text-white pt-32 pb-20 overflow-hidden">
+    <div className="min-h-screen bg-black text-white pt-32 pb-20 overflow-hidden relative">
       <SEO 
         title="Managed Cloud & Dedicated Servers | WebHaze"
         description="Experience WebHaze high-performance, fully customizable servers with 99.999% SLA. Enterprise cloud architecture for your mission-critical workloads."
@@ -152,7 +167,11 @@ const CloudServers = () => {
         ]}
       />
 
-      <div className="container-site">
+      {/* Aceternity: Backgrounds */}
+      <GlowingStarsBackground className="fixed inset-0 pointer-events-none opacity-25" />
+      <BackgroundBeams className="opacity-30" />
+
+      <div className="container-site relative z-10">
         <div className="flex justify-end mb-8">
           <CurrencySelector />
         </div>
@@ -160,15 +179,24 @@ const CloudServers = () => {
         {/* Header */}
         <div className="max-w-4xl mb-24">
           <ScrollReveal>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tighter leading-tight uppercase">
-              ENTERPRISE <br/><span className="text-white">CLOUD ARCHITECTURE.</span>
+            <span className="text-[11px] font-medium tracking-[0.15em] text-white/40 uppercase block mb-6" style={{ fontFamily: f.l }}>SERVICES</span>
+            <h1 className="text-[52px] md:text-[90px] font-black leading-[0.9] mb-10 tracking-[-0.04em] uppercase" style={{ fontFamily: f.h }}>
+              <WavyText text="ENTERPRISE" /><br/>
+              <WavyText text="CLOUD." delay={0.2} />
+
             </h1>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
-             <p className="text-lg md:text-xl text-white max-w-2xl font-medium leading-relaxed">
-              Experience our high-performance, fully customizable servers. Tailor your configuration with no lock-in, fixed monthly billing, and 24/7 legendary support with a 5-minute response time.
-            </p>
+            <TextGenerateEffect
+              words="High-performance, fully customizable servers. No lock-in, fixed monthly billing, and 24/7 legendary support with a 5-minute response time."
+              className="text-lg md:text-xl text-white/60 max-w-2xl font-medium leading-relaxed"
+            />
           </ScrollReveal>
+        </div>
+
+        {/* Aceternity ScrollVelocity */}
+        <div className="mb-24 overflow-hidden border-t border-white/[0.06]">
+          <ScrollVelocity text1="LINUX VPS · WINDOWS VPS · DEDICATED SERVERS ·" text2="99.999% UPTIME · 5-MIN SUPPORT · WEBHAZE ·" />
         </div>
 
         {/* Features Grid */}
@@ -176,13 +204,18 @@ const CloudServers = () => {
           <ScrollReveal>
              <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-12">THE WEBHAZE ADVANTAGE</h2>
           </ScrollReveal>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {features.map((feature, i) => (
-              <ScrollReveal key={i} delay={i * 0.05} direction="up">
-                <div className="p-6 bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all duration-300 h-full flex items-center gap-4 group">
-                  <div className="w-2 h-2 bg-white rounded-full group-hover:scale-150 transition-transform duration-300" />
-                  <span className="text-sm font-medium text-white group-hover:text-white transition-colors">{feature}</span>
-                </div>
+              <ScrollReveal key={i} delay={i * 0.04} direction="up">
+                <SpotlightCard
+                  className="border border-white/[0.06] bg-white/[0.02] hover:border-white/20 transition-all duration-300 h-full"
+                  spotlightColor="rgba(255,255,255,0.04)"
+                >
+                  <div className="p-5 flex items-center gap-4 h-full">
+                    <div className="w-1.5 h-1.5 bg-white/30 flex-shrink-0" style={{ borderRadius: 0 }} />
+                    <span className="text-sm font-medium text-white/70">{feature}</span>
+                  </div>
+                </SpotlightCard>
               </ScrollReveal>
             ))}
           </div>
@@ -270,38 +303,50 @@ const CloudServers = () => {
           </ScrollReveal>
           
           <ScrollReveal delay={0.2}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {(isWindows ? panelsWindows : panelsLinux).map((panel, i) => (
-                <div key={i} className="p-8 bg-white/[0.02] border border-white/5 flex flex-col items-center justify-center text-center group hover:border-white/20 transition-all duration-300">
-                  <h3 className="font-bold text-white mb-2">{panel.name}</h3>
-                   <p className="text-white text-sm mb-4">{panel.limit}</p>
-                  <div className="text-[10px] font-black tracking-[0.2em] text-white bg-white/5 px-4 py-1 rounded-full uppercase">{panel.price}</div>
-                </div>
+                <SpotlightCard
+                  key={i}
+                  className="border border-white/[0.06] bg-white/[0.02] hover:border-white/20 transition-all duration-300"
+                  spotlightColor="rgba(255,255,255,0.04)"
+                >
+                  <div className="p-8 flex flex-col items-center justify-center text-center">
+                    <h3 className="font-black text-white mb-2 uppercase tracking-tight text-sm">{panel.name}</h3>
+                    <p className="text-white/50 text-sm mb-4">{panel.limit}</p>
+                    <div className="text-[10px] font-black tracking-[0.2em] text-white/70 bg-white/5 border border-white/[0.08] px-4 py-1.5 uppercase">{panel.price}</div>
+                  </div>
+                </SpotlightCard>
               ))}
             </div>
           </ScrollReveal>
         </div>
-        
-        {/* CTA */}
-        <div className="mt-32 border border-white/10 p-12 md:p-24 relative overflow-hidden bg-white/[0.01]">
-          <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none" />
-          <ScrollReveal>
-            <h2 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter uppercase relative z-10">
-               NEED A CUSTOM <br/><span className="text-white">CONFIGURATION?</span>
-            </h2>
-             <p className="text-lg text-white max-w-xl mb-10 relative z-10">
-              Our enterprise architects can design a custom bare-metal or cloud infrastructure strictly tailored to your high-scale workload.
-            </p>
-            <Link 
-              to="/contact" 
-              className="inline-block px-10 py-5 bg-white !text-black font-black text-[10px] tracking-[0.3em] uppercase hover:bg-white/90 transition-all relative z-10"
-              style={{ borderRadius: 0 }}
-            >
-              Contact Sales
-            </Link>
-          </ScrollReveal>
-        </div>
       </div>
+
+      {/* Aceternity: LampContainer CTA */}
+      <LampContainer className="mt-0">
+        <ScrollReveal>
+          <span className="text-[11px] font-medium tracking-[0.15em] text-white/40 uppercase block mb-6 text-center" style={{ fontFamily: f.l }}>
+            NEED SOMETHING CUSTOM?
+          </span>
+          <h2 className="text-[40px] md:text-[80px] font-black tracking-[-0.04em] leading-[0.85] uppercase mb-10 text-center" style={{ fontFamily: f.h }}>
+            CUSTOM
+            <br />
+            <span className="text-white">CONFIGURATION.</span>
+          </h2>
+          <p className="text-white/60 text-center max-w-xl mx-auto mb-10" style={{ fontFamily: f.b }}>
+            Our enterprise architects can design a custom bare-metal or cloud infrastructure strictly tailored to your high-scale workload.
+          </p>
+        </ScrollReveal>
+        <ScrollReveal delay={0.2}>
+          <Link
+            to="/contact"
+            className="px-14 py-5 bg-white text-black text-[12px] font-bold tracking-[0.15em] uppercase hover:bg-white/90 transition-all"
+            style={{ borderRadius: 0, fontFamily: f.l, color: '#000000' }}
+          >
+            Contact Sales
+          </Link>
+        </ScrollReveal>
+      </LampContainer>
     </div>
   );
 };

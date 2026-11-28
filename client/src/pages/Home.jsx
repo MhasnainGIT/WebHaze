@@ -4,9 +4,6 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import SEO from '../components/SEO';
 import ScrollReveal from '../components/ScrollReveal';
-import { useCurrency } from '../contexts/CurrencyContext';
-import { PLANS } from '../config/pricing';
-import Globe from '../components/ui/Globe';
 import {
   SpotlightCard,
   TextGenerateEffect,
@@ -27,6 +24,9 @@ const f = {
   b: "'Hanken Grotesk',sans-serif",
   l: "'Geist Mono','monospace'",
 };
+
+const loadGlobe = () => import('../components/ui/3d-globe');
+const Globe3D = React.lazy(loadGlobe);
 
 /* ─── 3D Mouse-parallax background ─── */
 const Bg3D = () => {
@@ -122,7 +122,7 @@ const Hero = () => {
               transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
             >
               WE BUILD<br />
-              <span className="text-white">WEBSITES THAT WORK.</span>
+              <span className="text-white">WITHOUT LIMITS.</span>
             </motion.h1>
           </div>
 
@@ -565,21 +565,46 @@ const Services = () => {
 };
 
 const locations = [
-  { lat: 17.4, lng: 78.5, city: 'Hyderabad', country: 'India' },
-  { lat: 25.2, lng: 55.3, city: 'Dubai', country: 'UAE' },
-  { lat: 51.5, lng: -0.1, city: 'London', country: 'UK' },
-  { lat: 40.7, lng: -74.0, city: 'New York', country: 'USA' },
-  { lat: 1.3, lng: 103.8, city: 'Singapore', country: 'SG' },
-  { lat: 48.9, lng: 2.3, city: 'Paris', country: 'France' },
+  { lat: 17.385, lng: 78.4867, city: 'Hyderabad', country: 'India', avatar: 1 },
+  { lat: 25.2048, lng: 55.2708, city: 'Dubai', country: 'UAE', avatar: 10 },
+  { lat: 51.5072, lng: -0.1276, city: 'London', country: 'UK', avatar: 2 },
+  { lat: 40.7128, lng: -74.006, city: 'New York', country: 'USA', avatar: 1 },
+  { lat: 1.3521, lng: 103.8198, city: 'Singapore', country: 'SG', avatar: 12 },
+  { lat: 48.8566, lng: 2.3522, city: 'Paris', country: 'France', avatar: 5 },
 ];
 
-const globeMarkers = locations.map(({ lat, lng }) => ({
-  location: [lat, lng],
-  size: 0.06,
+const globeMarkers = locations.map(({ lat, lng, city, avatar }) => ({
+  lat,
+  lng,
+  label: city,
+  src: `https://assets.aceternity.com/avatars/${avatar}.webp`,
 }));
 
 /* ─── Global Reach (Aceternity 3D Globe) ─── */
 const GlobalReach = () => {
+  const globeRef = useRef(null);
+  useEffect(() => {
+    const preloadGlobe = () => {
+      loadGlobe().catch((error) => {
+        console.error('Unable to preload the globe.', error);
+      });
+    };
+
+    if (typeof window.requestIdleCallback === 'function') {
+      const idleId = window.requestIdleCallback(preloadGlobe, { timeout: 2000 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(preloadGlobe, 1200);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
+
+  const showGlobe = useInView(globeRef, {
+    once: true,
+    amount: 0.1,
+    margin: '1200px 0px',
+  });
+
   return (
     <section className="py-24 md:py-32 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06] overflow-hidden">
       <div className="max-w-[1440px] mx-auto">
@@ -603,10 +628,9 @@ const GlobalReach = () => {
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <TextGenerateEffect
-                words="We work with businesses in Hyderabad, Dubai, London, New York, Singapore, and Paris."
-                className="text-lg text-white/60 leading-relaxed mb-10 max-w-lg"
-              />
+              <p className="text-lg text-white/60 leading-relaxed mb-10 max-w-lg">
+                We work with businesses in Hyderabad, Dubai, London, New York, Singapore, and Paris.
+              </p>
             </ScrollReveal>
             <ScrollReveal delay={0.3}>
               <div className="grid grid-cols-2 gap-4">
@@ -617,16 +641,10 @@ const GlobalReach = () => {
                   >
                     <div className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0" />
                     <span
-                      className="text-[11px] text-white/50 uppercase tracking-[0.1em]"
+                      className="text-[11px] text-white/50 uppercase tracking-[0.1em] ml-auto"
                       style={{ fontFamily: f.l }}
                     >
-                      {loc.city}
-                    </span>
-                    <span
-                      className="text-[10px] text-white/20 uppercase tracking-[0.1em] ml-auto"
-                      style={{ fontFamily: f.l }}
-                    >
-                      {loc.country}
+                      {loc.city}, {loc.country}
                     </span>
                   </div>
                 ))}
@@ -636,7 +654,30 @@ const GlobalReach = () => {
           {/* Globe side */}
           <div className="lg:w-1/2 flex justify-center">
             <ScrollReveal delay={0.3}>
-              <Globe markers={globeMarkers} className="w-full max-w-[380px]" />
+              <div ref={globeRef} className="w-full max-w-[520px]">
+                {showGlobe ? (
+                  <React.Suspense
+                    fallback={
+                      <div className="flex h-[380px] w-full items-center justify-center text-sm text-white/40 md:h-[500px]">
+                        Loading globe…
+                      </div>
+                    }
+                  >
+                    <Globe3D
+                      markers={globeMarkers}
+                      config={{
+                        atmosphereColor: '#4da6ff',
+                        atmosphereIntensity: 0.1,
+                        bumpScale: 5,
+                        autoRotateSpeed: 0.3,
+                      }}
+                      className="max-w-[520px]"
+                    />
+                  </React.Suspense>
+                ) : (
+                  <div className="h-[380px] w-full md:h-[500px]" aria-hidden="true" />
+                )}
+              </div>
             </ScrollReveal>
           </div>
         </div>
@@ -645,109 +686,35 @@ const GlobalReach = () => {
   );
 };
 
-/* ─── Pricing ─── */
-const Pricing = () => {
-  const { formatPrice, currency } = useCurrency();
-
-  return (
-    <section className="py-24 md:py-40 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
-      <div className="max-w-[1440px] mx-auto">
-        <ScrollReveal className="mb-16 md:mb-24">
-          <span
-            className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-6"
-            style={{ fontFamily: f.l }}
-          >
-            PRICING
-          </span>
-          <h2
-            className="text-[40px] md:text-[72px] font-black tracking-[-0.03em] uppercase leading-[0.95]"
-            style={{ fontFamily: f.h }}
-          >
-            TRANSPARENT
-            <br />
-            <span className="text-white">PRICING.</span>
-          </h2>
-        </ScrollReveal>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {PLANS.map((plan, i) => (
-            <ScrollReveal key={i} delay={i * 0.1}>
-              {/* Aceternity: SpotlightCard for pricing */}
-              <SpotlightCard
-                className={`h-full border transition-all duration-700 ${
-                  plan.popular
-                    ? 'border-white/20 bg-white/[0.05]'
-                    : 'border-white/[0.08] bg-white/[0.02]'
-                }`}
-                spotlightColor={plan.popular ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)'}
-              >
-                <div className="relative flex flex-col h-full p-8 md:p-10">
-                  {plan.popular && (
-                    <div
-                      className="absolute -top-3.5 left-8 bg-white text-black text-[10px] font-bold uppercase tracking-[0.15em] px-4 py-1.5"
-                      style={{ borderRadius: 0, fontFamily: f.l }}
-                    >
-                      Most popular
-                    </div>
-                  )}
-                  <span
-                    className="text-[11px] font-medium tracking-[0.15em] text-white uppercase block mb-8"
-                    style={{ fontFamily: f.l }}
-                  >
-                    {plan.name}
-                  </span>
-                  <div className="flex items-baseline gap-2 mb-10">
-                    <span
-                      className="text-4xl md:text-[56px] font-black text-white tracking-[-0.03em]"
-                      style={{ fontFamily: f.h }}
-                    >
-                      {formatPrice(plan.prices[currency])}
-                    </span>
-                    <span
-                      className="text-white/40 text-[11px] tracking-[0.1em]"
-                      style={{ fontFamily: f.l }}
-                    >
-                      /ONCE
-                    </span>
-                  </div>
-                  <ul className="space-y-4 mb-10 flex-grow">
-                    {plan.features.map((feat, j) => (
-                      <li
-                        key={j}
-                        className="flex items-center text-white/70 gap-3 text-sm md:text-base"
-                        style={{ fontFamily: f.b }}
-                      >
-                        <div className="w-1 h-1 bg-white/40 flex-shrink-0" />
-                        {feat}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to="/contact"
-                    className={`block text-center px-6 py-4 text-[11px] font-bold tracking-[0.15em] uppercase transition-all ${
-                      plan.popular
-                        ? 'bg-white text-black hover:bg-white/90'
-                        : 'bg-transparent text-white border border-white/[0.08] hover:border-white'
-                    }`}
-                    style={{
-                      borderRadius: 0,
-                      fontFamily: f.l,
-                      color: plan.popular ? '#000000' : undefined,
-                    }}
-                  >
-                    {plan.popular ? 'Get Started' : 'Choose plan'}
-                  </Link>
-                </div>
-              </SpotlightCard>
-            </ScrollReveal>
-          ))}
-        </div>
+/* ─── Pricing link ─── */
+const PricingLink = () => (
+  <section className="py-12 md:py-16 bg-black relative z-10 px-6 md:px-20 border-t border-white/[0.06]">
+    <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div>
+        <span
+          className="text-[11px] font-medium tracking-[0.15em] text-white/50 uppercase block mb-3"
+          style={{ fontFamily: f.l }}
+        >
+          PRICING
+        </span>
+        <h2 className="text-2xl md:text-3xl font-black uppercase" style={{ fontFamily: f.h }}>
+          See all plans and prices
+        </h2>
       </div>
-    </section>
-  );
-};
+      <Link
+        to="/pricing"
+        className="px-8 py-4 bg-white text-black text-[12px] font-bold tracking-[0.15em] uppercase hover:bg-white/90 transition-all"
+        style={{ fontFamily: f.l, color: '#000000' }}
+      >
+        View pricing
+      </Link>
+    </div>
+  </section>
+);
 
 /* ─── Testimonials — clean staggered layout, no CardStack overlap ─── */
 const Testimonials = () => {
+  const [showAll, setShowAll] = useState(false);
   const items = [
     {
       quote: 'Our conversion rate rose 40% in the first month.',
@@ -798,9 +765,16 @@ const Testimonials = () => {
           </h2>
         </ScrollReveal>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((t, i) => (
-            <ScrollReveal key={i} delay={i * 0.05} className="h-full">
+        <div
+          id="client-reviews"
+          className={`grid gap-4 ${showAll ? 'sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}
+        >
+          {(showAll ? items : items.slice(0, 1)).map((t, i) => (
+            <ScrollReveal
+              key={t.name}
+              delay={i * 0.05}
+              className={showAll ? 'h-full' : 'h-full sm:col-span-2 lg:col-span-3'}
+            >
               <SpotlightCard
                 className="border border-white/[0.08] bg-white/[0.02] hover:border-white/20 transition-all duration-700"
                 spotlightColor="rgba(255,255,255,0.05)"
@@ -827,6 +801,19 @@ const Testimonials = () => {
               </SpotlightCard>
             </ScrollReveal>
           ))}
+        </div>
+
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            aria-expanded={showAll}
+            aria-controls="client-reviews"
+            onClick={() => setShowAll((current) => !current)}
+            className="px-6 py-3 border border-white/20 text-white text-[11px] font-bold tracking-[0.12em] uppercase hover:border-white transition-colors"
+            style={{ fontFamily: f.l }}
+          >
+            {showAll ? 'Show less' : 'Show more reviews'}
+          </button>
         </div>
 
         {/* CTA row */}
@@ -1033,7 +1020,7 @@ const Home = () => (
     <Process />
     <Services />
     <GlobalReach />
-    <Pricing />
+    <PricingLink />
     <Testimonials />
     <FAQ />
     <CTA />
